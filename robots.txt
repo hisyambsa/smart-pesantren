@@ -1,0 +1,16 @@
+User-agent: *
+# disallow all files in these directories
+Disallow: /captcha/
+Disallow: /system/
+Disallow: /asset/admin/
+Disallow: /asset/ckeditor/
+Disallow: /asset/kcfinder/
+Disallow: /application/views/administrator/
+Disallow: /application/views/errors/
+Disallow: /application/config/
+Disallow: /application/controllers/
+Disallow: /application/helpers/
+Disallow: /application/libraries/
+Disallow: /application/models/
+
+Sitemap: https://www.azkaumroh.com/sitemap.html

@@ -1,0 +1,35 @@
+.container-content {
+  min-height: calc(100vh - 70px);
+}
+.footer {
+  height: 50px;
+}
+
+.navbar .navbar-brand img {
+    height: 40px;
+}
+.backgroundLoading{
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: red;
+    position: absolute;
+    z-index: 88;
+    opacity: 0.7;
+  }
+  
+  .loader { 
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 7rem;
+    height: 7rem;
+    animation: spin 2s linear infinite;
+    z-index: 9999;
+    
+    position: absolute;
+    color: White;
+    left: 45%;
+    top: 45%;
+  }
