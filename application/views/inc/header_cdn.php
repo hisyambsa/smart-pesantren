@@ -90,23 +90,18 @@
     <!-- ./ select2 -->
 
     <!-- jstree -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js" integrity="sha512-TGClBy3S4qrWJtzel4qMtXsmM0Y9cap6QwRm3zo1MpVjvIURa90YYz5weeh6nvDGKZf/x3hrl1zzHW/uygftKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" integrity="sha512-pg7xGkuHzhrV2jAMJvQsTV30au1VGlnxVN4sgmG8Yv0dxGR71B21QeHGLMvYod4AaygAzz87swLEZURw7VND2A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default-dark/style.min.css" integrity="sha512-G2U+dh7e2qpH9e1PZdGb7Hp+/uoiPbbEt3dGdU3G+eX+j3ZdnTSRL7s6jgXu94SeQBV1lOUr50kGQ99j2Vj3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- ./jstree -->
 
-    <div id="domMessage" style="display:none;">
-        <h6 class="h6-responsive my-4">Sistem sedang memproses...</h6>
-    </div>
+
     <script async>
-        $(document).ajaxStop($.unblockUI);
-        $.blockUI({
-            message: $('#domMessage')
-        });
-        let base_url = '<?= base_url(); ?>';
         $(document).ready(function() {
-            $.unblockUI();
+            $(document).ajaxStart(function() {
+                Pace.restart();
+            });
         });
-        $(document).ajaxStop($.unblockUI);
     </script>
     <style>
         .is-hide {
