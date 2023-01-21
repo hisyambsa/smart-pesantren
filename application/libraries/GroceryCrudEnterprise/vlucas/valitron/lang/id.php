@@ -30,5 +30,11 @@ return array(
     'lengthBetween' => "harus diantara karakter %d dan %d",
     'creditCard'    => "nomor kartu kredit harus valid",
     "lengthMin"     => "minimal berisi %d karakter",
-    "lengthMax"     => "maksimal berisi %d karakter"
+    "lengthMax"     => "maksimal berisi %d karakter",
+    'instanceOf'     => "must be an instance of '%s'",
+    'containsUnique' => "must contain unique elements only",
+    'requiredWith'   => "is required",
+    'requiredWithout' => "is required",
+    'subset'         => "contains an item that is not in the list",
+    'arrayHasKeys'   => "does not contain all required keys",
 );

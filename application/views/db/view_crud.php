@@ -11,7 +11,7 @@
         opacity: 0;
     }
 
-    .white-skin .btn-default {
+    .cyan-skin .btn-default {
         background-color: white !important;
         color: black !important;
     }
