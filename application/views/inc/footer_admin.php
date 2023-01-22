@@ -162,7 +162,13 @@
         <?php } ?>
     });
 </script>
-<?php if (ENVIRONMENT == 'development') : ?>
+<?php
+$whitelist = array(
+    '127.0.0.1',
+    '::1'
+);
+?>
+<?php if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) or PROFILER == TRUE) : ?>
     <div class="fixed-action-btn" style="bottom: 0px; right: 0px;">
         <button class="">
             <strong>

@@ -67,12 +67,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <body>
 	<div id="container">
 		<h1><?php echo 'KESALAHAN SISTEM' ?></h1>
-		<p>
-			<a target="_blank" href="https://api.whatsapp.com/send?phone=6281905096842&text=Bang%20Mohon%20Supportnya!%0A<?= urlencode(current_url()) . '%0A' . urlencode(strip_tags($message)) ?>">Klik disini untuk bantuan</a>
-		</p>
 		<p><?= $message ?></p>
 	</div>
-	<a href="<?= base_url('') ?>" class="btn btn-link text-white">Back to Home</a>
 </body>
 
 </html>
