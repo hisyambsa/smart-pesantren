@@ -32,7 +32,7 @@
                 <!-- <img loading="lazy" height="120" class="" src="<?= base_url('uploads/settings/' . $this->session->userdata('settings')->logo_square) ?>" alt="logo"> -->
                 <p class="text-teal">Selamat datang di Smart Pesantren
                     <br>
-                    MA’HAD DAAR AL IMAM ANNAWAWI R.A
+                    Pondok Pesantren Darrullughah Wadda'wah Jawa Timur
                     <br>
                     Untuk bantuan teknis hub. 081905096842
                 </p>

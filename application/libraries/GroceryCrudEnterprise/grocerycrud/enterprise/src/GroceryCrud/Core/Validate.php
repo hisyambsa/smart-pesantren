@@ -15,10 +15,10 @@ class Validate implements ValidateInterface
 
     function __construct($config)
     {
-
     }
 
-    public function set_language($language) {
+    public function set_language($language)
+    {
         $valitronLanguage = $this->_get_language_mapping($language);
 
         Validator::lang($valitronLanguage);
@@ -54,7 +54,8 @@ class Validate implements ValidateInterface
         return $this->_errors;
     }
 
-    public function setUniqueCallback(callable $uniqueCallback) {
+    public function setUniqueCallback(callable $uniqueCallback)
+    {
         $this->_uniqueCallback = $uniqueCallback;
 
         return $this;
@@ -63,7 +64,7 @@ class Validate implements ValidateInterface
     public function pre_render()
     {
         if ($this->_uniqueCallback !== null) {
-            Validator::addRule('unique', $this->_uniqueCallback, 'must contain a unique value.');
+            Validator::addRule('unique', $this->_uniqueCallback, ' sudah Terdaftar.');
         }
     }
 
@@ -93,14 +94,12 @@ class Validate implements ValidateInterface
                 } else {
                     throw new \Exception('Validate doesn\'t support more than 3 parameters');
                 }
-
             } else {
                 $validator->rule($rule['rule'], $rule['fieldName'], $rule['parameters']);
             }
-
         }
 
-        if($validator->validate()) {
+        if ($validator->validate()) {
             return true;
         } else {
             $this->set_errors($validator->errors());
@@ -108,7 +107,8 @@ class Validate implements ValidateInterface
         }
     }
 
-    private function _get_language_mapping($language) {
+    private function _get_language_mapping($language)
+    {
 
         // Most common scenario
         if ($language === 'English') {
@@ -137,11 +137,11 @@ class Validate implements ValidateInterface
         // Full list of languages supported from here:
         // https://github.com/vlucas/valitron/tree/master/lang
         if (in_array($short_lang, [
-            'ar','es',
-            'fr','it','ja',
-            'ko','no','ro',
-            'ru','sk','th',
-            'tr','uk','vi'
+            'ar', 'es',
+            'fr', 'it', 'ja',
+            'ko', 'no', 'ro',
+            'ru', 'sk', 'th',
+            'tr', 'uk', 'vi'
         ])) {
             return $short_lang;
         }

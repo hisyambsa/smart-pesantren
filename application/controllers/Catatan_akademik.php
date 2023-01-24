@@ -42,11 +42,6 @@ class Catatan_akademik extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
@@ -54,6 +49,14 @@ class Catatan_akademik extends CI_Controller
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+        $crud->setRelation('santri_id', 't_santri', '{nama_santri} - {nik_siswa}');
+        $crud->setRelation('pengajar_id', 't_pengajar', '{nama_pengajar} - {nik}');
+
+        $crud->setAdd();
+        $crud->setEdit();
+        $crud->setDelete();
+        $crud->setConfig('action_button_type', 'icon');
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -80,6 +83,11 @@ class Catatan_akademik extends CI_Controller
     }
     private function display_as($crud)
     {
+        $crud->displayAs(array(
+            'santri_id' => 'Nama Santri',
+            'pengajar_id' => 'Nama Pengajar',
+            'data_catatan' => 'Catatan',
+        ));
         return $crud;
     }
 }

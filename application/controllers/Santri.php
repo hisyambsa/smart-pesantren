@@ -42,11 +42,6 @@ class Santri extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
@@ -54,6 +49,13 @@ class Santri extends CI_Controller
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+        $crud->setConfig('action_button_type', 'icon');
+
+        $crud->setRelation('ppdb_id', 't_ppdb', '{no_pendaftaran}');
+
+        $crud->setRead();
+        $crud->columns(['nama_santri', 'jenis_kelamin', 'nik_siswa']);
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -80,6 +82,16 @@ class Santri extends CI_Controller
     }
     private function display_as($crud)
     {
+        $crud->displayAs(array(
+            'ppdb_id' => 'No Pendaftaran',
+            'nik_siswa' => 'NIK',
+            'nis' => 'NIS',
+            'nisn' => 'NISN',
+            'nama_santri' => 'Nama',
+            'tempat_lahir' => 'Tempat Lahir',
+            'tanggal_lahir' => 'Tanggal Lahir',
+        ));
+
         return $crud;
     }
 }

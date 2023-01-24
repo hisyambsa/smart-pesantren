@@ -9,77 +9,130 @@
 <!-- .................................. -->
 */
 ?>
-<h2 style="margin-top:0px"><?php echo $button ?> T_ppdb </h2>
-<?= form_open($action) ?>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="no_pendaftaran" id="id_no_pendaftaran" placeholder="Masukan No Pendaftaran" value="<?php echo $no_pendaftaran; ?>" />
-    <label for="varchar">No Pendaftaran <?php echo form_error('no_pendaftaran') ?></label>
+<script src="<?= base_url('assets/user/chosen_bug_mobile.js') ?>"></script>
+<script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<div class="rgba-green-slight">
+    <div class="container grey lighten-5 py-3">
+        <div class="text-center">
+            <h2 class="h2-responsive">P P D B </h2>
+            <h3 class="h3-responsive text-monospace">Pondok Pesantren</h3>
+            <h4 class="h4-responsive font-weight-bold">Darrullughah Wadda'wah Jawa Timur</h4>
+        </div>
+        <div class="row align">
+            <div class="col-md-6 order-md-2 py-md-5">
+                <img src="<?= base_url('images/form_ppdb.png') ?>" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="py-3 col-md-6 order-md-1">
+                <?= form_open($action, $attributes, $hidden) ?>
+                <div class="form-group md-form">
+                    <input length="16" maxlength="16" type="text" class="form-control" name="nik_santri" id="id_nik_santri" placeholder="Masukan NIK Calon Siswa" value="<?php echo $nik_santri; ?>" />
+                    <label for="varchar">NIK Calon Siswa <?php echo form_error('nik_santri') ?></label>
+                </div>
+                <div class="form-group md-form">
+                    <input type="text" class="form-control" name="nama_santri" id="id_nama_santri" placeholder="Masukan Nama Calon Siswa" value="<?php echo $nama_santri; ?>" />
+                    <label for="varchar">Nama Calon Siswa <?php echo form_error('nama_santri') ?></label>
+                </div>
+                <div class="form-group">
+                    <label for="varchar">Jenis Kelamin <?php echo form_error('jenis_kelamin') ?></label>
+                    <select data-placeholder="Pilih Jenis Kelamin" name="jenis_kelamin" id="id_jenis_kelamin" class="form-control chosen-select">
+                        <option value="">Pilih Jenis Kelamin</option>
+                        <option <?php echo set_select('jenis_kelamin', 'Laki-Laki', $select_jenis_kelamin = ($jenis_kelamin == 'Laki-Laki') ? TRUE : FALSE) ?> value="Laki-Laki">Laki-Laki</option>
+                        <option <?php echo set_select('jenis_kelamin', 'Perempuan', $select_jenis_kelamin = ($jenis_kelamin == 'Perempuan') ? TRUE : FALSE) ?> value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="form-group md-form">
+                    <input type="text" class="form-control" name="tempat_lahir" id="id_tempat_lahir" placeholder="Masukan Tempat Lahir" value="<?php echo $tempat_lahir; ?>" />
+                    <label for="varchar">Tempat Lahir <?php echo form_error('tempat_lahir') ?></label>
+                </div>
+                <div class="form-group md-form">
+                    <input type="text" class="form-control datepicker" id="id_tanggal_lahir_form" placeholder="Masukan Tanggal Lahir" value="<?php echo $tanggal_lahir; ?>" />
+                    <input type="hidden" class="form-control" name="tanggal_lahir" id="id_tanggal_lahir" placeholder="Masukan Tanggal Lahir" value="<?php echo $tanggal_lahir; ?>" />
+                    <label for="date">Tanggal Lahir <?php echo form_error('tanggal_lahir') ?></label>
+                </div>
+                <div class="form-group md-form">
+                    <textarea class="form-control" rows="3" name="alamat" id="alamat" placeholder="Alamat"><?php echo $alamat; ?></textarea>
+                    <label for="alamat">Alamat <?php echo form_error('alamat') ?></label>
+                </div>
+                <div class="form-group">
+                    <label for="varchar">Jenjang yang dipilih <?php echo form_error('jenjang') ?></label>
+                    <select data-placeholder="Pilih Jenjang" name="jenjang" id="id_jenjang" class="form-control chosen-select">
+                        <option value="">Pilih Jenjang</option>
+                        <option <?php echo set_select('jenjang', "I'dadiyah", $select_jenjang = ($jenjang == "I'dadiyah") ? TRUE : FALSE) ?> value="I'dadiyah">I'dadiyah</option>
+                        <option <?php echo set_select('jenjang', 'Ibtidaiyah', $select_jenjang = ($jenjang == 'Ibtidaiyah') ? TRUE : FALSE) ?> value="Ibtidaiyah">Ibtidaiyah</option>
+                        <option <?php echo set_select('jenjang', 'Tsanawiyah', $select_jenjang = ($jenjang == 'Tsanawiyah') ? TRUE : FALSE) ?> value="Tsanawiyah">Tsanawiyah</option>
+                        <option <?php echo set_select('jenjang', 'Aliyah', $select_jenjang = ($jenjang == 'Aliyah') ? TRUE : FALSE) ?> value="Aliyah">Aliyah</option>
+                    </select>
+                </div>
+                <input type="hidden" name="id" value="<?php echo $id; ?>" />
+                <hr>
+                <button type="submit" class="btn btn-secondary btn-block btn-rounded mt-3">DAFTAR SEKARANG</button>
+                <?= form_close() ?>
+            </div>
+
+        </div>
+    </div>
 </div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="nik_santri" id="id_nik_santri" placeholder="Masukan Nik Santri" value="<?php echo $nik_santri; ?>" />
-    <label for="varchar">Nik Santri <?php echo form_error('nik_santri') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="nama_santri" id="id_nama_santri" placeholder="Masukan Nama Santri" value="<?php echo $nama_santri; ?>" />
-    <label for="varchar">Nama Santri <?php echo form_error('nama_santri') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="jenis_kelamin" id="id_jenis_kelamin" placeholder="Masukan Jenis Kelamin" value="<?php echo $jenis_kelamin; ?>" />
-    <label for="enum">Jenis Kelamin <?php echo form_error('jenis_kelamin') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="tempat_lahir" id="id_tempat_lahir" placeholder="Masukan Tempat Lahir" value="<?php echo $tempat_lahir; ?>" />
-    <label for="varchar">Tempat Lahir <?php echo form_error('tempat_lahir') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="tanggal_lahir" id="id_tanggal_lahir" placeholder="Masukan Tanggal Lahir" value="<?php echo $tanggal_lahir; ?>" />
-    <label for="date">Tanggal Lahir <?php echo form_error('tanggal_lahir') ?></label>
-</div>
-<div class="form-group md-form">
-    <textarea class="form-control" rows="3" name="alamat" id="alamat" placeholder="Alamat"><?php echo $alamat; ?></textarea>
-    <label for="alamat">Alamat <?php echo form_error('alamat') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="jenjang" id="id_jenjang" placeholder="Masukan Jenjang" value="<?php echo $jenjang; ?>" />
-    <label for="enum">Jenjang <?php echo form_error('jenjang') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="nama_ayah" id="id_nama_ayah" placeholder="Masukan Nama Ayah" value="<?php echo $nama_ayah; ?>" />
-    <label for="varchar">Nama Ayah <?php echo form_error('nama_ayah') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="nama_ibu" id="id_nama_ibu" placeholder="Masukan Nama Ibu" value="<?php echo $nama_ibu; ?>" />
-    <label for="varchar">Nama Ibu <?php echo form_error('nama_ibu') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="golongan_darah" id="id_golongan_darah" placeholder="Masukan Golongan Darah" value="<?php echo $golongan_darah; ?>" />
-    <label for="enum">Golongan Darah <?php echo form_error('golongan_darah') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="status" id="id_status" placeholder="Masukan Status" value="<?php echo $status; ?>" />
-    <label for="enum">Status <?php echo form_error('status') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="timestamp" id="id_timestamp" placeholder="Masukan Timestamp" value="<?php echo $timestamp; ?>" />
-    <label for="timestamp">Timestamp <?php echo form_error('timestamp') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="create_by" id="id_create_by" placeholder="Masukan Create By" value="<?php echo $create_by; ?>" />
-    <label for="varchar">Create By <?php echo form_error('create_by') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="modify" id="id_modify" placeholder="Masukan Modify" value="<?php echo $modify; ?>" />
-    <label for="timestamp">Modify <?php echo form_error('modify') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="modify_by" id="id_modify_by" placeholder="Masukan Modify By" value="<?php echo $modify_by; ?>" />
-    <label for="varchar">Modify By <?php echo form_error('modify_by') ?></label>
-</div>
-<div class="form-group md-form">
-    <input type="text" class="form-control" name="delete_at" id="id_delete_at" placeholder="Masukan Delete At" value="<?php echo $delete_at; ?>" />
-    <label for="int">Delete At <?php echo form_error('delete_at') ?></label>
-</div>
-<input type="hidden" name="id" value="<?php echo $id; ?>" />
-<button type="submit" class="btn btn-primary btn-rounded"><?php echo $button ?></button>
-<a href="<?php echo site_url('c_ppdb') ?>" class="btn btn-danger btn-rounded">Batal</a>
-<?= form_close() ?>
+
+<script>
+    $(document).ready(function() {
+        $(".chosen-select").select2({
+            width: "100%",
+            allowClear: true,
+            theme: 'bootstrap',
+        });
+        $('.datepicker').daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            "showDropdowns": true,
+            "locale": {
+                "format": "D MMMM YYYY",
+                "separator": " - ",
+                "applyLabel": "Apply",
+                "cancelLabel": "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Minggu",
+                    "Senin",
+                    "Selasa",
+                    "Rabu",
+                    "Kamis",
+                    "Jum'at",
+                    "Sabtu"
+                ],
+                "monthNames": [
+                    "Januari",
+                    "Februari",
+                    "Maret",
+                    "April",
+                    "Mei",
+                    "Juni",
+                    "Juli",
+                    "Agustus",
+                    "September",
+                    "Oktober",
+                    "November",
+                    "Desember"
+                ],
+                "firstDay": 1,
+                "maxYear": 2023,
+                "drops": "up"
+            },
+            function(start, end, label) {
+                var years = moment().diff(start, 'years');
+                alert("You are " + years + " years old!");
+            }
+        });
+        $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
+            $('#id_tanggal_lahir_form').val(picker.startDate.format('D MMMM YYYY'));
+            $('#id_tanggal_lahir').val(picker.startDate.format('YYYY-MM-DD'));
+        });
+
+        $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+    });
+</script>

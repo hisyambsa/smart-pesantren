@@ -42,11 +42,6 @@ class Kurikulum extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
@@ -54,6 +49,15 @@ class Kurikulum extends CI_Controller
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+
+        $crud->setAdd();
+        $crud->setEdit();
+        $crud->setDelete();
+        $crud->setConfig('action_button_type', 'icon');
+
+        $crud->uniqueFields(['kode_mapel']);
+        $crud->requiredFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'kelas', 'jam_perminggu']);
 
         $output = $crud->render();
         $this->output_crud($output);

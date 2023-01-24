@@ -42,11 +42,6 @@ class Asrama extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
@@ -54,6 +49,11 @@ class Asrama extends CI_Controller
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+        $crud->setAdd();
+        $crud->setEdit();
+        $crud->setDelete();
+        $crud->setConfig('action_button_type', 'icon');
 
         $output = $crud->render();
         $this->output_crud($output);

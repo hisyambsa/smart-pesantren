@@ -22,6 +22,12 @@ class C_ppdb extends CI_Controller
 
     public function create()
     {
+        $attributes = array(
+            'autocomplete' => 'off',
+            'id' => 'form_id'
+        );
+
+        $hidden = array();
         $data = array(
             'button' => 'Buat',
             'action' => site_url('c_ppdb/create_action'),
@@ -43,6 +49,9 @@ class C_ppdb extends CI_Controller
             'modify' => set_value('modify'),
             'modify_by' => set_value('modify_by'),
             'delete_at' => set_value('delete_at'),
+
+            'attributes' => $attributes,
+            'hidden' => $hidden
         );
         $this->load->view('c_ppdb/t_ppdb_form', $data);
     }
@@ -54,8 +63,9 @@ class C_ppdb extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
+            $no_pendaftaran = $this->Ppdb_model->generate_nomor_pendaftaran();
             $data = array(
-                'no_pendaftaran' => $this->input->post('no_pendaftaran', TRUE),
+                'no_pendaftaran' => $no_pendaftaran,
                 'nik_santri' => $this->input->post('nik_santri', TRUE),
                 'nama_santri' => $this->input->post('nama_santri', TRUE),
                 'jenis_kelamin' => $this->input->post('jenis_kelamin', TRUE),
@@ -66,7 +76,7 @@ class C_ppdb extends CI_Controller
                 'nama_ayah' => $this->input->post('nama_ayah', TRUE),
                 'nama_ibu' => $this->input->post('nama_ibu', TRUE),
                 'golongan_darah' => $this->input->post('golongan_darah', TRUE),
-                'status' => $this->input->post('status', TRUE),
+                'status' => 'proses',
                 'timestamp' => $this->input->post('timestamp', TRUE),
                 'create_by' => $this->input->post('create_by', TRUE),
                 'modify' => $this->input->post('modify', TRUE),
@@ -74,20 +84,21 @@ class C_ppdb extends CI_Controller
                 'delete_at' => $this->input->post('delete_at', TRUE),
             );
             if ($this->Ppdb_model->insert($data)) {
-                $messages = 'DATA BERHASIL <br>DIBUAT';
+                $messages = 'REGISTRASI BERHASIL <br> Anda akan dihubungi <br>Panitia PPDB untuk informasi selanjutnya<hr><br>No. Registrasi<br>' . $no_pendaftaran;
                 $this->session->set_tempdata('pesan', $messages, 5);
                 $this->session->set_tempdata('type', 'success', 5);
-                $this->session->set_tempdata('confirm', 'false', 5);
-                $this->session->set_tempdata('timer', '3000', 5);
+                $this->session->set_tempdata('confirm', true, 5);
+                $this->session->set_tempdata('timer', '60000', 5);
+                $this->session->set_tempdata('toast', 'toast', 5);
             } else {
                 $errors = 'Terjadi Kesalahan System <br> Error Code : R002<br> Technical Assistant <br> ' . 'SYSTEM ADMIN';
                 $this->session->set_tempdata('pesan', $errors, 5);
                 $this->session->set_tempdata('type', 'error', 5);
                 $this->session->set_tempdata('confirm', 'true', 5);
                 $this->session->set_tempdata('toast', 'toast', 5);
-                $this->session->set_tempdata('timer', '30000', 5);
+                $this->session->set_tempdata('timer', '60000', 5);
             };
-            redirect(site_url('c_ppdb'));
+            redirect(site_url(''));
         }
     }
 
@@ -206,23 +217,17 @@ class C_ppdb extends CI_Controller
 
     public function _rules()
     {
-        $this->form_validation->set_rules('no_pendaftaran', 'no pendaftaran', 'trim|required');
-        $this->form_validation->set_rules('nik_santri', 'nik santri', 'trim|required');
+        $this->form_validation->set_rules('nik_santri', 'nik santri', 'trim|required|numeric|is_unique[t_ppdb.nik_santri]', array('is_unique' => 'NIK sudah Terdaftar'));
         $this->form_validation->set_rules('nama_santri', 'nama santri', 'trim|required');
         $this->form_validation->set_rules('jenis_kelamin', 'jenis kelamin', 'trim|required');
         $this->form_validation->set_rules('tempat_lahir', 'tempat lahir', 'trim|required');
         $this->form_validation->set_rules('tanggal_lahir', 'tanggal lahir', 'trim|required');
         $this->form_validation->set_rules('alamat', 'alamat', 'trim|required');
         $this->form_validation->set_rules('jenjang', 'jenjang', 'trim|required');
-        $this->form_validation->set_rules('nama_ayah', 'nama ayah', 'trim|required');
-        $this->form_validation->set_rules('nama_ibu', 'nama ibu', 'trim|required');
-        $this->form_validation->set_rules('golongan_darah', 'golongan darah', 'trim|required');
-        $this->form_validation->set_rules('status', 'status', 'trim|required');
-        $this->form_validation->set_rules('timestamp', 'timestamp', 'trim|required');
-        $this->form_validation->set_rules('create_by', 'create by', 'trim|required');
-        $this->form_validation->set_rules('modify', 'modify', 'trim|required');
-        $this->form_validation->set_rules('modify_by', 'modify by', 'trim|required');
-        $this->form_validation->set_rules('delete_at', 'delete at', 'trim|required');
+        // $this->form_validation->set_rules('nama_ayah', 'nama ayah', 'trim|required');
+        // $this->form_validation->set_rules('nama_ibu', 'nama ibu', 'trim|required');
+        // $this->form_validation->set_rules('golongan_darah', 'golongan darah', 'trim|required');
+        // $this->form_validation->set_rules('status', 'status', 'trim|required');
 
         $this->form_validation->set_rules('id', 'id', 'trim');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

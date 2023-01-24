@@ -42,18 +42,25 @@ class Pengajar extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
-
         $crud->setTable($this->table);
         $table = $crud->getTable();
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+        $crud->setAdd();
+        $crud->setEdit();
+        $crud->setDelete();
+        $crud->setConfig('action_button_type', 'icon');
+
+        $crud->requiredFields(['nik', 'nama_pengajar']);
+
+        // application/libraries/GroceryCrudEnterprise/grocerycrud/enterprise/src/GroceryCrud/Core/Validate.php
+        $crud->uniqueFields(['nik']);
+
+        $crud->setRule('nik', 'numeric');
+        $crud->setRule('nik', 'length', [16]);
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -80,6 +87,10 @@ class Pengajar extends CI_Controller
     }
     private function display_as($crud)
     {
+        $crud->displayAs(array(
+            'nik' => 'NIK Pengajar',
+            'nama_pengajar' => 'Nama Pengajar',
+        ));
         return $crud;
     }
 }

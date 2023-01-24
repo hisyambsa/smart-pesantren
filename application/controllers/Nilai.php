@@ -42,11 +42,7 @@ class Nilai extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
+
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
@@ -54,6 +50,16 @@ class Nilai extends CI_Controller
 
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
+
+        $crud->setAdd();
+        $crud->setEdit();
+        $crud->setDelete();
+        $crud->setConfig('action_button_type', 'icon');
+
+
+        $crud->setRelation('santri_id', 't_santri', '{nama_santri} - {nik_siswa}');
+        $crud->setRelation('kurikulum_id', 'kurikulum', '{kode_mapel} - {mata_pelajaran}');
+        $crud->setRelation('pengajar_id', 't_pengajar', '{nama_pengajar} - {nik}');
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -80,6 +86,11 @@ class Nilai extends CI_Controller
     }
     private function display_as($crud)
     {
+        $crud->displayAs(array(
+            'santri_id' => 'Nama Santri',
+            'kurikulum_id' => 'Kurikulum',
+            'pengajar_id' => 'Nama Pengajar',
+        ));
         return $crud;
     }
 }

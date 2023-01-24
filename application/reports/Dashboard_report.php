@@ -20,84 +20,55 @@ class Dashboard_report extends \koolreport\KoolReport
     use \koolreport\inputs\POSTBinding;
     use \koolreport\codeigniter\Friendship; // All you need to do is to claim this friendship
 
-    // kodeproyek0-> no_surat tugas
-    protected function defaultParamValues()
-    {
-        if (isset($this->params['tanggal_absensi'])) {
-            return array(
-                "tanggal_absensi" => $this->params['tanggal_absensi'],
-            );
-        } else {
-            return array(
-                "tanggal_absensi" => array(date("Y-m-d"), date("Y-m-d")),
-            );
-        }
-    }
-    protected function bindParamsToInputs()
-    {
-        return array(
-            "tanggal_absensi",
-        );
-    }
 
     function setup()
     {
-        $root_absensi = $this->src("default");
-        $root_users = $this->src("default");
+        $root_ppdb = $this->src("default");
+        $root_ppdb
+            ->query("select * from t_ppdb")
+            ->saveTo($root_ppdb);
+        $root_ppdb->pipe($this->dataStore("query_all_ppdb"));
 
+        $root_santri = $this->src("default");
+        $root_santri
+            ->query("select * from t_santri")
+            ->saveTo($root_santri);
+        $root_santri->pipe($this->dataStore("query_all_santri"));
 
+        $root_pengajar = $this->src("default");
+        $root_pengajar
+            ->query("select * from t_pengajar")
+            ->saveTo($root_pengajar);
+        $root_pengajar->pipe($this->dataStore("query_all_pengajar"));
 
-        if (isset($this->params['unit_kerja_absensi'])) {
-            $root_absensi
-                ->query("select * from absensi where tanggal_absensi >= '" . $this->params['tanggal_absensi'][0] . "' and tanggal_absensi <= '" . $this->params['tanggal_absensi'][1] . "' and delete_at_absensi is NULL and unit_kerja_absensi ='" . $this->params['unit_kerja_absensi'] . "'")
+        $root_pegawai = $this->src("default");
+        $root_pegawai
+            ->query("select * from t_pegawai")
+            ->saveTo($root_pegawai);
+        $root_pegawai->pipe($this->dataStore("query_all_pegawai"));
 
+        $root_kurikulum = $this->src("default");
+        $root_kurikulum
+            ->query("select * from kurikulum")
+            ->saveTo($root_kurikulum);
+        $root_kurikulum->pipe($this->dataStore("query_all_kurikulum"));
 
-                ->saveTo($root_absensi);
-        } elseif (isset($this->params['nama_absensi'])) {
-            $root_absensi
-                ->query("select * from absensi where tanggal_absensi >= '" . $this->params['tanggal_absensi'][0] . "' and tanggal_absensi <= '" . $this->params['tanggal_absensi'][1] . "' and delete_at_absensi is NULL and nama_absensi ='" . $this->params['nama_absensi'] . "'")
+        $root_nilai = $this->src("default");
+        $root_nilai
+            ->query("select * from nilai")
+            ->saveTo($root_nilai);
+        $root_nilai->pipe($this->dataStore("query_all_nilai"));
 
-                ->saveTo($root_absensi);
-        } else {
-            $root_absensi
-                ->query("select * from absensi where tanggal_absensi >= '" . $this->params['tanggal_absensi'][0] . "' and tanggal_absensi <= '" . $this->params['tanggal_absensi'][1] . "' and delete_at_absensi is NULL")
+        $root_catatan_akademik = $this->src("default");
+        $root_catatan_akademik
+            ->query("select * from catatan_akademik")
+            ->saveTo($root_catatan_akademik);
+        $root_catatan_akademik->pipe($this->dataStore("query_all_catatan_akademik"));
 
-                ->saveTo($root_absensi);
-        }
-
-        $root_absensi->pipe($this->dataStore("query_all_absensi"));
-
-
-
-
-        if (isset($this->params['unit_kerja_absensi'])) {
-            $root_users
-                ->query("select * from users where unit_kerja ='" . $this->params['unit_kerja_absensi'] . "'")
-
-
-                ->saveTo($root_users);
-        } elseif (isset($this->params['nama_absensi'])) {
-            $root_users
-                ->query("select * from users where first_name ='" . $this->params['nama_absensi'] . "'")
-
-                ->saveTo($root_users);
-        } else {
-            $root_users
-                ->query("select * from users")
-
-                ->saveTo($root_users);
-        }
-
-        $root_users
-            ->pipe(new DropNull(array(
-                "targetColumns" => array("organ_perusahaan")
-            )))
-            ->pipe(new Filter(array(
-                array("organ_perusahaan", "!=", "Dewan Direksi"),
-                array("active", "=", 1)
-            )))
-            ->saveTo($root_users);
-
-        $root_users->pipe($this->dataStore("query_all_users"));
+        $root_asrama = $this->src("default");
+        $root_asrama
+            ->query("select * from asrama")
+            ->saveTo($root_asrama);
+        $root_asrama->pipe($this->dataStore("query_all_asrama"));
     }
 }

@@ -21,7 +21,7 @@ class Ppdb extends CI_Controller
             redirect('', 'refresh');
         }
         $this->table = 't_ppdb';
-        $this->subject = 'HASIL TEST PPDB';
+        $this->subject = 'PPDB';
     }
 
     public function output_crud($output = null)
@@ -88,11 +88,11 @@ class Ppdb extends CI_Controller
                 $this->db->where('id', $row->id);
                 $data_id = $this->db->get($table)->row();
                 if ($data_id->status == 'Proses') {
-                    return '<span class="blue-text">' . ucfirst($data_id->status) . '</span>';
+                    return '<span class="purple-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Diterima') {
                     return '<span class="green-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Lulus') {
-                    return '<span class="info-text">' . ucfirst($data_id->status) . '</span>';
+                    return '<span class="blue-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Tidak Lulus') {
                     return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Tidak Daftar Ulang') {
@@ -110,7 +110,9 @@ class Ppdb extends CI_Controller
 
         $crud->readOnlyEditFields(['no_pendaftaran', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'jenjang', 'nama_ayah', 'nama_ibu', 'golongan_darah']);;
         $crud->callbackInsert(function ($stateParameters) use ($table) {
-            $stateParameters->data['no_pendaftaran'] = $this->generate_nomor_pendaftaran();
+            $this->load->model('Ppdb_model');
+
+            $stateParameters->data['no_pendaftaran'] = $this->Ppdb_model->generate_nomor_pendaftaran();
             if ($this->db->insert($table, $stateParameters->data)) {
                 $stateParameters->insertId = $this->db->insert_id();
                 return $stateParameters;
@@ -124,7 +126,52 @@ class Ppdb extends CI_Controller
             $crud->uniqueFields(['nik_santri']);
         }
 
-        $output = $crud->render();
+
+        $this->load->model('Santri_model');
+        $crud->callbackAfterUpdate(function ($stateParameters) use ($table) {
+
+            if ($stateParameters->data['status'] == 'Diterima') {
+                $this->db->where('id', $stateParameters->primaryKeyValue);
+                $data_ppdb = $this->db->get($table)->row();
+                $data = array(
+                    'ppdb_id' => $data_ppdb->id,
+                    'nik_siswa' => $data_ppdb->nik_santri,
+                    // 'nisn' => $data_ppdb->nisn,
+                    'nis' => $this->Santri_model->generate_nis(),
+                    'nama_santri' => $data_ppdb->nama_santri,
+                    'jenis_kelamin' => $data_ppdb->jenis_kelamin,
+                    'tempat_lahir' => $data_ppdb->tempat_lahir,
+                    'tanggal_lahir' => $data_ppdb->tanggal_lahir,
+                    'alamat' => $data_ppdb->alamat,
+                );
+                $this->db->insert('t_santri', $data);
+            }
+
+            return $stateParameters;
+        });
+        if ($crud->getState() == 'EditForm') {
+
+            $stateInfo = $crud->getStateInfo();
+            $this->db->where('id', $stateInfo->primaryKeyValue);
+
+            $data = $this->db->get($table)->row();
+            if ($data->status == 'Diterima') {
+                $output = (object)[
+                    'isJSONResponse' => true,
+                    'output' => json_encode(
+                        (object)[
+                            'message' =>
+                            'Status sudah Diterima, sudah menjadi Santri',
+                            'status' => 'failure'
+                        ]
+                    )
+                ];
+            } else {
+                $output = $crud->render();
+            }
+        } else {
+            $output = $crud->render();
+        }
         $this->output_crud($output);
 
         $dataGcrud = $this->output_crud($output);
@@ -163,23 +210,6 @@ class Ppdb extends CI_Controller
             'golongan_darah' => 'Golongan Darah',
         ));
         return $crud;
-    }
-    private function generate_nomor_pendaftaran($dari_nama = NULL)
-    {
-        $nomor = "1";
-        $tahun = date('Y');
-        $this->db->order_by('id', 'desc');
-        $data  = $this->db->get('t_ppdb', 1)->row();
-
-        if ($data) {
-            $tahun = substr($data->no_pendaftaran, 3, 4);
-            if ($tahun == date('Y')) {
-                $nomorTerakhir = substr($data->no_pendaftaran, -4, 4);
-                $nomor = $nomorTerakhir + 1;
-            }
-        }
-
-        return  "NP-" . $tahun . str_pad($nomor, 4, 0, STR_PAD_LEFT);
     }
 }
 

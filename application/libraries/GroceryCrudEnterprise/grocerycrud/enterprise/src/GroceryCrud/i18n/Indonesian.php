@@ -9,7 +9,7 @@ return [
     'edit' => 'Ubah',
     'view' => 'View',
     'action_delete' => 'Hapus',
-    'actions' => 'Pilihan',
+    'actions' => '',
     'print' => 'Cetak',
     'export_to_file' => 'Ekspor',
     'quick_search' => 'Quick Search',

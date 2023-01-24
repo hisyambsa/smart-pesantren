@@ -103,192 +103,156 @@
 </style>
 
 
-<?php if ($this->ion_auth->logged_in()) { ?>
-    <header>
-        <div id="slide-out" class="side-nav fixed">
-            <ul class="custom-scrollbar">
-                <li class="">
-                    <div class="waves-light white">
-                        <div class="row m-2">
-                            <div class="col-7 green-text">
-                                <small style="font-size: xx-small;">MA’HAD
-                                    DAAR AL IMAM ANNAWAWI R.A
-                                </small>
-                            </div>
-                            <div class="col-5 text-right">
-                                <a href="<?= base_url('') ?>">
-                                    <img height="60" width="60" alt="logo_full" src="https://pesantrensmartdigital.com/assets/images/logo.png" class="img-fluid flex-center">
-                                </a>
+<div id="content" class="heavy-rain-gradient">
+    <?php if ($this->ion_auth->logged_in()) { ?>
+        <header class="">
+            <br><br><br>
+            <div id="slide-out" class="side-nav fixed">
+                <ul class="custom-scrollbar">
+                    <li class="">
+                        <div class="waves-light white">
+                            <div class="row m-2">
+                                <div class="col-7 green-text">
+                                    <small style="font-size: xx-small;">Pondok Pesantren Darrullughah Wadda'wah Jawa Timur
+                                    </small>
+                                </div>
+                                <div class="col-5 text-right">
+                                    <a href="<?= base_url('') ?>">
+                                        <img height="60" width="60" alt="logo_full" src="https://pesantrensmartdigital.com/assets/images/logo.png" class="img-fluid flex-center">
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    </li>
+                    <li>
+                        <ul class="social">
+                            <li class="mx-3">
+                                <?php if ($img_user) : ?>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p><img alt="logo_square" width="70" height="70" src="<?= $img_user ?>" class="img-fluid white rounded-circle"></p>
+                                        </div>
+                                        <div class="col-8 text-left">
+                                            <h6 class="h6-responesive text-capitalize"><?= $this->ion_auth->user()->row()->username ?></h6>
+                                            <h6 class="h6-responesive text-capitalize">Admin</h6>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                            </li>
+                        </ul>
+                    </li>
+                    <div sty id="html" class="treeview-animated w-30 mx-1 my-1">
+                        <ul class="">
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('ppdb/modul') ?>" class="">
+                                    PPDB
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('santri/modul') ?>" class="">
+                                    Santri
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('pengajar/modul') ?>" class="">
+                                    Pengajar
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('pegawai/modul') ?>" class="">
+                                    Pegawai
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('kurikulum/modul') ?>" class="">
+                                    Kurikulum
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('nilai/modul') ?>" class="">
+                                    Nilai
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('catatan_akademik/modul') ?>" class="">
+                                    Catatan Akademik
+                                </a>
+                            </li>
+                            <!-- <li class="jstree-ocl" data-jstree='{"type":"file", "class":""}'>Keuangan
+                                <ul class="nested">
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('approval/waiting') ?>" class="">
+                                            Dashboard
+                                        </a>
+                                    </li>
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('approval/history') ?>" class="">
+                                            Kategori
+                                        </a>
+                                    </li>
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('auth/logout') ?>" class="">
+                                            Transaksi
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> -->
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('asrama/modul') ?>" class="">
+                                    Asrama
+                                </a>
+                            </li>
+                            <li class="jstree-ocl" data-jstree='{"type":"root", "class":""}'>Pengaturan Admin
+                                <ul class="nested">
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('users') ?>" class="">
+                                            User
+                                        </a>
+                                    </li>
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('users/reset_password') ?>" class="">
+                                            Reset Password
+                                        </a>
+                                    </li>
+                                    <li data-jstree='{"type":"file", "class":""}'>
+                                        <a href="<?= base_url('users/groups') ?>" class="">
+                                            Role Akses
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('auth/logout') ?>" class="">
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </li>
-                <li>
-                    <ul class="social">
-                        <li class="mx-3">
-                            <?php if ($img_user) : ?>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p><img alt="logo_square" width="70" height="70" src="<?= $img_user ?>" class="img-fluid white rounded-circle"></p>
-                                    </div>
-                                    <div class="col-8 text-left">
-                                        <h6 class="h6-responesive text-capitalize"><?= $this->ion_auth->user()->row()->username ?></h6>
-                                        <h6 class="h6-responesive text-capitalize">Admin</h6>
-                                    </div>
-                                </div>
-                            <?php endif ?>
-                        </li>
-                    </ul>
-                </li>
-                <div sty id="html" class="treeview-animated w-30 mx-1 my-1">
-                    <ul class="">
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('ppdb/modul') ?>" class="">
-                                PPDB
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('santri/modul') ?>" class="">
-                                Santri
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('pengajar/modul') ?>" class="">
-                                Pengajar
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('pegawai/modul') ?>" class="">
-                                Pegawai
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('kurikulum/modul') ?>" class="">
-                                Kurikulum
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('nilai/modul') ?>" class="">
-                                Nilai
-                            </a>
-                        </li>
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('catatan_akademik/modul') ?>" class="">
-                                Catatan Akademik
-                            </a>
-                        </li>
-                        <!-- <li class="jstree-ocl" data-jstree='{"type":"file", "class":""}'>Keuangan
-                            <ul class="nested">
-                                <li data-jstree='{"type":"file", "class":""}'>
-                                    <a href="<?= base_url('approval/waiting') ?>" class="">
-                                        Dashboard
-                                    </a>
-                                </li>
-                                <li data-jstree='{"type":"file", "class":""}'>
-                                    <a href="<?= base_url('approval/history') ?>" class="">
-                                        Kategori
-                                    </a>
-                                </li>
-                                <li data-jstree='{"type":"file", "class":""}'>
-                                    <a href="<?= base_url('auth/logout') ?>" class="">
-                                        Transaksi
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
-                        <li data-jstree='{"type":"file", "class":""}'>
-                            <a href="<?= base_url('asrama/modul') ?>" class="">
-                                Asrama
-                            </a>
-                        </li>
-                        <li class="jstree-ocl" data-jstree='{"type":"root", "class":""}'>Pengaturan
-                            <ul class="nested">
-                                <li data-jstree='{"type":"file", "class":""}'>
-                                    <a href="<?= base_url('approval/waiting') ?>" class="">
-                                        User
-                                    </a>
-                                </li>
-                                <li data-jstree='{"type":"file", "class":""}'>
-                                    <a href="<?= base_url('approval/history') ?>" class="">
-                                        Role Akses
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+            </div>
+            <!--/. Sidebar navigation -->
+
+            <nav class="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav fixed-top mb-5">
+                <!-- SideNav slide-out button -->
+                <div class="float-left">
+                    <a href="#" id="trigger_nav" data-activates="slide-out" class="white-text button-collapse"><i class="fas fa-bars"></i></a>
                 </div>
-        </div>
-        <!--/. Sidebar navigation -->
-
-        <br><br><br>
-        <nav class="navbar fixed-tosp navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav fixed-top mb-5">
-            <!-- SideNav slide-out button -->
-            <div class="float-left">
-                <a href="#" id="trigger_nav" data-activates="slide-out" class="white-text button-collapse"><i class="fas fa-bars"></i></a>
-            </div>
-            <div class="ml-auto d-none d-xl-block">
-                <a class="<?= (ENVIRONMENT == 'production') ? 'text-success' : 'text-warning '; ?>" href="#"><?= (ENVIRONMENT == 'production') ? ucwords('live') : ucwords(ENVIRONMENT); ?> | &nbsp;</a><a id="setDateList" href="#"></a>
-            </div>
-            <!-- /.Navbar -->
-        </nav>
-    </header>
-    <!--/.Double navigation-->
-<?php } ?>
-<?php if (isset($this->ion_auth->user()->row()->username)) : ?>
-    <script defer>
-        $(document).ready(function() {
-            OneSignal.getUserId(function(userId) {
-                if (userId) {
-                    $.ajax({
-                        type: "get",
-                        url: "https://onesignal.com/api/v1/players/" + userId,
-                        data: {
-                            data: {
-                                appId: "<?= $this->config->item('app_id') ?>", // config
-                                safari_web_id: "<?= $this->config->item('safari_web_id') ?>",
-                            },
-                        },
-                        dataType: "json",
-                        success: function(response) {
-                            $.ajax({
-                                type: "post",
-                                url: "<?= base_url('ajax/create_update_users_notifications') ?>",
-                                data: {
-                                    nama_users_notifications: '<?= $this->ion_auth->user()->row()->username ?>',
-                                    user_id_users_notifications: response.id,
-                                    device_os_users_notifications: response.device_os,
-                                    device_type_users_notifications: response.device_type,
-                                    device_model_users_notifications: response.device_model,
-                                    tags_users_notifications: response.tags,
-                                    create_at_users_notifications: response.created_at,
-                                    last_active_users_notifications: response.last_active,
-                                    badge_count_users_notifications: response.badge_count,
-                                    session_count_users_notifications: response.session_count,
-                                    identifier_users_notifications: response.session_count,
-                                },
-                                dataType: "json",
-                                success: function(response) {
-                                    console.log(response)
-                                }
-                            });
-                        }
-                    });
-                } else {
-
-                }
-                console.log("Notif User ID:", userId);
-            });
-        });
-    </script>
-<?php endif ?>
-<section class="">
-    <div id="overlay">
-        <div class="cv-spinner">
-            <span class="spinner"></span><br>
-        </div>
-    </div>
-</section>
-<div id="content" class="">
+                <div class="m-auto d-none d-xl-block">
+                    <a class="<?= (ENVIRONMENT == 'production') ? 'text-success' : 'text-warning '; ?>" href="#"><?= (ENVIRONMENT == 'production') ? ucwords('live') : ucwords(ENVIRONMENT); ?> | &nbsp;</a><a id="setDateList" href="#"></a>
+                </div>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog"></i> </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-dark" aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item text-black-50 font-weight-bold" href="#">Profile Saya</a>
+                        <a class="dropdown-item text-black-50 font-weight-bold" href="<?= base_url('auth/change_password') ?>">Ganti Password</a>
+                        <a class="dropdown-item text-black-50 font-weight-bold" href="<?= base_url('auth/logout') ?>">Log out</a>
+                    </div>
+                </div>
+                <!-- /.Navbar -->
+            </nav>
+        </header>
+        <!--/.Double navigation-->
+    <?php } ?>
 
     <script>
         <?php if ($this->ion_auth->logged_in()) { ?>
