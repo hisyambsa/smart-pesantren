@@ -7,7 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // include the base class
 require_once("application/core/GCrud.php");
 
-class Pengajar extends CI_Controller
+class Gedung extends CI_Controller
 {
     public function __construct()
     {
@@ -20,8 +20,8 @@ class Pengajar extends CI_Controller
             $this->session->set_tempdata('timer', '15000', 5);
             redirect('', 'refresh');
         }
-        $this->table = 't_pengajar';
-        $this->subject = 'Data Pengajar';
+        $this->table = 'gedung';
+        $this->subject = 'Data Gedung';
     }
 
     public function output_crud($output = null)
@@ -42,6 +42,7 @@ class Pengajar extends CI_Controller
     public function modul()
     {
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
+
         $crud->setTable($this->table);
         $table = $crud->getTable();
         $subject = $this->subject;
@@ -54,13 +55,7 @@ class Pengajar extends CI_Controller
         $crud->setDelete();
         $crud->setConfig('action_button_type', 'icon');
 
-        $crud->requiredFields(['nik', 'nama_pengajar']);
-
-        // application/libraries/GroceryCrudEnterprise/grocerycrud/enterprise/src/GroceryCrud/Core/Validate.php
-        $crud->uniqueFields(['nik']);
-
-        $crud->setRule('nik', 'numeric');
-        $crud->setRule('nik', 'length', [16]);
+        $crud->setRelation('gedung_id', 'gedung', 'nama');
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -88,11 +83,10 @@ class Pengajar extends CI_Controller
     private function display_as($crud)
     {
         $crud->displayAs(array(
-            'nik' => 'NIK Pengajar',
-            'nama_pengajar' => 'Nama Pengajar',
+            'nama' => 'Nama Gedung',
         ));
         return $crud;
     }
 }
 
-/* End of file Pengajar.php */
+/* End of file Gedung.php */

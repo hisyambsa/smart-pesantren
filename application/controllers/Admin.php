@@ -34,4 +34,8 @@ class Admin extends CI_Controller
         $data = array('report' => $report,);
         $this->load->view('koolreport/render', $data);
     }
+    public function settings()
+    {
+        $this->load->view('admin/settings');
+    }
 }

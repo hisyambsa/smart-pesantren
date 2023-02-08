@@ -55,6 +55,8 @@ class Asrama extends CI_Controller
         $crud->setDelete();
         $crud->setConfig('action_button_type', 'icon');
 
+        $crud->setRelation('gedung_id', 'gedung', 'nama');
+
         $output = $crud->render();
         $this->output_crud($output);
 
@@ -68,7 +70,7 @@ class Asrama extends CI_Controller
     }
     private function initial_config($crud)
     {
-        $crud->unsetColumns(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+        $crud->unsetColumns(['create_by', 'modify', 'modify_by', 'delete_at']);
         $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
 
         $crud->unsetPrint();
@@ -80,6 +82,9 @@ class Asrama extends CI_Controller
     }
     private function display_as($crud)
     {
+        $crud->displayAs(array(
+            'gedung_id' => 'Nama Gedung',
+        ));
         return $crud;
     }
 }

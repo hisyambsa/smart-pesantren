@@ -74,7 +74,7 @@ class Nilai extends CI_Controller
     }
     private function initial_config($crud)
     {
-        $crud->unsetColumns(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+        $crud->unsetColumns(['create_by', 'modify', 'modify_by', 'delete_at']);
         $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
 
         $crud->unsetPrint();
@@ -88,7 +88,7 @@ class Nilai extends CI_Controller
     {
         $crud->displayAs(array(
             'santri_id' => 'Nama Santri',
-            'kurikulum_id' => 'Kurikulum',
+            'kurikulum_id' => 'Mata Pelajaran',
             'pengajar_id' => 'Nama Pengajar',
         ));
         return $crud;

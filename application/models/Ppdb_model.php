@@ -58,7 +58,7 @@ class Ppdb_model extends CI_Model
         }
         $this->db->where($this->delete_at, NULL);
         $this->db->order_by($this->id, $this->order);
-        return $this->db->get($this->table)->result();
+        return $this->db->get($this->table);
     }
     function get_all_trash($kondisi = NULL)
     {

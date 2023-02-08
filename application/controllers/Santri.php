@@ -70,7 +70,7 @@ class Santri extends CI_Controller
     }
     private function initial_config($crud)
     {
-        $crud->unsetColumns(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+        $crud->unsetColumns(['create_by', 'modify', 'modify_by', 'delete_at']);
         $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
 
         $crud->unsetPrint();

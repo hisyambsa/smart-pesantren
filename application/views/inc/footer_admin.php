@@ -1,15 +1,17 @@
 </main>
 <!--Main Layout-->
 </body>
-<script>
-    $(function() {
-        // SideNav Button Initialization
-        $(".button-collapse").sideNav();
-        // SideNav Scrollbar Initialization
-        var sideNavScrollbar = document.querySelector('.custom-scrollbar');
-        var ps = new PerfectScrollbar(sideNavScrollbar);
-    })
-</script>
+<?php if ($this->ion_auth->logged_in()) { ?>
+    <script>
+        $(function() {
+            // SideNav Button Initialization
+            $(".button-collapse").sideNav();
+            // SideNav Scrollbar Initialization
+            var sideNavScrollbar = document.querySelector('.custom-scrollbar');
+            var ps = new PerfectScrollbar(sideNavScrollbar);
+        })
+    </script>
+<?php } ?>
 
 <script defer>
     window.fire_notif = function(pesan, type = 'info') {

@@ -57,7 +57,9 @@ class Kurikulum extends CI_Controller
         $crud->setConfig('action_button_type', 'icon');
 
         $crud->uniqueFields(['kode_mapel']);
-        $crud->requiredFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'kelas', 'jam_perminggu']);
+        $crud->requiredFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'jenjang', 'kelas', 'jam_perminggu']);
+
+        $crud->setRelation('kitab_rujukan', 'kitab', '{nama} - {pengarang}');
 
         $output = $crud->render();
         $this->output_crud($output);
@@ -72,7 +74,7 @@ class Kurikulum extends CI_Controller
     }
     private function initial_config($crud)
     {
-        $crud->unsetColumns(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+        $crud->unsetColumns(['create_by', 'modify', 'modify_by', 'delete_at']);
         $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
 
         $crud->unsetPrint();

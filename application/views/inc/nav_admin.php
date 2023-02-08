@@ -198,6 +198,16 @@
                                 </ul>
                             </li> -->
                             <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('kitab/modul') ?>" class="">
+                                    Kitab
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
+                                <a href="<?= base_url('gedung/modul') ?>" class="">
+                                    Gedung
+                                </a>
+                            </li>
+                            <li data-jstree='{"type":"file", "class":""}'>
                                 <a href="<?= base_url('asrama/modul') ?>" class="">
                                     Asrama
                                 </a>
@@ -246,6 +256,10 @@
                         <a class="dropdown-item text-black-50 font-weight-bold" href="#">Profile Saya</a>
                         <a class="dropdown-item text-black-50 font-weight-bold" href="<?= base_url('auth/change_password') ?>">Ganti Password</a>
                         <a class="dropdown-item text-black-50 font-weight-bold" href="<?= base_url('auth/logout') ?>">Log out</a>
+                        <?php if ($this->ion_auth->is_admin()) : ?>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-black-50 font-weight-bold" href="<?= base_url('admin/settings') ?>">CONFIG ADMIN</a>
+                        <?php endif ?>
                     </div>
                 </div>
                 <!-- /.Navbar -->
