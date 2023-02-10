@@ -2,8 +2,8 @@
 
 use \koolreport\datagrid\DataTables;
 use \koolreport\widgets\koolphp\Card;
-use \koolreport\widgets\google\ColumnChart;
-use \koolreport\widgets\google\PieChart;
+// use \koolreport\widgets\google\ColumnChart;
+// use \koolreport\widgets\google\PieChart;
 // use \koolreport\widgets\google\BarChart;
 
 use \koolreport\chartjs\BarChart;
@@ -22,9 +22,58 @@ use \koolreport\processes\Sort;
 use \koolreport\cube\processes\Cube;
 use \koolreport\inputs\DateRangePicker;
 
+use \koolreport\chartjs\PieChart;
+use \koolreport\chartjs\ColumnChart;
 ?>
 <?php
+// var_dump($this->dataStore('query_all_group_by_count_status'));
+// die;
 ?>
+<div class="row py-3">
+    <?php if ($this->dataStore("query_all_group_by_count_status")) : ?>
+        <div class="col-12 col-sm-6 col-md-6">
+            <?php
+            PieChart::create(array(
+                "title" => "Status PPDB",
+                "dataSource" => $this->dataStore('query_all_group_by_count_status'),
+                "columns" => array(
+                    "status",
+                    "status_id" => array(
+                        "type" => "number",
+                    )
+                )
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+    <?php if ($this->dataStore("query_all_group_by_count_jenjang")) : ?>
+        <div class="col-12 col-sm-6 col-md-6">
+            <?php
+            ColumnChart::create(array(
+                "title" => "Jenjang PPDB",
+                "dataSource" => $this->dataStore('query_all_group_by_count_jenjang'),
+                "columns" => array(
+                    "jenjang",
+                    "jenjang_id" => array(
+                        "type" => "number",
+                    )
+                ),
+                "options" => [
+                    "scales" => [
+                        "yAxes" => [[
+                            "display" => true,
+                            "ticks" => [
+                                "beginAtZero" => true,
+                            ]
+                        ]]
+                    ],
+                ]
+
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+</div>
 <div class="row py-3">
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Proses')) : ?>
         <div class="col-4 col-sm-3 col-md-3 my-2">

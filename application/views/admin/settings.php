@@ -4,7 +4,7 @@
         <div class="list-group-flush text-uppercase">
             <div class="list-group-item">
                 <p class="mb-0"><i class="far fa-image mr-4 grey p-3 white-text rounded-circle " aria-hidden="true"></i>
-                    <a class="white" href="<?= base_url('users/groups') ?>">
+                    <a class="white" href="<?= base_url('settings') ?>">
                         MAIN CONFIG
                     </a>
                 </p>
@@ -17,6 +17,13 @@
                 </p>
             </div>
 
+            <div class="list-group-item">
+                <p class="mb-0"><i class="far fa-image mr-4 mr-4 grey p-3 white-text rounded-circle" aria-hidden="true"></i>
+                    <a class="white" href="<?= base_url('users/akses') ?>">
+                        USER AKSES
+                    </a>
+                </p>
+            </div>
 
             <div class="list-group-item">
                 <p class="mb-0"><i class="far fa-image mr-4 mr-4 grey p-3 white-text rounded-circle" aria-hidden="true"></i>
@@ -36,7 +43,7 @@
 
             <div class="list-group-item">
                 <p class="mb-0"><i class="far fa-image mr-4 mr-4 grey p-3 white-text rounded-circle" aria-hidden="true"></i>
-                    <a class="white" href="<?= base_url('Gedung/admin') ?>">
+                    <a class="white" href="<?= base_url('gedung/modul/admin') ?>">
                         Gedung
                     </a>
                 </p>
@@ -44,7 +51,7 @@
 
             <div class="list-group-item">
                 <p class="mb-0"><i class="far fa-image mr-4 mr-4 grey p-3 white-text rounded-circle" aria-hidden="true"></i>
-                    <a class="white" href="<?= base_url('Asrama/admin') ?>">
+                    <a class="white" href="<?= base_url('asrama/modul/admin') ?>">
                         Asrama
                     </a>
                 </p>

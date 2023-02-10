@@ -50,8 +50,16 @@ class Catatan_akademik extends CI_Controller
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
 
-        $crud->setRelation('santri_id', 't_santri', '{nama_santri} - {nik_siswa}');
+        $crud->setRelation('santri_id', 't_santri', '{nama_santri} - {nik_santri}');
         $crud->setRelation('pengajar_id', 't_pengajar', '{nama_pengajar} - {nik}');
+
+        // $crud->addFields(['pengajar_id', 'kurikulum_id', 'santri_id', 'data_nilai']);
+
+        $crud->callbackAddField('pengajar_id', function ($fieldType, $fieldName) {
+            $dataPengajar = $this->db->where('login_id', $this->ion_auth->user()->row()->id)->get('t_pengajar')->row();
+
+            return $dataPengajar->nama_pengajar . '<input readonly class="form-control" name="' . $fieldName . '" type="hidden" value="' . $dataPengajar->id . '">';
+        });
 
         $crud->setAdd();
         $crud->setEdit();

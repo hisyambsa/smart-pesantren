@@ -6,6 +6,9 @@
 
 <?= form_open_multipart($action, $attributes, $hidden); ?>
 <div class="form-group"><?php echo form_error('upload_kartu_keluarga') ?>
+    <input data-allowed-file-extensions='["jpg", "png"]' data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD PAS FOTO" class="file-input" type="file" name="upload_kartu_keluarga" id="input-kartu-keluarga" />
+</div>
+<div class="form-group"><?php echo form_error('upload_kartu_keluarga') ?>
     <input data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD KARTU KELUARGA" class="file-input" type="file" name="upload_kartu_keluarga" id="input-kartu-keluarga" />
 </div>
 <div class="form-group"><?php echo form_error('upload_nasab') ?>
@@ -22,7 +25,7 @@
             theme: "fas",
             language: "id",
             showUpload: false,
-            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+            allowedFileExtensions: ['pdf'],
             maxFileCount: 1,
             maxFilePreviewSize: 8192, // 1MB
             maxFileSize: 8192, // 1MB

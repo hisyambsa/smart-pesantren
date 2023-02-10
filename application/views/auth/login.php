@@ -28,11 +28,10 @@
         <?php echo form_open("auth/login", 'autocomplete="off" class="white"'); ?>
         <div class="row align-items-center justify-content-around" style="z-index: 2;">
             <div class="col-md-6 py-5 text-center">
-                <img loading="lazy" height="120" class="" src="https://pesantrensmartdigital.com/assets/images/logo.png" alt="logo">
-                <!-- <img loading="lazy" height="120" class="" src="<?= base_url('uploads/settings/' . $this->session->userdata('settings')->logo_square) ?>" alt="logo"> -->
+                <img loading="lazy" height="120" class="" src="<?= base_url('uploads/settings/' . $this->session->userdata('settings')->logo_square) ?>" alt="logo">
                 <p class="text-teal">Selamat datang di Smart Pesantren
                     <br>
-                    Pondok Pesantren Darrullughah Wadda'wah Jawa Timur
+                    <?= $this->session->userdata('settings')->nama_pesantren ?>
                     <br>
                     Untuk bantuan teknis hub. 081905096842
                 </p>

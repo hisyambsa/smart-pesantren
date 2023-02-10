@@ -29,6 +29,18 @@ class Dashboard_report extends \koolreport\KoolReport
             ->saveTo($root_ppdb);
         $root_ppdb->pipe($this->dataStore("query_all_ppdb"));
 
+        $root_ppdb->pipe(new Group(array(
+            "by" => "status",
+            "count" => "status_id",
+        )))
+            ->pipe($this->dataStore("query_all_group_by_count_status"));
+
+        $root_ppdb->pipe(new Group(array(
+            "by" => "jenjang",
+            "count" => "jenjang_id",
+        )))
+            ->pipe($this->dataStore("query_all_group_by_count_jenjang"));
+
         $root_santri = $this->src("default");
         $root_santri
             ->query("select * from t_santri")

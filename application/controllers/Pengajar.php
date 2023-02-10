@@ -50,11 +50,55 @@ class Pengajar extends CI_Controller
         $crud = $this->display_as($crud);
 
         $crud->setAdd();
+
+        $crud->setRelation('login_id', 'users', '{username} - {first_name}');
+        $crud->callbackInsert(function ($stateParameters) use ($table) {
+
+            $this->db->trans_begin();
+
+            $this->load->model('Pengajar_model');
+            $stateParameters->data['nip'] = $this->Pengajar_model->generate_nip();
+
+            $this->db->insert($table, $stateParameters->data);
+            $stateParameters->insertId = $this->db->insert_id();
+
+            $dataInsert = $this->db->get_where($table, array('id' => $stateParameters->insertId,))->row();
+
+            $groupIon = $this->db->where('name', 'Pengajar')->get('groups')->row();
+
+            $additional_data = array(
+                'first_name' => $dataInsert->nama_pengajar,
+            );
+            $group = array('2'); // Sets Pengajar
+
+
+            $this->ion_auth->register($dataInsert->nip, $dataInsert->tanggal_lahir, $dataInsert->email, $additional_data, array($groupIon->id));
+
+
+            $userRegister = $this->db->where('username', $dataInsert->nip)->get('users')->row();
+            $object = array('login_id' => $userRegister->id,);
+            $this->db->where('id', $stateParameters->insertId);
+            $this->db->update($table, $object);
+
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $errorMessage = new \GroceryCrud\Core\Error\ErrorMessage();
+                return $errorMessage->setMessage("EMAIL SUDAH TERDAFTAR\n");
+            } else {
+                // $this->db->trans_rollback();
+                $this->db->trans_commit();
+            }
+
+            return $stateParameters;
+        });
+
+
         $crud->setEdit();
         $crud->setDelete();
         $crud->setConfig('action_button_type', 'icon');
 
-        $crud->requiredFields(['nik', 'nama_pengajar']);
+        $crud->requiredFields(['nik', 'nama_pengajar', 'tanggal_lahir', 'email']);
 
         // application/libraries/GroceryCrudEnterprise/grocerycrud/enterprise/src/GroceryCrud/Core/Validate.php
         $crud->uniqueFields(['nik']);
@@ -76,7 +120,7 @@ class Pengajar extends CI_Controller
     private function initial_config($crud)
     {
         $crud->unsetColumns(['create_by', 'modify', 'modify_by', 'delete_at']);
-        $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+        $crud->unsetFields(['nip', 'login_id', 'timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
 
         $crud->unsetPrint();
         $crud->unsetExport();
@@ -90,6 +134,7 @@ class Pengajar extends CI_Controller
         $crud->displayAs(array(
             'nik' => 'NIK Pengajar',
             'nama_pengajar' => 'Nama Pengajar',
+            'login_id' => 'Username - Nama',
         ));
         return $crud;
     }

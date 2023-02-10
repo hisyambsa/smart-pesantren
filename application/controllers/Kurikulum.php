@@ -52,14 +52,21 @@ class Kurikulum extends CI_Controller
 
 
         $crud->setAdd();
+        $crud->setRead();
         $crud->setEdit();
         $crud->setDelete();
         $crud->setConfig('action_button_type', 'icon');
 
         $crud->uniqueFields(['kode_mapel']);
         $crud->requiredFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'jenjang', 'kelas', 'jam_perminggu']);
+        $crud->addFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'jenjang', 'kelas', 'jam_perminggu']);
+        $crud->editFields(['kode_mapel', 'mata_pelajaran', 'kitab_rujukan', 'jenjang', 'kelas', 'jam_perminggu']);
+        $crud->columns(['kode_mapel', 'mata_pelajaran', 'jenjang', 'kelas', 'jam_perminggu']);
 
-        $crud->setRelation('kitab_rujukan', 'kitab', '{nama} - {pengarang}');
+        // $crud->setRelation('kitab_rujukan', 'kitab', '{nama} - {pengarang}');
+        $crud->setRelationNtoN('kitab_rujukan', 'kurikulum_kitab', 'kitab', 'kurikulum_id', 'kitab_id', '{nama} - {pengarang}');
+
+
 
         $output = $crud->render();
         $this->output_crud($output);

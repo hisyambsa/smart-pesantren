@@ -113,12 +113,12 @@
                         <div class="waves-light white">
                             <div class="row m-2">
                                 <div class="col-7 green-text">
-                                    <small style="font-size: xx-small;">Pondok Pesantren Darrullughah Wadda'wah Jawa Timur
+                                    <small style="font-size: xx-small;"> <?= $this->session->userdata('settings')->nama_pesantren ?>
                                     </small>
                                 </div>
                                 <div class="col-5 text-right">
                                     <a href="<?= base_url('') ?>">
-                                        <img height="60" width="60" alt="logo_full" src="https://pesantrensmartdigital.com/assets/images/logo.png" class="img-fluid flex-center">
+                                        <img alt="logo" height="60" width="60" alt="logo_full" src="<?= base_url('uploads/settings/' . $this->session->userdata('settings')->logo_square) ?>" class="img-fluid flex-center">
                                     </a>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="col-8 text-left">
                                             <h6 class="h6-responesive text-capitalize"><?= $this->ion_auth->user()->row()->username ?></h6>
-                                            <h6 class="h6-responesive text-capitalize">Admin</h6>
+                                            <h6 class="h6-responesive text-capitalize"><?= $this->ion_auth->user()->row()->first_name ?></h6>
                                         </div>
                                     </div>
                                 <?php endif ?>
@@ -202,7 +202,7 @@
                                     Kitab
                                 </a>
                             </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
+                            <!-- <li data-jstree='{"type":"file", "class":""}'>
                                 <a href="<?= base_url('gedung/modul') ?>" class="">
                                     Gedung
                                 </a>
@@ -211,26 +211,7 @@
                                 <a href="<?= base_url('asrama/modul') ?>" class="">
                                     Asrama
                                 </a>
-                            </li>
-                            <li class="jstree-ocl" data-jstree='{"type":"root", "class":""}'>Pengaturan Admin
-                                <ul class="nested">
-                                    <li data-jstree='{"type":"file", "class":""}'>
-                                        <a href="<?= base_url('users') ?>" class="">
-                                            User
-                                        </a>
-                                    </li>
-                                    <li data-jstree='{"type":"file", "class":""}'>
-                                        <a href="<?= base_url('users/reset_password') ?>" class="">
-                                            Reset Password
-                                        </a>
-                                    </li>
-                                    <li data-jstree='{"type":"file", "class":""}'>
-                                        <a href="<?= base_url('users/groups') ?>" class="">
-                                            Role Akses
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            </li> -->
                             <li data-jstree='{"type":"file", "class":""}'>
                                 <a href="<?= base_url('auth/logout') ?>" class="">
                                     Logout

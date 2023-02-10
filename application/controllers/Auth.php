@@ -494,6 +494,7 @@ class Auth extends CI_Controller
      */
     public function create_user()
     {
+
         $this->data['title'] = $this->lang->line('create_user_heading');
 
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
@@ -504,20 +505,14 @@ class Auth extends CI_Controller
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->data['identity_column'] = $identity_column;
 
-        // validate form input
         $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'trim|required');
-        $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'trim|required');
         if ($identity_column !== 'email') {
             $this->form_validation->set_rules('identity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
-            $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
+            // $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
         } else {
-            $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
+            // $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
         }
-        $this->form_validation->set_rules('telp', $this->lang->line('create_user_validation_telp_label'), 'trim');
-        $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
-        $this->form_validation->set_rules('job_level', $this->lang->line('create_user_validation_job_level_label'), 'trim');
-        $this->form_validation->set_rules('unit_kerja', $this->lang->line('create_user_validation_unit_kerja_label'), 'trim');
-        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]', array('matches' => 'Konfirmasi Password tidak Sama'));
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->form_validation->run() === TRUE) {
@@ -527,11 +522,6 @@ class Auth extends CI_Controller
 
             $additional_data = [
                 'first_name' => $this->input->post('first_name'),
-                'last_name' => $this->input->post('last_name'),
-                'company' => $this->input->post('company'),
-                'telp' => $this->input->post('telp'),
-                'job_level' => $this->input->post('job_level'),
-                'unit_kerja' => $this->input->post('unit_kerja'),
             ];
         } // $group = array('2'); // Sets user to kadiv.
         $group = $this->input->post('groups');
@@ -551,47 +541,11 @@ class Auth extends CI_Controller
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('first_name'),
             ];
-            $this->data['last_name'] = [
-                'name' => 'last_name',
-                'id' => 'last_name',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('last_name'),
-            ];
             $this->data['identity'] = [
                 'name' => 'identity',
                 'id' => 'identity',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('identity'),
-            ];
-            $this->data['email'] = [
-                'name' => 'email',
-                'id' => 'email',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('email'),
-            ];
-            $this->data['company'] = [
-                'name' => 'company',
-                'id' => 'company',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('company'),
-            ];
-            $this->data['telp'] = [
-                'name' => 'telp',
-                'id' => 'telp',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('telp'),
-            ];
-            $this->data['unit_kerja'] = [
-                'name' => 'unit_kerja',
-                'id' => 'unit_kerja',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('unit_kerja'),
-            ];
-            $this->data['job_level'] = [
-                'name' => 'job_level',
-                'id' => 'job_level',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('job_level'),
             ];
             $this->data['password'] = [
                 'name' => 'password',
@@ -903,6 +857,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'trim|required|alpha_dash');
 
         if ($this->form_validation->run() === TRUE) {
+            die;
             $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'));
             if ($new_group_id) {
                 // check to see if we are creating the group

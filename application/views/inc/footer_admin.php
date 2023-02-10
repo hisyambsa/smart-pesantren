@@ -178,7 +178,7 @@ $whitelist = array(
                 echo $this->benchmark->elapsed_time();
                 echo ' || ';
                 echo $this->benchmark->memory_usage();
-                $this->output->enable_profiler(TRUE);
+                $this->output->enable_profiler(PROFILER);
                 ?>
             </strong>
         </button>
