@@ -87,22 +87,6 @@
             theme: 'bootstrap',
         });
 
-
-        var apiUrl = '<?= base_url('ajax_wilayah/getProvSelect2/') ?>';
-        var select2Options = {
-            width: 'resolve'
-        };
-        $('select').select2(select2Options);
-
-        var apiUrl = '<?= base_url('ajax_wilayah/getKabSelect2/:parentId:') ?>';
-        var cascadLoading = new Select2Cascade($('#id_provinsi'), $('#id_kota_kabupaten'), apiUrl, select2Options, 'PILIH KOTA/KABUPATEN');
-
-        var apiUrl = '<?= base_url('ajax_wilayah/getDistrictsSelect2/:parentId:') ?>';
-        var cascadLoading = new Select2Cascade($('#id_kota_kabupaten'), $('#id_kecamatan'), apiUrl, select2Options, 'PILIH KECAMATAN');
-
-        var apiUrl = '<?= base_url('ajax_wilayah/getVillagesSelect2/:parentId:') ?>';
-        var cascadLoading = new Select2Cascade($('#id_kecamatan'), $('#id_kelurahan'), apiUrl, select2Options, 'PILIH KELURAHAN/DESA');
-
         $('.datepicker').daterangepicker({
             singleDatePicker: true,
             autoUpdateInput: false,

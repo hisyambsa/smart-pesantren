@@ -13,14 +13,46 @@ use \koolreport\pivot\processes\PivotExtract;
 use \koolreport\processes\TimeBucket;
 use \koolreport\processes\Custom;
 use \koolreport\processes\NumberRange;
+use \koolreport\processes\AggregatedColumn;
 
 class Dashboard_report extends \koolreport\KoolReport
 {
     use \koolreport\inputs\Bindable;
     use \koolreport\inputs\POSTBinding;
     use \koolreport\codeigniter\Friendship; // All you need to do is to claim this friendship
+    use \koolreport\cache\FileCache;
 
+    function cacheSettings()
+    {
+        return array(
+            "ttl" => 60,
+        );
+    }
+    protected function settings()
+    {
 
+        $whitelist = array(
+            '127.0.0.1',
+            '::1'
+        );
+
+        if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+            // not valid
+            return array(
+                "assets" => array(
+                    "path" => $_SERVER['DOCUMENT_ROOT'] . "/assets/koolreport_assets",
+                    "url" => "/assets/koolreport_assets"
+                )
+            );
+        } else {
+            return array(
+                "assets" => array(
+                    "path" => $_SERVER['DOCUMENT_ROOT'] . "/smart-pesantren/assets/koolreport_assets",
+                    "url" => "/smart-pesantren/assets/koolreport_assets"
+                )
+            );
+        }
+    }
     function setup()
     {
         $root_ppdb = $this->src("default");
@@ -29,6 +61,35 @@ class Dashboard_report extends \koolreport\KoolReport
             ->saveTo($root_ppdb);
         $root_ppdb->pipe($this->dataStore("query_all_ppdb"));
 
+        $root_ppdb
+            ->pipe(new CalculatedColumn(array(
+                "usia" => function ($row) {
+                    $age = date_diff(date_create($row["tanggal_lahir"]), date_create('now'))->y;
+                    return $age;
+                }
+            )))
+            ->pipe(new NumberRange(array(
+                "usia" => array(
+
+                    "Usia < 11" => array(NULL, 10),
+                    "Usia 11-14" => array(11, 20),
+                    "Usia 15-18" => array(15, 18),
+                    "Usia 19-21" => array(19, 21),
+                    "Usia 21 < " => array(22, NULL),
+                )
+            )))
+            ->pipe(new Group(array(
+                "by" => "usia",
+                "count" => "usia_id",
+            )))
+            ->pipe($this->dataStore("query_usia"));
+
+        $root_ppdb->pipe(new Group(array(
+            "by" => "jenis_kelamin",
+            "count" => "jenis_kelamin_id",
+        )))
+            ->pipe($this->dataStore("query_jenis_kelamin"));
+
         $root_ppdb->pipe(new Group(array(
             "by" => "status",
             "count" => "status_id",
@@ -36,10 +97,29 @@ class Dashboard_report extends \koolreport\KoolReport
             ->pipe($this->dataStore("query_all_group_by_count_status"));
 
         $root_ppdb->pipe(new Group(array(
+            "by" => array("status"),
+            "count" => array("status_id"),
+        )))
+            ->pipe(new AggregatedColumn(array(
+                "jenis_kelamin" => array("count", "status"),
+            )))
+            ->pipe($this->dataStore("query_all_group_by_count_status_jenis_kelamin"));
+
+        $root_ppdb->pipe(new Group(array(
             "by" => "jenjang",
             "count" => "jenjang_id",
         )))
             ->pipe($this->dataStore("query_all_group_by_count_jenjang"));
+
+        $root_ppdb->pipe(new Group(array(
+            "by" => array("jenjang"),
+            "count" => array("jenjang_id"),
+        )))
+            ->pipe(new AggregatedColumn(array(
+                "jenis_kelamin" => array("count", "jenjang"),
+            )))
+            ->pipe($this->dataStore("query_all_group_by_count_jenjang_jenis_kelamin"));
+
 
         $root_santri = $this->src("default");
         $root_santri

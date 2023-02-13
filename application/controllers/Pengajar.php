@@ -135,6 +135,7 @@ class Pengajar extends CI_Controller
             'nik' => 'NIK Pengajar',
             'nama_pengajar' => 'Nama Pengajar',
             'login_id' => 'Username - Nama',
+            'no_hp' => 'No. HP / WA',
         ));
         return $crud;
     }

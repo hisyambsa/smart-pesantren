@@ -70,7 +70,8 @@ class Santri extends CI_Controller
 
 
         $crud->setRead();
-        $crud->columns(['delete_at', 'upload_pas_foto', 'nama_santri', 'nis', 'tanggal_lahir', 'jenjang']);
+
+        $crud->columns(['delete_at', 'nis', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'tanggal_lahir', 'jenjang']);
 
         if (isset($_GET['search'])) {
             $nama_santri = $this->input->get_post('nama_santri');

@@ -39,6 +39,7 @@ class C_ppdb extends CI_Controller
                 'tempat_lahir' => $this->input->post('tempat_lahir', TRUE),
                 'tanggal_lahir' => $this->input->post('tanggal_lahir', TRUE),
                 'alamat' => $this->input->post('alamat', TRUE),
+                'sesuai_ktp' => $this->input->post('sesuai_ktp', TRUE),
                 'jenjang' => $this->input->post('jenjang', TRUE),
                 'province_id' => $this->input->post('province_id', TRUE),
                 'regency_id' => $this->input->post('regency_id', TRUE),
@@ -69,66 +70,131 @@ class C_ppdb extends CI_Controller
 
     public function update_action()
     {
-        // var_dump($_POST);
-        var_dump($_FILES);
-        die;
-        if ($this->input->post('form') == 'form_2') {
-            $this->_rules_2();
-        } elseif ($this->input->post('form') == 'form_3') {
-            $this->form_validation->set_rules('no_pendaftaran', 'No Pendaftaran', 'trim|required');
-            $this->form_validation->set_rules('upload_kartu_keluarga', 'Upload Kartu Keluarga', 'trim|required');
-            $this->form_validation->set_rules('upload_nasab', 'Upload Nasab', 'trim|required');
+        $this->_rules_2();
+
+        $this->form_validation->set_rules('upload_pas_foto', 'Upload Pas Foto', 'trim|required');
+        $this->form_validation->set_rules('upload_kartu_keluarga', 'Upload Kartu Keluarga', 'trim|required');
+        if ($this->input->post('jenjang') == "I'dadiyah") {
             $this->form_validation->set_rules('upload_ijasah', 'Upload Ijasah', 'trim|required');
-
-
-            $this->form_validation->set_rules('id', 'id', 'trim');
-            $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-        } else {
-            show_error('Line : ' . __LINE__ . ' : INFOKAN ADMIN');
         }
-        // $no_pendaftaran = base64_decode($this->input->post('no_pendaftaran', TRUE));
-        $no_pendaftaran = $this->input->post('no_pendaftaran', TRUE);
+        if ($this->input->post('punya_buku_nasab') == 'punya') {
+            $this->form_validation->set_rules('upload_nasab', 'Upload Nasab', 'trim|required');
+        }
 
         if ($this->form_validation->run() == FALSE) {
             if ($this->input->post('form') == 'form_2') {
-                $this->ppdb_2($no_pendaftaran);
-            } elseif ($this->input->post('form') == 'form_3') {
-                $this->ppdb_3($no_pendaftaran);
+                $this->detail($this->input->post('no_pendaftaran'));
             } else {
                 show_error('Line : ' . __LINE__ . ' : INFOKAN ADMIN');
             }
         } else {
+            $id = base64_decode($this->input->post('no_pendaftaran', TRUE));
+            $no_pendaftaran = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
+            if (!$no_pendaftaran) {
+                show_error('GAGAL FORM PPDB, HUBUNGI SISTEM ADMIN<br>Code Error : ' . __LINE__);
+            }
             if ($this->input->post('form') == 'form_2') {
                 $data = array(
-                    'no_pendaftaran' => base64_decode($this->input->post('no_pendaftaran', TRUE)),
+                    'no_pendaftaran' => $no_pendaftaran,
                     'nomor_kartu_keluarga' => $this->input->post('nomor_kartu_keluarga', TRUE),
                     'punya_buku_nasab' => $this->input->post('punya_buku_nasab', TRUE),
                     'nama_ayah' => $this->input->post('nama_ayah', TRUE),
                     'nama_ibu' => $this->input->post('nama_ibu', TRUE),
+                    'upload_pas_foto' => $this->input->post('upload_pas_foto', TRUE),
+                    'upload_kartu_keluarga' => $this->input->post('upload_kartu_keluarga', TRUE),
+                    'upload_nasab' => $this->input->post('upload_nasab', TRUE),
+                    'upload_ijasah' => $this->input->post('upload_ijasah', TRUE),
                 );
-                $kondisi = array('no_pendaftaran' => base64_decode($this->input->post('no_pendaftaran', TRUE)),);
+                $kondisi = array('no_pendaftaran' => $no_pendaftaran,);
+
                 if ($this->Ppdb_model->update_where($kondisi, $data)) {
-                    $messages = 'BERHASIL SUBMIT DATA<br>SILAHKAN UPLOAD DOKUMEN';
+                    $messages = 'BERHASIL SUBMIT DATA';
                     $this->session->set_tempdata('pesan', $messages, 5);
                     $this->session->set_tempdata('type', 'success', 5);
                     $this->session->set_tempdata('confirm', 'true', 5);
                     $this->session->set_tempdata('timer', '10000', 5);
-                    redirect('c_ppdb/ppdb_3');
+                    redirect('c_ppdb/done/' . $this->input->post('no_pendaftaran', TRUE));
                 } else {
-                    $errors = "Terjadi Kesalahan System <br> Error Code : __LINE__<br> Technical Assistant <br> ' . 'SYSTEM ADMIN";
-                    $this->session->set_tempdata('pesan', $errors, 5);
-                    $this->session->set_tempdata('type', 'error', 5);
-                    $this->session->set_tempdata('confirm', 'true', 5);
-                    $this->session->set_tempdata('toast', 'toast', 5);
-                    $this->session->set_tempdata('timer', '30000', 5);
-                    redirect('c_ppdb/ppdb_2');
+                    show_error('GAGAL FORM PPDB, HUBUNGI SISTEM ADMIN<br>Code Error : ' . __LINE__);
                 };
-            } elseif ($this->input->post('form') == 'form_3') {
-                $this->ppdb_3($no_pendaftaran);
             } else {
                 show_error('Line : ' . __LINE__ . ' : INFOKAN ADMIN');
             }
         }
+    }
+    public function read($no_pendaftaran)
+    {
+        if ($no_pendaftaran == NULL) {
+            show_error('LINK INVALID');
+        } else {
+            // $no_pendaftaran = base64_decode($no_pendaftaran)       $id = base64_decode($id);
+            $id = base64_decode($no_pendaftaran);
+            $decrypted_string = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
+            if (!$decrypted_string) {
+                show_error('LINK INVALID / ID TIDAK DITEMUKAN');
+            }
+        }
+
+
+        $kondisi = array('no_pendaftaran' => $decrypted_string,);
+        $row = $this->Ppdb_model->get_all($kondisi)->row();
+
+        if ($row) {
+            $data = array(
+                'no_pendaftaran' => $row->no_pendaftaran,
+                'nik_santri' => $row->nik_santri,
+                'nama_santri' => $row->nama_santri,
+                'jenis_kelamin' => $row->jenis_kelamin,
+                'tempat_lahir' => $row->tempat_lahir,
+                'tanggal_lahir' => $row->tanggal_lahir,
+                'alamat' => $row->alamat,
+                'sesuai_ktp' => $row->sesuai_ktp,
+                'jenjang' => $row->jenjang,
+                'email' => $row->email,
+                'no_hp' => $row->no_hp,
+                'nama_ayah' => $row->nama_ayah,
+                'nama_ibu' => $row->nama_ibu,
+
+                'province_id' => $row->province_id,
+                'regency_id' => $row->regency_id,
+                'district_id' => $row->district_id,
+                'village_id' => $row->village_id,
+
+                'nomor_kartu_keluarga' => $row->nomor_kartu_keluarga,
+                'punya_buku_nasab' => $row->punya_buku_nasab,
+
+                'upload_pas_foto' => $row->upload_pas_foto,
+                'upload_kartu_keluarga' => $row->upload_kartu_keluarga,
+                'upload_nasab' => $row->upload_nasab,
+                'upload_ijasah' => $row->upload_ijasah,
+
+                'status' => $row->status,
+            );
+
+            $form = $this->load->view('c_ppdb/read', $data, true);
+            $data = array(
+                'form' => $form,
+                'bagian' => 'PENDAFTARAN',
+            );
+
+            $this->load->view('c_ppdb/tempelate', $data);
+        }
+    }
+    public function done($no_pendaftaran)
+    {
+        if ($no_pendaftaran == NULL) {
+            show_404();
+        } else {
+            // $no_pendaftaran = base64_decode($no_pendaftaran)       $id = base64_decode($id);
+            $id = base64_decode($no_pendaftaran);
+            $decrypted_string = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
+            if (!$decrypted_string) {
+                show_error('LINK INVALID / ID TIDAK DITEMUKAN');
+            }
+        }
+        $this->load->view('c_ppdb/done');
+
+        exit("This request is success :" . $decrypted_string);
     }
     public function ppdb_1()
     {
@@ -154,6 +220,7 @@ class C_ppdb extends CI_Controller
             'tempat_lahir' => set_value('tempat_lahir'),
             'tanggal_lahir' => set_value('tanggal_lahir'),
             'alamat' => set_value('alamat'),
+            'sesuai_ktp' => set_value('sesuai_ktp'),
             'jenjang' => set_value('jenjang'),
             'email' => set_value('email'),
             'no_hp' => set_value('no_hp'),
@@ -178,14 +245,19 @@ class C_ppdb extends CI_Controller
 
         $this->load->view('c_ppdb/tempelate', $data);
     }
-    public function ppdb_2($no_pendaftaran = NULL)
+    public function detail($no_pendaftaran = NULL)
     {
         if ($no_pendaftaran == NULL) {
-            show_404();
+            show_error('LINK PENDAFTARAN INVALID');
         } else {
-            // $no_pendaftaran = base64_decode($no_pendaftaran);
+            // $no_pendaftaran = base64_decode($no_pendaftaran)       $id = base64_decode($id);
+            $id = base64_decode($no_pendaftaran);
+            $decrypted_string = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
+            if (!$decrypted_string) {
+                show_error('LINK INVALID / ID TIDAK DITEMUKAN');
+            }
         }
-        $kondisi = array('no_pendaftaran' => $no_pendaftaran,);
+        $kondisi = array('no_pendaftaran' => $decrypted_string,);
         $row = $this->Ppdb_model->get_all($kondisi)->row();
 
         if ($row) {
@@ -197,20 +269,26 @@ class C_ppdb extends CI_Controller
             $hidden = array(
                 'form' => 'form_2',
                 // 'no_pendaftaran' => base64_encode($no_pendaftaran)
-                'no_pendaftaran' => $no_pendaftaran
+                'no_pendaftaran' => $no_pendaftaran,
+                'upload_pas_foto' => set_value('upload_pas_foto', $row->upload_pas_foto),
+                'upload_kartu_keluarga' => set_value('upload_kartu_keluarga', $row->upload_kartu_keluarga),
+                'upload_nasab' => set_value('upload_nasab', $row->upload_nasab),
+                'upload_ijasah' => set_value('upload_ijasah', $row->upload_ijasah),
+                'jenjang' => set_value('jenjang', $row->jenjang),
             );
             $data = array(
                 'button' => 'Ubah',
                 'action' => site_url('c_ppdb/update_action'),
                 'id' => set_value('id', $row->id),
-                'no_pendaftaran' => set_value('no_pendaftaran', $row->no_pendaftaran),
+                'no_pendaftaran' => $row->no_pendaftaran,
                 'nik_santri' => set_value('nik_santri', $row->nik_santri),
                 'nama_santri' => set_value('nama_santri', $row->nama_santri),
                 'jenis_kelamin' => set_value('jenis_kelamin', $row->jenis_kelamin),
                 'tempat_lahir' => set_value('tempat_lahir', $row->tempat_lahir),
                 'tanggal_lahir' => set_value('tanggal_lahir', $row->tanggal_lahir),
                 'alamat' => set_value('alamat', $row->alamat),
-                'jenjang' => set_value('jenjang', $row->jenjang),
+                'sesuai_ktp' => set_value('sesuai_ktp', $row->sesuai_ktp),
+                'jenjang' => $row->jenjang,
                 'email' => set_value('email', $row->email),
                 'no_hp' => set_value('no_hp', $row->no_hp),
                 'nama_ayah' => set_value('nama_ayah', $row->nama_ayah),
@@ -224,6 +302,12 @@ class C_ppdb extends CI_Controller
                 'nomor_kartu_keluarga' => set_value('nomor_kartu_keluarga', $row->nomor_kartu_keluarga),
                 'punya_buku_nasab' => set_value('punya_buku_nasab', $row->punya_buku_nasab),
 
+                'upload_pas_foto' => set_value('upload_pas_foto', $row->upload_pas_foto),
+                'upload_kartu_keluarga' => set_value('upload_kartu_keluarga', $row->upload_kartu_keluarga),
+                'upload_nasab' => set_value('upload_nasab', $row->upload_nasab),
+                'upload_ijasah' => set_value('upload_ijasah', $row->upload_ijasah),
+
+
                 'attributes' => $attributes,
                 'hidden' => $hidden
             );
@@ -231,7 +315,7 @@ class C_ppdb extends CI_Controller
             $form = $this->load->view('c_ppdb/t_ppdb_form_2', $data, true);
             $data = array(
                 'form' => $form,
-                'bagian' => 'KELENGKAPAN DATA',
+                'bagian' => 'KELENGKAPAN DOKUMEN',
             );
 
             $this->load->view('c_ppdb/tempelate', $data);
@@ -271,6 +355,7 @@ class C_ppdb extends CI_Controller
                 'tempat_lahir' => set_value('tempat_lahir', $row->tempat_lahir),
                 'tanggal_lahir' => set_value('tanggal_lahir', $row->tanggal_lahir),
                 'alamat' => set_value('alamat', $row->alamat),
+                'sesuai_ktp' => set_value('sesuai_ktp', $row->sesuai_ktp),
                 'jenjang' => set_value('jenjang', $row->jenjang),
                 'email' => set_value('email', $row->email),
                 'no_hp' => set_value('no_hp', $row->no_hp),
@@ -321,6 +406,7 @@ class C_ppdb extends CI_Controller
                 'tempat_lahir' => set_value('tempat_lahir', $row->tempat_lahir),
                 'tanggal_lahir' => set_value('tanggal_lahir', $row->tanggal_lahir),
                 'alamat' => set_value('alamat', $row->alamat),
+                'sesuai_ktp' => set_value('sesuai_ktp', $row->sesuai_ktp),
                 'jenjang' => set_value('jenjang', $row->jenjang),
                 'email' => set_value('email', $row->email),
                 'no_hp' => set_value('no_hp', $row->no_hp),
@@ -347,22 +433,23 @@ class C_ppdb extends CI_Controller
 
     public function _rules_1()
     {
-        $this->form_validation->set_rules('nik_santri', 'nik santri', 'trim|required|numeric|is_unique[t_ppdb.nik_santri]', array('is_unique' => 'NIK sudah Terdaftar'));
-        $this->form_validation->set_rules('nama_santri', 'nama santri', 'trim|required');
-        $this->form_validation->set_rules('jenis_kelamin', 'jenis kelamin', 'trim|required');
-        $this->form_validation->set_rules('tempat_lahir', 'tempat lahir', 'trim|required');
-        $this->form_validation->set_rules('tanggal_lahir', 'tanggal lahir', 'trim|required');
-        $this->form_validation->set_rules('alamat', 'alamat', 'trim|required');
+        $this->form_validation->set_rules('nik_santri', 'NIK Santri/wati', 'trim|required|numeric|is_unique[t_ppdb.nik_santri]', array('is_unique' => 'NIK sudah Terdaftar'));
+        $this->form_validation->set_rules('nama_santri', 'Nama Calon Santri/wati', 'trim|required');
+        $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'trim|required');
+        $this->form_validation->set_rules('tempat_lahir', 'Tempat Lahir', 'trim|required');
+        $this->form_validation->set_rules('tanggal_lahir', 'Tanggal lahir', 'trim|required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+        // $this->form_validation->set_rules('sesuai_ktp', 'sesuai_ktp', 'trim|required');
 
-        $this->form_validation->set_rules('province_id', 'province_id', 'trim|required');
-        $this->form_validation->set_rules('regency_id', 'regency_id', 'trim|required');
-        $this->form_validation->set_rules('district_id', 'district_id', 'trim|required');
-        $this->form_validation->set_rules('village_id', 'village_id', 'trim|required');
+        $this->form_validation->set_rules('province_id', 'Provinsi', 'trim|required');
+        $this->form_validation->set_rules('regency_id', 'Kota/Kabupatan', 'trim|required');
+        $this->form_validation->set_rules('district_id', 'Kecamatan', 'trim|required');
+        $this->form_validation->set_rules('village_id', 'Kelurahan', 'trim|required');
 
 
-        $this->form_validation->set_rules('jenjang', 'jenjang', 'trim|required');
-        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('no_hp', 'no_hp', 'trim|required|numeric');
+        $this->form_validation->set_rules('jenjang', 'Jenjang', 'trim|required');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('no_hp', 'No. Handphone/WA', 'trim|required|numeric');
 
 
         $this->form_validation->set_rules('id', 'id', 'trim');

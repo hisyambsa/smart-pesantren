@@ -50,7 +50,7 @@ class Ppdb extends CI_Controller
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
 
-        $crud->Columns(['delete_at', 'upload_pas_foto', 'nama_santri', 'no_pendaftaran', 'jenis_kelamin', 'status', 'jenjang', 'asrama_id']);
+        $crud->Columns(['delete_at', 'no_pendaftaran', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'status', 'jenjang', 'asrama_id']);
         $crud->setRead();
         $crud->setAdd();
         $crud->setEdit();
@@ -60,18 +60,52 @@ class Ppdb extends CI_Controller
         $crud->setLangString('error_generic_title', 'INFO');
         $crud->setLangString('edit_item', 'UPDATE STATUS');
 
+        $this->load->library('encryption');
+
+        $crud->setActionButton('LINK PPDB', 'fa fa-link', function ($row) {
+            $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
+
+
+            $whitelist = array('127.0.0.1', "::1");
+            if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+                // not valid
+                $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
+            } else {
+                $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
+            }
+        }, true);
+        $crud->setActionButton('<i class="fa-brands fa-whatsapp"></i>', 'fa fa-whatsapp', function ($row) {
+
+            $whitelist = array('127.0.0.1', "::1");
+            if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+                $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
+                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F6281905096842";
+            } else {
+                $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
+                // $ciphertext = base64_encode(openssl_encrypt(base_url("ppdb/c/" . $row->no_pendaftaran), "AES-128-ECB", $this->config->item('hash')));
+                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F6281905096842";
+            }
+        }, true);
+        $crud->setConfig('action_button_type', 'icon');
+
         $crud->callbackReadField('status', function ($value, $primaryKeyValue) use ($table) {;
             $this->db->where('id', $primaryKeyValue);
             $data_id = $this->db->get($table)->row();
 
-            if ($data_id->status == 'Diterima') {
-                return '<span class="green-text">' . ucfirst($data_id->status) . '</span>';
+            if ($data_id->status == 'Proses') {
+                return '<span class="grey-text">' . ucfirst($data_id->status) . '</span>';
             } elseif ($data_id->status == 'Lulus') {
-                return '<span class="info-text">' . ucfirst($data_id->status) . '</span>';
+                return '<span class="amber-text">' . ucfirst($data_id->status) . '</span>';
             } elseif ($data_id->status == 'Tidak Lulus') {
                 return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
+            } elseif ($data_id->status == 'Diterima') {
+                return '<span class="blue-text">' . ucfirst($data_id->status) . '</span>';
+            } elseif ($data_id->status == 'Tidak Diterima') {
+                return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
+            } elseif ($data_id->status == 'Daftar Ulang') {
+                return '<span class="green-text">' . ucfirst($data_id->status) . '</span>';
             } elseif ($data_id->status == 'Tidak Daftar Ulang') {
-                return '<span class="orange-text">' . ucfirst($data_id->status) . '</span>';
+                return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
             } else {
                 return '-';
             }
@@ -84,15 +118,19 @@ class Ppdb extends CI_Controller
                 $this->db->where('id', $row->id);
                 $data_id = $this->db->get($table)->row();
                 if ($data_id->status == 'Proses') {
-                    return '<span class="purple-text">' . ucfirst($data_id->status) . '</span>';
-                } elseif ($data_id->status == 'Diterima') {
-                    return '<span class="green-text">' . ucfirst($data_id->status) . '</span>';
+                    return '<span class="grey-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Lulus') {
-                    return '<span class="blue-text">' . ucfirst($data_id->status) . '</span>';
+                    return '<span class="amber-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Tidak Lulus') {
                     return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
+                } elseif ($data_id->status == 'Diterima') {
+                    return '<span class="blue-text">' . ucfirst($data_id->status) . '</span>';
+                } elseif ($data_id->status == 'Tidak Diterima') {
+                    return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
+                } elseif ($data_id->status == 'Daftar Ulang') {
+                    return '<span class="green-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Tidak Daftar Ulang') {
-                    return '<span class="orange-text">' . ucfirst($data_id->status) . '</span>';
+                    return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
                 } else {
                     return '-';
                 }
@@ -103,8 +141,8 @@ class Ppdb extends CI_Controller
                 $image = '';
             } else {
                 $image = '';
-                $image .= '<a data-caption="' . $row->no_pendaftaran . '" href="' . base_url('uploads/foto/' . $value) . '" class="blue-text" data-fancybox="pas_foto">';
-                $image .= $this->ShowImage_('foto', $value);
+                $image .= '<a data-caption="' . $row->no_pendaftaran . '" href="' . base_url('uploads/ppdb/' . $value) . '" class="blue-text" data-fancybox="pas_foto">';
+                $image .= $this->ShowImage_('ppdb', $value);
                 $image .= '</a>';
             }
             return $image;
@@ -121,7 +159,7 @@ class Ppdb extends CI_Controller
         $crud->setDependentRelation('district_id', 'regency_id', 'regency_id');
         $crud->setDependentRelation('village_id', 'district_id', 'district_id');
 
-        $crud->setFieldUpload('upload_pas_foto', 'uploads/foto', base_url('uploads/foto'));
+        $crud->setFieldUpload('upload_pas_foto', 'uploads/ppdb', base_url('uploads/ppdb'));
         $crud->setFieldUpload('upload_kartu_keluarga', 'uploads/ppdb', base_url('uploads/ppdb'));
         $crud->setFieldUpload('upload_nasab', 'uploads/ppdb', base_url('uploads/ppdb'));
         $crud->setFieldUpload('upload_ijasah', 'uploads/ppdb', base_url('uploads/ppdb'));
@@ -133,8 +171,8 @@ class Ppdb extends CI_Controller
             // that you replace these two variables with yours
 
             if ($uploadData->field_name == 'upload_pas_foto') {
-                $uploadPath = FCPATH . 'uploads/foto/'; // directory of the drive
-                $publicPath = FCPATH . 'uploads/foto/'; // public directory (at the URL)
+                $uploadPath = FCPATH . 'uploads/ppdb/'; // directory of the drive
+                $publicPath = FCPATH . 'uploads/ppdb/'; // public directory (at the URL)
             } else {
                 $uploadPath = FCPATH . 'uploads/ppdb/'; // directory of the drive
                 $publicPath = FCPATH . 'uploads/ppdb/'; // public directory (at the URL)
@@ -238,10 +276,10 @@ class Ppdb extends CI_Controller
             $asrama = $stateParameters->data['asrama_id'];
             $status = $stateParameters->data['status'];
 
-            if ($status == 'Diterima') {
+            if ($status == 'Daftar Ulang') {
                 if ($asrama == '') {
                     return (new \GroceryCrud\Core\Error\ErrorMessage())
-                        ->setMessage("Penerimaan Santri, Asrama tidak boleh Kosong");
+                        ->setMessage("Penerimaan Santri Daftar Ulang, Asrama tidak boleh Kosong");
                 }
             } else {
             }
@@ -252,7 +290,7 @@ class Ppdb extends CI_Controller
         $this->load->model('Santri_model');
         $crud->callbackAfterUpdate(function ($stateParameters) use ($table) {
 
-            if ($stateParameters->data['status'] == 'Diterima') {
+            if ($stateParameters->data['status'] == 'Daftar Ulang') {
                 $this->db->where('id', $stateParameters->primaryKeyValue);
                 $data_ppdb = $this->db->get($table)->row();
                 $data = array(
@@ -324,13 +362,24 @@ class Ppdb extends CI_Controller
             $this->db->where('id', $stateInfo->primaryKeyValue);
 
             $data = $this->db->get($table)->row();
-            if ($data->status == 'Diterima') {
+            if ($data->status == 'Daftar Ulang') {
                 $output = (object)[
                     'isJSONResponse' => true,
                     'output' => json_encode(
                         (object)[
                             'message' =>
-                            'Status sudah Diterima, sudah menjadi Santri',
+                            'Status sudah Daftar Ulang, sudah menjadi Santri',
+                            'status' => 'failure'
+                        ]
+                    )
+                ];
+            } elseif ($data->upload_pas_foto == '' or $data->upload_pas_foto == NULL) {
+                $output = (object)[
+                    'isJSONResponse' => true,
+                    'output' => json_encode(
+                        (object)[
+                            'message' =>
+                            'Santri belum melengkapi Dokumen',
                             'status' => 'failure'
                         ]
                     )

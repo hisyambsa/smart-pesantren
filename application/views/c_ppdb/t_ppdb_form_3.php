@@ -1,57 +1,331 @@
-<script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css" integrity="sha512-8KeRJXvPns3KF9uGWdZW18Azo4c1SG8dy2IqiMBq8Il1wdj7EWtR3EGLwj+DnvznrRjn0oyBU+OEwJk7A79n7w==" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js" integrity="sha512-vDrq7v1F/VUDuBTB+eILVfb9ErriIMW7Dn3JC/HOQLI8ZzTBTRRKrKJO3vfMmZFQpEGVpi+EYJFatPgVFxOKGA==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/locales/id.min.js" integrity="sha512-jzCNGQc2Inz0st0pcHOFXbRuZSP6AoRDZk5gV++BA1v9T70FR612nsMmKZw+nuHP/UaZ/RdC5o5mkXQK3YOQVg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fas/theme.min.js" integrity="sha512-BeQMmfGMfVp5kEkEGxUtlT5R9+m7jDVr5LDFCG2EK9VR50cEhR0kKzD5bn3XtSit/qNoYQUtr405lf5aSCSF8A==" crossorigin="anonymous"></script>
-
-<?= form_open_multipart($action, $attributes, $hidden); ?>
-<div class="form-group"><?php echo form_error('upload_kartu_keluarga') ?>
-    <input data-allowed-file-extensions='["jpg", "png"]' data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD PAS FOTO" class="file-input" type="file" name="upload_kartu_keluarga" id="input-kartu-keluarga" />
-</div>
-<div class="form-group"><?php echo form_error('upload_kartu_keluarga') ?>
-    <input data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD KARTU KELUARGA" class="file-input" type="file" name="upload_kartu_keluarga" id="input-kartu-keluarga" />
-</div>
-<div class="form-group"><?php echo form_error('upload_nasab') ?>
-    <input data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD NASAB" class="file-input" type="file" name="upload_nasab" id="input-nasab" />
-</div>
-<div class="form-group"><?php echo form_error('upload_ijasah') ?>
-    <input data-browse-on-zone-click="true" data-msg-placeholder="Select {files} for upload..." data-drop-zone-click-title="<br>Klik disini" data-drop-zone-title="UPLOAD IJASAH" class="file-input" type="file" name="upload_ijasah" id="input-ijasah" />
-</div>
-<button type="submit" class="btn btn-secondary btn-block btn-rounded mt-3">UPLOAD</button>
-<?= form_close(); ?>
 <script>
     $(function() {
-        $(".file-input").fileinput({
+        // pas foto
+        var $el1 = $("#input-pas-foto");
+        $($el1).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            var form = data.form,
+                files = data.files,
+                extra = data.extra,
+                response = data.response,
+                reader = data.reader;
+            alert(extra.bdInteli + " " + response.uploaded);
+        });
+        $el1.fileinput({
+            allowedFileExtensions: ['pdf', 'jpg', 'png'],
+            uploadUrl: "<?= base_url('ajax_upload/upload/') ?>" + $($el1).attr('file-upload'),
+            uploadAsync: true,
+            deleteUrl: "/site/file-delete",
+            showUpload: true, // hide upload button
+            overwriteInitial: true, // append files to initial preview
+            minFileCount: 1,
+            maxFileCount: 1,
+            browseOnZoneClick: true,
+
+            <?php if ($upload_pas_foto) : ?>
+                initialPreview: [
+                    "<?= base_url('uploads/ppdb/' . $upload_pas_foto) ?>",
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [{
+                    caption: "<?= $no_pendaftaran ?>",
+                    description: '<?= $no_pendaftaran ?>',
+                    size: 932882,
+                    width: "120px",
+                    url: "/site/file-delete",
+                    key: 0
+                }, ],
+            <?php endif ?>
+
+
+            showBrowse: false,
+            showCaption: false,
+
+            previewFileType: 'any',
             theme: "fas",
             language: "id",
-            showUpload: false,
-            allowedFileExtensions: ['pdf'],
-            maxFileCount: 1,
-            maxFilePreviewSize: 8192, // 1MB
-            maxFileSize: 8192, // 1MB
-            showPreview: true,
-            showCaption: false,
-            showBrowse: false,
-            layoutTemplates: {
-                actionDrag: '',
+            uploadExtraData: {
+                upload_path: 'uploads/ppdb', //this is formData
+                nama_file: $($el1).attr('data-name') + '_<?= $no_pendaftaran ?>', //this is formData
+                csrf_token_name: $("input[name=csrf_token_name]").val(),
             },
-            previewFileIconSettings: { // configure your icon file extensions
-                'doc': '<i class="fas fa-file-word text-primary"></i>',
-                'xls': '<i class="fas fa-file-excel text-success"></i>',
-                'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
-                'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
-                'zip': '<i class="fas fa-file-archive text-muted"></i>',
-                'htm': '<i class="fas fa-file-code text-info"></i>',
-                'txt': '<i class="fas fa-file-alt text-info"></i>',
-                'mov': '<i class="fas fa-file-video text-warning"></i>',
-                'mp3': '<i class="fas fa-file-audio text-warning"></i>',
-                // note for these file types below no extension determination logic 
-                // has been configured (the keys itself will be used as extensions)
-                'jpg': '<i class="fas fa-file-image text-danger"></i>',
-                'gif': '<i class="fas fa-file-image text-muted"></i>',
-                'png': '<i class="fas fa-file-image text-primary"></i>'
-            },
+            required: true,
+            pdfRendererUrl: 'https://plugins.krajee.com/pdfjs/web/viewer.html',
+
+        }).on("filebatchselected", function(event, files) {
+            $el1.fileinput("upload");
+        }).on('filedeleted', function(event, id, index) {
+            '<?= strtotime('now') ?>';
+        }).on('filesuccessremove', function(event, id) {
+            event.preventDefault();
+            dp = $('div.file-preview-thumbnails #' + id).attr('server_id')
+            $.post('deletefilesurl', {
+                    'server_id': dp
+                })
+                .done(function(r) {
+                    if (r == 'ok') {
+                        $('#' + id).fadeOut(300, function() {
+                            $(this).remove()
+                        })
+                    } else {
+                        $('#' + id).addClass('btn-danger').find('.file-actions').html(r)
+                    }
+                })
+                .fail(function() {
+                    $('#' + id).addClass('btn-danger').find('.file-actions').html('nothing deleted')
+                })
+
+            return false
+        }).on('fileuploaded', function(event, previewId, index, fileId) {
+            $('input[name="upload_pas_foto"]').val(previewId.response.initialPreviewConfig[0].key);
+        }).on('fileloaded', function(event, previewId, index, fileId) {
+
         });
+
+        // kartu_keluarga
+        var $el2 = $("#input-kartu-keluarga");
+        $($el2).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            var form = data.form,
+                files = data.files,
+                extra = data.extra,
+                response = data.response,
+                reader = data.reader;
+            alert(extra.bdInteli + " " + response.uploaded);
+        });
+        $el2.fileinput({
+            allowedFileExtensions: ['pdf', 'jpg', 'png'],
+            uploadUrl: "<?= base_url('ajax_upload/upload/') ?>" + $($el2).attr('file-upload'),
+            uploadAsync: true,
+            deleteUrl: "/site/file-delete",
+            showUpload: true, // hide upload button
+            overwriteInitial: true, // append files to initial preview
+            minFileCount: 1,
+            maxFileCount: 1,
+            browseOnZoneClick: true,
+
+            <?php if ($upload_kartu_keluarga) : ?>
+                initialPreview: [
+                    "<?= base_url('uploads/ppdb/' . $upload_kartu_keluarga) ?>",
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [{
+                    caption: "<?= $no_pendaftaran ?>",
+                    description: '<?= $no_pendaftaran ?>',
+                    size: 932882,
+                    width: "120px",
+                    url: "/site/file-delete",
+                    key: 0
+                }, ],
+            <?php endif ?>
+
+            showBrowse: false,
+            showCaption: false,
+
+            previewFileType: 'any',
+            theme: "fas",
+            language: "id",
+            uploadExtraData: {
+                upload_path: 'uploads/ppdb', //this is formData
+                nama_file: $($el2).attr('data-name') + '_<?= $no_pendaftaran ?>', //this is formData
+                csrf_token_name: $("input[name=csrf_token_name]").val(),
+            },
+            required: true,
+            pdfRendererUrl: 'https://plugins.krajee.com/pdfjs/web/viewer.html',
+
+        }).on("filebatchselected", function(event, files) {
+            $el2.fileinput("upload");
+        }).on('filedeleted', function(event, id, index) {
+            '<?= strtotime('now') ?>';
+        }).on('filesuccessremove', function(event, id) {
+            event.preventDefault();
+            dp = $('div.file-preview-thumbnails #' + id).attr('server_id')
+            $.post('deletefilesurl', {
+                    'server_id': dp
+                })
+                .done(function(r) {
+                    if (r == 'ok') {
+                        $('#' + id).fadeOut(300, function() {
+                            $(this).remove()
+                        })
+                    } else {
+                        $('#' + id).addClass('btn-danger').find('.file-actions').html(r)
+                    }
+                })
+                .fail(function() {
+                    $('#' + id).addClass('btn-danger').find('.file-actions').html('nothing deleted')
+                })
+
+            return false
+        }).on('fileuploaded', function(event, previewId, index, fileId) {
+            $('input[name="upload_kartu_keluarga"]').val(previewId.response.initialPreviewConfig[0].key);
+        }).on('fileloaded', function(event, previewId, index, fileId) {
+
+        });
+        // nasab
+        var $el3 = $("#input-nasab");
+        $($el3).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            var form = data.form,
+                files = data.files,
+                extra = data.extra,
+                response = data.response,
+                reader = data.reader;
+            alert(extra.bdInteli + " " + response.uploaded);
+        });
+        $el3.fileinput({
+            allowedFileExtensions: ['pdf', 'jpg', 'png'],
+            uploadUrl: "<?= base_url('ajax_upload/upload/') ?>" + $($el3).attr('file-upload'),
+            uploadAsync: true,
+            deleteUrl: "/site/file-delete",
+            showUpload: true, // hide upload button
+            overwriteInitial: true, // append files to initial preview
+            minFileCount: 1,
+            maxFileCount: 1,
+            browseOnZoneClick: true,
+
+            <?php if ($upload_nasab) : ?>
+                initialPreview: [
+                    "<?= base_url('uploads/ppdb/' . $upload_nasab) ?>",
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [{
+                    caption: "<?= $no_pendaftaran ?>",
+                    description: '<?= $no_pendaftaran ?>',
+                    size: 932882,
+                    width: "120px",
+                    url: "/site/file-delete",
+                    key: 0
+                }, ],
+            <?php endif ?>
+
+
+            showBrowse: false,
+            showCaption: false,
+
+            previewFileType: 'any',
+            theme: "fas",
+            language: "id",
+            uploadExtraData: {
+                upload_path: 'uploads/ppdb', //this is formData
+                nama_file: $($el3).attr('data-name') + '_<?= $no_pendaftaran ?>', //this is formData
+                csrf_token_name: $("input[name=csrf_token_name]").val(),
+            },
+            required: true,
+            pdfRendererUrl: 'https://plugins.krajee.com/pdfjs/web/viewer.html',
+
+        }).on("filebatchselected", function(event, files) {
+            $el3.fileinput("upload");
+        }).on('filedeleted', function(event, id, index) {
+            '<?= strtotime('now') ?>';
+        }).on('filesuccessremove', function(event, id) {
+            event.preventDefault();
+            dp = $('div.file-preview-thumbnails #' + id).attr('server_id')
+            $.post('deletefilesurl', {
+                    'server_id': dp
+                })
+                .done(function(r) {
+                    if (r == 'ok') {
+                        $('#' + id).fadeOut(300, function() {
+                            $(this).remove()
+                        })
+                    } else {
+                        $('#' + id).addClass('btn-danger').find('.file-actions').html(r)
+                    }
+                })
+                .fail(function() {
+                    $('#' + id).addClass('btn-danger').find('.file-actions').html('nothing deleted')
+                })
+
+            return false
+        }).on('fileuploaded', function(event, previewId, index, fileId) {
+            $('input[name="upload_nasab"]').val(previewId.response.initialPreviewConfig[0].key);
+        }).on('fileloaded', function(event, previewId, index, fileId) {
+
+        });
+        // ijasah
+        var $el4 = $("#input-ijasah");
+        $($el4).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            var form = data.form,
+                files = data.files,
+                extra = data.extra,
+                response = data.response,
+                reader = data.reader;
+            alert(extra.bdInteli + " " + response.uploaded);
+        });
+        $el4.fileinput({
+            allowedFileExtensions: ['pdf', 'jpg', 'png'],
+            uploadUrl: "<?= base_url('ajax_upload/upload/') ?>" + $($el4).attr('file-upload'),
+            uploadAsync: true,
+            deleteUrl: "/site/file-delete",
+            showUpload: true, // hide upload button
+            overwriteInitial: true, // append files to initial preview
+            minFileCount: 1,
+            maxFileCount: 1,
+            browseOnZoneClick: true,
+
+            <?php if ($upload_ijasah) : ?>
+                initialPreview: [
+                    "<?= base_url('uploads/ppdb/' . $upload_ijasah) ?>",
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [{
+                    caption: "<?= $no_pendaftaran ?>",
+                    description: '<?= $no_pendaftaran ?>',
+                    size: 932882,
+                    width: "120px",
+                    url: "/site/file-delete",
+                    key: 0
+                }, ],
+            <?php endif ?>
+
+
+            showBrowse: false,
+            showCaption: false,
+
+            previewFileType: 'any',
+            theme: "fas",
+            language: "id",
+            uploadExtraData: {
+                upload_path: 'uploads/ppdb', //this is formData
+                nama_file: $($el4).attr('data-name') + '_<?= $no_pendaftaran ?>', //this is formData
+                csrf_token_name: $("input[name=csrf_token_name]").val(),
+            },
+            required: true,
+            pdfRendererUrl: 'https://plugins.krajee.com/pdfjs/web/viewer.html',
+
+        }).on("filebatchselected", function(event, files) {
+            $el4.fileinput("upload");
+        }).on('filedeleted', function(event, id, index) {
+            '<?= strtotime('now') ?>';
+        }).on('filesuccessremove', function(event, id) {
+            event.preventDefault();
+            dp = $('div.file-preview-thumbnails #' + id).attr('server_id')
+            $.post('deletefilesurl', {
+                    'server_id': dp
+                })
+                .done(function(r) {
+                    if (r == 'ok') {
+                        $('#' + id).fadeOut(300, function() {
+                            $(this).remove()
+                        })
+                    } else {
+                        $('#' + id).addClass('btn-danger').find('.file-actions').html(r)
+                    }
+                })
+                .fail(function() {
+                    $('#' + id).addClass('btn-danger').find('.file-actions').html('nothing deleted')
+                })
+
+            return false
+        }).on('fileuploaded', function(event, previewId, index, fileId) {
+            $('input[name="upload_ijasah"]').val(previewId.response.initialPreviewConfig[0].key);
+        }).on('fileloaded', function(event, previewId, index, fileId) {
+
+        });
+
+
 
     });
 </script>

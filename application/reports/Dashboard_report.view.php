@@ -30,6 +30,56 @@ use \koolreport\chartjs\ColumnChart;
 // die;
 ?>
 <div class="row py-3">
+    <?php if ($this->dataStore("query_usia")) : ?>
+        <div class="col-6 sm-6 md-6">
+            <?php
+            ColumnChart::create(array(
+                "title" => "USIA",
+                "dataSource" => $this->dataStore('query_usia'),
+                "columns" => array(
+                    "usia",
+                    "usia_id" => array(
+                        "label" => "PPDB berdasarkan Usia",
+                        "type" => "number",
+                    ),
+                ),
+                "options" => [
+                    "scales" => [
+                        "yAxes" => [[
+                            "display" => true,
+                            "ticks" => [
+                                "beginAtZero" => true,
+                                "stepSize" => 1,
+                            ]
+                        ]]
+                    ],
+                ]
+
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+    <?php if ($this->dataStore("query_usia")) : ?>
+        <div class="col-6 sm-6 md-6">
+            <?php
+            PieChart::create(array(
+                "title" => "Jenis Kelmain PPDB",
+                "dataSource" => $this->dataStore('query_jenis_kelamin'),
+                "columns" => array(
+                    "jenis_kelamin",
+                    "jenis_kelamin_id" => array(
+                        "label" => "jumlah",
+                        "type" => "number",
+                    )
+                )
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+
+
+
+
     <?php if ($this->dataStore("query_all_group_by_count_status")) : ?>
         <div class="col-12 col-sm-6 col-md-6">
             <?php
@@ -39,6 +89,7 @@ use \koolreport\chartjs\ColumnChart;
                 "columns" => array(
                     "status",
                     "status_id" => array(
+                        "label" => "jumlah",
                         "type" => "number",
                     )
                 )
@@ -46,17 +97,41 @@ use \koolreport\chartjs\ColumnChart;
             ?>
         </div>
     <?php endif ?>
-    <?php if ($this->dataStore("query_all_group_by_count_jenjang")) : ?>
+
+    <?php if ($this->dataStore("query_all_group_by_count_status")) : ?>
         <div class="col-12 col-sm-6 col-md-6">
             <?php
-            ColumnChart::create(array(
-                "title" => "Jenjang PPDB",
+            PieChart::create(array(
+                "title" => "Jenjang",
                 "dataSource" => $this->dataStore('query_all_group_by_count_jenjang'),
                 "columns" => array(
                     "jenjang",
                     "jenjang_id" => array(
+                        "label" => "jumlah",
                         "type" => "number",
                     )
+                )
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+
+    <?php if ($this->dataStore("query_all_group_by_count_status_jenis_kelamin")) : ?>
+        <div class="col-12 col-sm-6 col-md-6">
+            <?php
+            ColumnChart::create(array(
+                "title" => "status PPDB",
+                "dataSource" => $this->dataStore('query_all_group_by_count_status_jenis_kelamin'),
+                "columns" => array(
+                    "status",
+                    "status_id" => array(
+                        "label" => "Laki-Laki",
+                        "type" => "number",
+                    ),
+                    "jenis_kelamin" => array(
+                        "label" => "Perempuan",
+                        "type" => "number",
+                    ),
                 ),
                 "options" => [
                     "scales" => [
@@ -73,16 +148,52 @@ use \koolreport\chartjs\ColumnChart;
             ?>
         </div>
     <?php endif ?>
+
+
+    <?php if ($this->dataStore("query_all_group_by_count_jenjang_jenis_kelamin")) : ?>
+        <div class="col-12 col-sm-6 col-md-6">
+            <?php
+            ColumnChart::create(array(
+                "title" => "Jenjang PPDB",
+                "dataSource" => $this->dataStore('query_all_group_by_count_jenjang_jenis_kelamin'),
+                "columns" => array(
+                    "jenjang",
+                    "jenjang_id" => array(
+                        "label" => "Laki-Laki",
+                        "type" => "number",
+                    ),
+                    "jenis_kelamin" => array(
+                        "label" => "Perempuan",
+                        "type" => "number",
+                    ),
+                ),
+                "options" => [
+                    "scales" => [
+                        "yAxes" => [[
+                            "display" => true,
+                            "ticks" => [
+                                "beginAtZero" => true,
+                            ]
+                        ]]
+                    ],
+                ]
+
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+
+
 </div>
 <div class="row py-3">
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Proses')) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+        <div class="col-6 col-sm-4 col-md-4 my-2">
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_ppdb")->where("status", 'Proses')->count(),
                 "title" => "Proses",
                 "cssClass" => array(
-                    "card" => "purple",
+                    "card" => "grey",
                     "title" => "text-white",
                     "value" => "text-white"
                 )
@@ -91,11 +202,26 @@ use \koolreport\chartjs\ColumnChart;
         </div>
     <?php endif ?>
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Lulus')) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+        <div class="col-6 col-sm-4 col-md-4 my-2">
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_ppdb")->where("status", 'Lulus')->count(),
                 "title" => "Lulus",
+                "cssClass" => array(
+                    "card" => "orange",
+                    "title" => "text-white",
+                    "value" => "text-white"
+                )
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+    <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Diterima')) : ?>
+        <div class="col-6 col-sm-4 col-md-4 my-2">
+            <?php
+            Card::create(array(
+                "value" => $this->dataStore("query_all_ppdb")->where("status", 'Diterima')->count(),
+                "title" => "Diterima",
                 "cssClass" => array(
                     "card" => "blue",
                     "title" => "text-white",
@@ -106,7 +232,7 @@ use \koolreport\chartjs\ColumnChart;
         </div>
     <?php endif ?>
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Tidak Lulus')) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+        <div class="col-6 col-sm-4 col-md-4 my-2">
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_ppdb")->where("status", 'Tidak Lulus')->count(),
@@ -120,14 +246,14 @@ use \koolreport\chartjs\ColumnChart;
             ?>
         </div>
     <?php endif ?>
-    <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Diterima')) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+    <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Tidak Diterima')) : ?>
+        <div class="col-6 col-sm-4 col-md-4 my-2">
             <?php
             Card::create(array(
-                "value" => $this->dataStore("query_all_ppdb")->where("status", 'Diterima')->count(),
-                "title" => "Diterima",
+                "value" => $this->dataStore("query_all_ppdb")->where("status", 'Tidak Diterima')->count(),
+                "title" => "Tidak Diterima",
                 "cssClass" => array(
-                    "card" => "green",
+                    "card" => "red",
                     "title" => "text-white",
                     "value" => "text-white"
                 )
@@ -136,13 +262,28 @@ use \koolreport\chartjs\ColumnChart;
         </div>
     <?php endif ?>
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Tidak Daftar Ulang')) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+        <div class="col-6 col-sm-4 col-md-4 my-2">
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_ppdb")->where("status", 'Tidak Daftar Ulang')->count(),
                 "title" => "Tidak Daftar Ulang",
                 "cssClass" => array(
-                    "card" => "orange",
+                    "card" => "red",
+                    "title" => "text-white",
+                    "value" => "text-white"
+                )
+            ));
+            ?>
+        </div>
+    <?php endif ?>
+    <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Daftar Ulang')) : ?>
+        <div class="col-6 col-sm-4 col-md-4 my-2">
+            <?php
+            Card::create(array(
+                "value" => $this->dataStore("query_all_ppdb")->where("status", 'Daftar Ulang')->count(),
+                "title" => "Daftar Ulang",
+                "cssClass" => array(
+                    "card" => "green",
                     "title" => "text-white",
                     "value" => "text-white"
                 )
@@ -160,7 +301,7 @@ use \koolreport\chartjs\ColumnChart;
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_santri")->count(),
-                "title" => "Jumlah Santri",
+                "title" => "Jumlah<br>Santri",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",
@@ -175,7 +316,7 @@ use \koolreport\chartjs\ColumnChart;
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_pengajar")->count(),
-                "title" => "Jumlah Pengajar",
+                "title" => "Jumlah<br>Pengajar",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",
@@ -190,7 +331,7 @@ use \koolreport\chartjs\ColumnChart;
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_pegawai")->count(),
-                "title" => "Jumlah Pegawai",
+                "title" => "Jumlah<br>Pegawai",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",
@@ -206,7 +347,7 @@ use \koolreport\chartjs\ColumnChart;
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_kurikulum")->count(),
-                "title" => "Jumlah Kurikulum",
+                "title" => "Jumlah<br>Kurikulum",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",
@@ -216,13 +357,12 @@ use \koolreport\chartjs\ColumnChart;
             ?>
         </div>
     <?php endif ?>
-
     <?php if ($this->dataStore("query_all_nilai")) : ?>
-        <div class="col-4 col-sm-3 col-md-3 my-2">
+        <div class="offset-col-4 col-4 offset-sm-3 col-sm-3 offset-md-3 col-md-3 my-2">
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_nilai")->count(),
-                "title" => "Jumlah Nilai",
+                "title" => "Jumlah<br>Nilai",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",
@@ -238,7 +378,7 @@ use \koolreport\chartjs\ColumnChart;
             <?php
             Card::create(array(
                 "value" => $this->dataStore("query_all_catatan_akademik")->count(),
-                "title" => "Jumlah Catatan Akademik",
+                "title" => "Jumlah<br>Catatan Akademik",
                 "cssClass" => array(
                     "card" => "teal",
                     "title" => "text-white",

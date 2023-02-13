@@ -1,4 +1,8 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+use Illuminate\Support\Facades\App;
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class Auth
