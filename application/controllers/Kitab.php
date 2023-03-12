@@ -45,6 +45,8 @@ class Kitab extends CI_Controller
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
@@ -65,6 +67,7 @@ class Kitab extends CI_Controller
         $data = array(
             'subject' => $subject,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }
@@ -83,7 +86,7 @@ class Kitab extends CI_Controller
     private function display_as($crud)
     {
         $crud->displayAs(array(
-            // 'gedung_id' => 'Nama Gedung',
+            'nama' => 'Nama Kitab',
         ));
         return $crud;
     }

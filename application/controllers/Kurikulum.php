@@ -45,6 +45,8 @@ class Kurikulum extends CI_Controller
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
@@ -76,6 +78,7 @@ class Kurikulum extends CI_Controller
         $data = array(
             'subject' => $subject,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }

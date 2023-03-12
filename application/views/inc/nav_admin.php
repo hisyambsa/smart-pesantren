@@ -143,41 +143,76 @@
                     </li>
                     <div sty id="html" class="treeview-animated w-30 mx-1 my-1">
                         <ul class="">
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('ppdb/modul') ?>" class="">
-                                    PPDB
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('santri/modul') ?>" class="">
-                                    Santri
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('pengajar/modul') ?>" class="">
-                                    Pengajar
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('pegawai/modul') ?>" class="">
-                                    Pegawai
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('kurikulum/modul') ?>" class="">
-                                    Kurikulum
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('nilai/modul') ?>" class="">
-                                    Nilai
-                                </a>
-                            </li>
-                            <li data-jstree='{"type":"file", "class":""}'>
-                                <a href="<?= base_url('catatan_akademik/modul') ?>" class="">
-                                    Catatan Akademik
-                                </a>
-                            </li>
+                            <?php
+                            $group = array('ppdb', 'pegawai');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('ppdb/modul') ?>" class="">
+                                        PPDB
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('santri', 'pegawai');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('santri/modul') ?>" class="">
+                                        Santri
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('pengajar');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('pengajar/modul') ?>" class="">
+                                        Pengajar
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('pegawai');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('pegawai/modul') ?>" class="">
+                                        Pegawai
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('pegawai');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('kurikulum/modul') ?>" class="">
+                                        Kurikulum
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('pengajar');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('nilai/modul') ?>" class="">
+                                        Nilai
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                            <?php
+                            $group = array('pegawai');
+                            ?>
+                            <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
+                                <li data-jstree='{"type":"file", "class":""}'>
+                                    <a href="<?= base_url('catatan_akademik/modul') ?>" class="">
+                                        Catatan Akademik
+                                    </a>
+                                </li>
+                            <?php endif ?>
                             <!-- <li class="jstree-ocl" data-jstree='{"type":"file", "class":""}'>Keuangan
                                 <ul class="nested">
                                     <li data-jstree='{"type":"file", "class":""}'>

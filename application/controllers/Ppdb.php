@@ -46,14 +46,17 @@ class Ppdb extends CI_Controller
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
         $crud = $this->initial_config($crud);
         $crud = $this->display_as($crud);
 
-        $crud->Columns(['delete_at', 'no_pendaftaran', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'status', 'jenjang', 'asrama_id']);
+        $crud->Columns(['delete_at', 'no_pendaftaran', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'status', 'jenjang']);
         $crud->setRead();
         $crud->setAdd();
         $crud->setEdit();
+
 
         $crud->editFields(['status']);
         $crud->setLangString('edit', 'UPDATE STATUS');
@@ -69,9 +72,9 @@ class Ppdb extends CI_Controller
             $whitelist = array('127.0.0.1', "::1");
             if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
                 // not valid
-                $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
+                return $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
             } else {
-                $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
+                return $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
             }
         }, true);
         $crud->setActionButton('<i class="fa-brands fa-whatsapp"></i>', 'fa fa-whatsapp', function ($row) {
@@ -79,11 +82,13 @@ class Ppdb extends CI_Controller
             $whitelist = array('127.0.0.1', "::1");
             if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
                 $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
-                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F6281905096842";
+                $no_bantuan_wa = $this->session->userdata('settings')->no_bantuan_wa;
+                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
             } else {
                 $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
                 // $ciphertext = base64_encode(openssl_encrypt(base_url("ppdb/c/" . $row->no_pendaftaran), "AES-128-ECB", $this->config->item('hash')));
-                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F6281905096842";
+                $no_bantuan_wa = $this->session->userdata('settings')->no_bantuan_wa;
+                return "https://api.whatsapp.com/send?phone=6281905096842&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
             }
         }, true);
         $crud->setConfig('action_button_type', 'icon');
@@ -94,6 +99,8 @@ class Ppdb extends CI_Controller
 
             if ($data_id->status == 'Proses') {
                 return '<span class="grey-text">' . ucfirst($data_id->status) . '</span>';
+            } elseif ($data_id->status == 'Upload  Dokumen') {
+                return '<span class="purple-text">' . ucfirst($data_id->status) . '</span>';
             } elseif ($data_id->status == 'Lulus') {
                 return '<span class="amber-text">' . ucfirst($data_id->status) . '</span>';
             } elseif ($data_id->status == 'Tidak Lulus') {
@@ -120,6 +127,8 @@ class Ppdb extends CI_Controller
                 if ($data_id->status == 'Proses') {
                     return '<span class="grey-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Lulus') {
+                    return '<span class="purple-text">' . ucfirst($data_id->status) . '</span>';
+                } elseif ($data_id->status == 'Upload Dokumen') {
                     return '<span class="amber-text">' . ucfirst($data_id->status) . '</span>';
                 } elseif ($data_id->status == 'Tidak Lulus') {
                     return '<span class="red-text">' . ucfirst($data_id->status) . '</span>';
@@ -149,7 +158,7 @@ class Ppdb extends CI_Controller
         });
 
 
-        $crud->setRelation('asrama_id', 'asrama', '{no_kamar}-{nama_kamar}');
+        // $crud->setRelation('asrama_id', 'asrama', '{no_kamar}-{nama_kamar}');
 
         $crud->setRelation('province_id', 'provinces', '{id}-{name}');
         $crud->setRelation('regency_id', 'regencies', '{id}-{name}');
@@ -254,7 +263,8 @@ class Ppdb extends CI_Controller
         // $crud->unsetAddFields(['no_pendaftaran', 'timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
         $crud->AddFields(['nik_santri', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'province_id', 'regency_id', 'district_id', 'village_id', 'jenjang', 'email', 'no_hp', 'nomor_kartu_keluarga', 'punya_buku_nasab', 'nama_ayah', 'nama_ibu', 'golongan_darah', 'upload_pas_foto', 'upload_kartu_keluarga', 'upload_nasab', 'upload_ijasah', 'status']);
 
-        $crud->EditFields(['no_pendaftaran', 'status', 'asrama_id', 'upload_pas_foto']);
+        $crud->readOnlyFields(['no_pendaftaran']);
+        $crud->EditFields(['no_pendaftaran', 'status', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'province_id', 'regency_id', 'district_id', 'village_id', 'jenjang', 'email', 'no_hp', 'nomor_kartu_keluarga', 'punya_buku_nasab', 'nama_ayah', 'nama_ibu', 'golongan_darah', 'upload_pas_foto', 'upload_kartu_keluarga', 'upload_nasab', 'upload_ijasah']);
 
         $crud->callbackInsert(function ($stateParameters) use ($table) {
             $this->load->model('Ppdb_model');
@@ -273,16 +283,16 @@ class Ppdb extends CI_Controller
             $crud->uniqueFields(['nik_santri']);
         }
         $crud->callbackBeforeUpdate(function ($stateParameters) {
-            $asrama = $stateParameters->data['asrama_id'];
+            // $asrama = $stateParameters->data['asrama_id'];
             $status = $stateParameters->data['status'];
 
-            if ($status == 'Daftar Ulang') {
-                if ($asrama == '') {
-                    return (new \GroceryCrud\Core\Error\ErrorMessage())
-                        ->setMessage("Penerimaan Santri Daftar Ulang, Asrama tidak boleh Kosong");
-                }
-            } else {
-            }
+            // if ($status == 'Daftar Ulang') {
+            //     // if ($asrama == '') {
+            //     // }
+            //     // return (new \GroceryCrud\Core\Error\ErrorMessage())
+            //     //     ->setMessage("Penerimaan Santri Daftar Ulang");
+            // } else {
+            // }
             return $stateParameters;
         });
 
@@ -418,6 +428,7 @@ class Ppdb extends CI_Controller
             'subject' => $subject,
             'search' => $search,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }
@@ -456,7 +467,7 @@ class Ppdb extends CI_Controller
             'punya_buku_nasab' => 'Punya Buku Nasab',
             'nama_ayah' => 'Nama Ayah',
             'nama_ibu' => 'Nama Ibu',
-            'asrama_id' => 'Asrama',
+            // 'asrama_id' => 'Asrama',
             'golongan_darah' => 'Golongan Darah',
             'upload_pas_foto' => 'Foto',
         ));

@@ -16,12 +16,12 @@
                         <span class="label">Pendaftaran</span>
                     </a>
                 </li>
-                <li class="<?= $status_proses_0 = ($upload_pas_foto == '' or $upload_pas_foto == NULL) ? '' : 'active'; ?><?= $status_lulus_2 = ($status == 'Tidak Lulus') ? 'warning' : ''; ?>">
+                <li class="<?= $status_proses_0 = ($status == 'Proses' or $upload_pas_foto == '' or $upload_pas_foto == NULL) ? '' : 'active'; ?>">
                     <a href="#!">
                         <span class="circle"><?= $status_check = ($status_proses_0 == 'active') ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>'; ?></span>
                         <span class="label">Dokumen</span>
                     </a>
-                    <?php if ($upload_pas_foto == '' or $upload_pas_foto == NULL) : ?>
+                    <?php if ($status == 'Proses' or $upload_pas_foto == '' or $upload_pas_foto == NULL) : ?>
                         <div class="step-content grey lighten-3">
                             <?php $ciphertext = base64_encode(openssl_encrypt($no_pendaftaran, "AES-128-ECB", $this->config->item('hash'))); ?>
                             <?php
@@ -43,19 +43,19 @@
                 <li class="<?= $status_proses_1 = ($status == 'Lulus' or $status == 'Diterima' or $status == 'Tidak Diterima' or $status == 'Daftar Ulang' or $status == 'Tidak Daftar Ulang') ? 'completed' : ''; ?><?= $status_lulus_2 = ($status == 'Tidak Lulus') ? 'warning' : ''; ?>">
                     <a href="#!">
                         <span class="circle"><?= $status_check = ($status_proses_1 == 'completed') ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>'; ?></span>
-                        <span class="label">Lulus</span>
+                        <span class="label">Status Kelulusan</span>
                     </a>
                 </li>
                 <li class="<?= $status_proses_2 = ($status == 'Diterima' or $status == 'Daftar Ulang' or $status == 'Tidak Daftar Ulang') ? 'completed' : ''; ?><?= $status_lulus_2 = ($status == 'Tidak Diterima') ? 'warning' : ''; ?>">
                     <a href="#!">
                         <span class="circle"><?= $status_check = ($status_proses_2 == 'completed') ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>'; ?></span>
-                        <span class="label">Diterima</span>
+                        <span class="label">Status Penerimaan</span>
                     </a>
                 </li>
                 <li class="<?= $status_proses_3 = ($status == 'Daftar Ulang') ? 'completed' : ''; ?><?= $status_lulus_2 = ($status == 'Tidak Daftar Ulang') ? 'warning' : ''; ?>">
                     <a href="#!">
                         <span class="circle"><?= $status_check = ($status_proses_3 == 'completed') ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>'; ?></span>
-                        <span class="label">Daftar Ulang</span>
+                        <span class="label">Status Daftar Ulang</span>
                     </a>
                 </li>
             </ul>

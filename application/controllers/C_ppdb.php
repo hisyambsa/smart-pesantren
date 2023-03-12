@@ -94,6 +94,67 @@ class C_ppdb extends CI_Controller
                 show_error('GAGAL FORM PPDB, HUBUNGI SISTEM ADMIN<br>Code Error : ' . __LINE__);
             }
             if ($this->input->post('form') == 'form_2') {
+                // connect to FTP server
+                $ftp_server = "151.106.125.175";
+                $ftp_username = "admin_hisyambsa";
+                $ftp_userpass = "Ipd5FI*pd%xemLkM";
+                $ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+
+                //login to FTP server
+                $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
+                if (!$login) {
+                    log_message('error', __CLASS__ . ' baris :' . __LINE__);
+                    $out['error'] = 'terjadi masalah server';
+                }
+                ftp_chdir($ftp_conn, "public_html");
+                ftp_chdir($ftp_conn, "uploads");
+                ftp_chdir($ftp_conn, 'ppdb');
+                $path = 'uploads/ppdb';
+                // upload file
+
+
+                if ($this->input->post('upload_pas_foto', TRUE)) {
+                    $newFileUrl = $path . '/' . $this->input->post('upload_pas_foto', TRUE);
+                    if (!ftp_delete($ftp_conn, $this->input->post('upload_pas_foto', TRUE))) {
+                        log_message('error', 'GAGAL FTP PAS FOTO');
+                    }
+
+                    if (!ftp_put($ftp_conn, $this->input->post('upload_pas_foto', TRUE), "$newFileUrl", FTP_BINARY)) {
+                        log_message('error', 'GAGAL FTP PAS FOTO');
+                    }
+                }
+
+                $path = 'uploads/ppdb';
+                ftp_chdir($ftp_conn, '../ppdb');
+                if ($this->input->post('upload_kartu_keluarga', TRUE)) {
+                    $newFileUrl = $path . '/' . $this->input->post('upload_kartu_keluarga', TRUE);
+                    if (!ftp_delete($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE))) {
+                        log_message('error', 'GAGAL FTP KARTU KELUARGA');
+                    }
+                    if (!ftp_put($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE), "$newFileUrl", FTP_BINARY)) {
+                        log_message('error', 'GAGAL FTP KARTU KELUARGA');
+                    }
+                }
+                if ($this->input->post('upload_nasab', TRUE)) {
+                    $newFileUrl = $path . '/' . $this->input->post('upload_nasab', TRUE);
+                    if (!ftp_delete($ftp_conn, $this->input->post('upload_nasab', TRUE))) {
+                        log_message('error', 'GAGAL FTP NASAB');
+                    }
+                    if (!ftp_put($ftp_conn, $this->input->post('upload_nasab', TRUE), "$newFileUrl", FTP_BINARY)) {
+                        log_message('error', 'GAGAL FTP NASAB');
+                    }
+                }
+                if ($this->input->post('upload_ijasah', TRUE)) {
+                    $newFileUrl = $path . '/' . $this->input->post('upload_ijasah', TRUE);
+                    if (!ftp_delete($ftp_conn, $this->input->post('upload_ijasah', TRUE))) {
+                        log_message('error', 'GAGAL FTP IJAZAH');
+                    }
+                    if (!ftp_put($ftp_conn, $this->input->post('upload_ijasah', TRUE), "$newFileUrl", FTP_BINARY)) {
+                        log_message('error', 'GAGAL FTP IJAZAH');
+                    }
+                }
+                ftp_close($ftp_conn);
+
                 $data = array(
                     'no_pendaftaran' => $no_pendaftaran,
                     'nomor_kartu_keluarga' => $this->input->post('nomor_kartu_keluarga', TRUE),
@@ -104,11 +165,12 @@ class C_ppdb extends CI_Controller
                     'upload_kartu_keluarga' => $this->input->post('upload_kartu_keluarga', TRUE),
                     'upload_nasab' => $this->input->post('upload_nasab', TRUE),
                     'upload_ijasah' => $this->input->post('upload_ijasah', TRUE),
+                    'status' => 'Upload Dokumen',
                 );
                 $kondisi = array('no_pendaftaran' => $no_pendaftaran,);
 
                 if ($this->Ppdb_model->update_where($kondisi, $data)) {
-                    $messages = 'BERHASIL SUBMIT DATA';
+                    $messages = 'BERHASIL UPLOAD DOKUMEN';
                     $this->session->set_tempdata('pesan', $messages, 5);
                     $this->session->set_tempdata('type', 'success', 5);
                     $this->session->set_tempdata('confirm', 'true', 5);
@@ -190,11 +252,10 @@ class C_ppdb extends CI_Controller
             $decrypted_string = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
             if (!$decrypted_string) {
                 show_error('LINK INVALID / ID TIDAK DITEMUKAN');
+            } else {
+                redirect("https://ppdb.smartponpes.id/ppdb/c/$no_pendaftaran", 'refresh');
             }
         }
-        $this->load->view('c_ppdb/done');
-
-        exit("This request is success :" . $decrypted_string);
     }
     public function ppdb_1()
     {

@@ -46,6 +46,8 @@ class Nilai extends CI_Controller
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
@@ -53,16 +55,21 @@ class Nilai extends CI_Controller
 
 
         if ($this->ion_auth->in_group('pengajar')) {
-            $crud->setAdd();
-            $crud->addFields(['pengajar_id', 'kurikulum_id', 'santri_id', 'data_nilai']);
+
+            $dataPengajar = $this->db->where('login_id', $this->ion_auth->user()->row()->id)->get('t_pengajar')->row();
+
+            if ($dataPengajar) {
+                $crud->setAdd();
+                $crud->addFields(['pengajar_id', 'kurikulum_id', 'santri_id', 'data_nilai']);
+                $crud->callbackAddField('pengajar_id', function ($fieldType, $fieldName) {
+                    $dataPengajar = $this->db->where('login_id', $this->ion_auth->user()->row()->id)->get('t_pengajar')->row();
+
+                    return $dataPengajar->nama_pengajar . '<input readonly class="form-control" name="' . $fieldName . '" type="hidden" value="' . $dataPengajar->id . '">';
+                });
+            }
             $crud->setEdit();
             $crud->setDelete();
         }
-        $crud->callbackAddField('pengajar_id', function ($fieldType, $fieldName) {
-            $dataPengajar = $this->db->where('login_id', $this->ion_auth->user()->row()->id)->get('t_pengajar')->row();
-
-            return $dataPengajar->nama_pengajar . '<input readonly class="form-control" name="' . $fieldName . '" type="hidden" value="' . $dataPengajar->id . '">';
-        });
 
         $crud->setConfig('action_button_type', 'icon');
 
@@ -79,6 +86,7 @@ class Nilai extends CI_Controller
         $data = array(
             'subject' => $subject,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }

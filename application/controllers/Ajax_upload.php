@@ -89,6 +89,27 @@ class Ajax_upload extends CI_Controller
                     // 'downloadUrl' => $newFileUrl, // the url to download the file
                     'url' => base_url('ajax_upload/delete/' . $path), // server api to delete the file based on key
                 ];
+                // $url = "https://apps.smartponpes.id/";
+
+                // // connect to FTP server
+                // $ftp_server = "151.106.125.175";
+                // $ftp_username = "admin_hisyambsa";
+                // $ftp_userpass = "Ipd5FI*pd%xemLkM";
+                // $ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+
+                // //login to FTP server
+                // $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
+                // if (!$login) {
+                //     log_message('error', __CLASS__ . ' baris :' . __LINE__);
+                //     $out['error'] = 'terjadi masalah server';
+                // }
+                // ftp_chdir($ftp_conn, "public_html");
+                // ftp_chdir($ftp_conn, "uploads");
+                // ftp_chdir($ftp_conn, $path);
+                // // upload file
+                // if (ftp_put($ftp_conn, $nama_file_upload, "$newFileUrl", FTP_ASCII)) {
+                //     $out['error'] = 'Oh snap! We could not upload';
+                // }
             } else {
                 $errors[] = $fileName;
             }

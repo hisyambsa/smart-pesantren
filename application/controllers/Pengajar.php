@@ -44,6 +44,8 @@ class Pengajar extends CI_Controller
         $crud = $this->GCrud->_getGroceryCrudEnterprise();
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
@@ -51,7 +53,7 @@ class Pengajar extends CI_Controller
 
         $crud->setAdd();
 
-        $crud->setRelation('login_id', 'users', '{username} - {first_name}');
+        $crud->setRelation('login_id', 'users', '{username}');
         $crud->callbackInsert(function ($stateParameters) use ($table) {
 
             $this->db->trans_begin();
@@ -106,6 +108,19 @@ class Pengajar extends CI_Controller
         $crud->setRule('nik', 'numeric');
         $crud->setRule('nik', 'length', [16]);
 
+        $crud->callbackAddField(
+            'tanggal_lahir',
+            function ($fieldType, $fieldName) {
+                // You have access now at the extra custom variable $username
+                return '<input type="date" class="form-control" name="tanggal_lahir" placeholder="Tanggal Lahir" />';
+            }
+        );
+        $crud->callbackEditField('tanggal_lahir', function ($fieldValue, $primaryKeyValue, $rowData) use ($table) {
+            $row_data = $this->db->where('id', $primaryKeyValue)->get($table)->row();
+            // You have access now at the extra custom variable $username
+            return '<input type="date" class="form-control" name="tanggal_lahir" placeholder="Tanggal Lahir" value="' . $row_data->tanggal_lahir . '" />';
+        });
+
         $output = $crud->render();
         $this->output_crud($output);
 
@@ -114,6 +129,7 @@ class Pengajar extends CI_Controller
         $data = array(
             'subject' => $subject,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }
@@ -134,8 +150,10 @@ class Pengajar extends CI_Controller
         $crud->displayAs(array(
             'nik' => 'NIK Pengajar',
             'nama_pengajar' => 'Nama Pengajar',
-            'login_id' => 'Username - Nama',
+            'login_id' => 'Username',
+            'nip' => 'NIP',
             'no_hp' => 'No. HP / WA',
+            'tanggal_lahir' => 'Tanggal Lahir',
         ));
         return $crud;
     }

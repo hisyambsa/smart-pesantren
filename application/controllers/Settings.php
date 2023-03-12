@@ -42,16 +42,8 @@ class Settings extends CI_Controller
         $table = $crud->getTable();
         $crud->setSubject('Settings', 'Settings');
 
-        $crud->unsetOperations();
-        $crud->unsetExport();
-        $crud->unsetFilters();
-        $crud->unsetSettings();
-        $crud->unsetPrint();
-
-        $crud->setEdit();
-        // $crud->setRead();
-        // $crud->setDelete();
-
+        $crud = $this->initial_config($crud);
+        $crud = $this->display_as($crud);
 
         $uploadValidations = [
             'maxUploadSize' => '1M', // 1 Mega Bytes
@@ -94,9 +86,60 @@ class Settings extends CI_Controller
             }
             return $image;
         });
+        $crud->callbackAfterUpdate(function ($stateParameters) use ($table) {
+
+            $cek62_no_bantuan_wa = substr($stateParameters->data['no_bantuan_wa'], 0, 2);
+            $cek0_no_bantuan_wa = substr($stateParameters->data['no_bantuan_wa'], 0, 1);
+            if ($cek62_no_bantuan_wa == 62) {
+                $str_to_replace = '';
+                $input_str = $stateParameters->data['no_bantuan_wa'];
+                $no_bantuan_wa_tel = $str_to_replace . substr($input_str, 2);
+            } elseif ($cek0_no_bantuan_wa == 0) {
+                $str_to_replace = '';
+                $input_str = $stateParameters->data['no_bantuan_wa'];
+                $no_bantuan_wa_tel = $str_to_replace . substr($input_str, 1);
+            } else {
+                // do nothing
+            }
+            $data = array('no_bantuan_wa' => '62' . $no_bantuan_wa_tel);
+
+            $this->db->where('id', $stateParameters->primaryKeyValue);
+            $this->db->update($table, $data);
+
+            return $stateParameters;
+        });
+        $crud->setConfig('actions_column_side', 'left');
         $crud->unsetExportPdf();
         $output = $crud->render();
         $this->output_crud($output);
+    }
+    private function initial_config($crud)
+    {
+        $crud->unsetSearchColumns(['no_pendaftaran', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'tanggal_lahir', 'status', 'jenjang']);
+        $crud->unsetColumns(['create_by', 'modify_by']);
+        $crud->unsetFields(['timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);
+
+        $crud->unsetPrint();
+        $crud->unsetExport();
+        $crud->unsetSettings();
+        $crud->unsetOperations();
+        $crud->unsetFilters();
+
+
+        $crud->setEdit();
+        // $crud->setRead();
+        // $crud->setDelete();
+        return $crud;
+    }
+    private function display_as($crud)
+    {
+        $crud->displayAs(array(
+            'nama_pesantren' => 'Nama Pesantren',
+            'deskripsi_pesantren' => 'Deskripsi Pesantren',
+            'no_bantuan_wa' => 'No Bantuan WA',
+
+        ));
+        return $crud;
     }
     function ShowImage_($folder, $value)
     {

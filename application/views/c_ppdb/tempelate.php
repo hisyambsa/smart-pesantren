@@ -64,7 +64,7 @@
         <div class="text-center">
             <h2 class="h2-responsive">P P D B </h2>
             <h3 class="h3-responsive text-monospace">Pondok Pesantren</h3>
-            <h4 class="h4-responsive font-weight-bold">Darrullughah Wadda'wah Jawa Timur</h4>
+            <h4 class="h4-responsive font-weight-bold"><?= $this->session->userdata('settings')->nama_pesantren ?></h4>
         </div>
         <h4 class="h4-responsive text-center"><?= $bagian ?></h4>
         <div class="row align">

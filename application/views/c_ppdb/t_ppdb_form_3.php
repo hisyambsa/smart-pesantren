@@ -20,24 +20,6 @@
             minFileCount: 1,
             maxFileCount: 1,
             browseOnZoneClick: true,
-
-            <?php if ($upload_pas_foto) : ?>
-                initialPreview: [
-                    "<?= base_url('uploads/ppdb/' . $upload_pas_foto) ?>",
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [{
-                    caption: "<?= $no_pendaftaran ?>",
-                    description: '<?= $no_pendaftaran ?>',
-                    size: 932882,
-                    width: "120px",
-                    url: "/site/file-delete",
-                    key: 0
-                }, ],
-            <?php endif ?>
-
-
             showBrowse: false,
             showCaption: false,
 
@@ -103,22 +85,6 @@
             maxFileCount: 1,
             browseOnZoneClick: true,
 
-            <?php if ($upload_kartu_keluarga) : ?>
-                initialPreview: [
-                    "<?= base_url('uploads/ppdb/' . $upload_kartu_keluarga) ?>",
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [{
-                    caption: "<?= $no_pendaftaran ?>",
-                    description: '<?= $no_pendaftaran ?>',
-                    size: 932882,
-                    width: "120px",
-                    url: "/site/file-delete",
-                    key: 0
-                }, ],
-            <?php endif ?>
-
             showBrowse: false,
             showCaption: false,
 
@@ -183,23 +149,6 @@
             maxFileCount: 1,
             browseOnZoneClick: true,
 
-            <?php if ($upload_nasab) : ?>
-                initialPreview: [
-                    "<?= base_url('uploads/ppdb/' . $upload_nasab) ?>",
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [{
-                    caption: "<?= $no_pendaftaran ?>",
-                    description: '<?= $no_pendaftaran ?>',
-                    size: 932882,
-                    width: "120px",
-                    url: "/site/file-delete",
-                    key: 0
-                }, ],
-            <?php endif ?>
-
-
             showBrowse: false,
             showCaption: false,
 
@@ -263,22 +212,6 @@
             minFileCount: 1,
             maxFileCount: 1,
             browseOnZoneClick: true,
-
-            <?php if ($upload_ijasah) : ?>
-                initialPreview: [
-                    "<?= base_url('uploads/ppdb/' . $upload_ijasah) ?>",
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [{
-                    caption: "<?= $no_pendaftaran ?>",
-                    description: '<?= $no_pendaftaran ?>',
-                    size: 932882,
-                    width: "120px",
-                    url: "/site/file-delete",
-                    key: 0
-                }, ],
-            <?php endif ?>
 
 
             showBrowse: false,

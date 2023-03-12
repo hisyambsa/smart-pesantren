@@ -54,7 +54,7 @@
                         <div class="text-center">
                             <?php echo form_checkbox('remember', '1', FALSE, 'id="remember" class="form-check-input"'); ?>
                             <?php echo lang('login_remember_label', 'remember', 'class="form-check-label mb-2"'); ?>
-                            <p><a target="_blank" href="https://api.whatsapp.com/send?phone=6281905096842"><?php echo lang('login_forgot_password'); ?></a></p>
+                            <p><a target="_blank" href="https://api.whatsapp.com/send?phone=<?= $this->session->userdata('settings')->no_bantuan_wa ?>"><?php echo lang('login_forgot_password'); ?></a></p>
                             <p><?php echo form_submit('submit', lang('login_submit_btn'), 'class="btn btn-lg btn-block my-3"'); ?></p>
                         </div>
                     </div>

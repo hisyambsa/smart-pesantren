@@ -19,15 +19,15 @@
 </style>
 <?= form_open($action, $attributes, $hidden) ?>
 <div class="form-group md-form">
-    <input length="16" maxlength="16" type="text" class="form-control" name="nik_santri" id="id_nik_santri" placeholder="Masukan NIK Calon Santri/wati" value="<?php echo $nik_santri; ?>" />
+    <input required length="16" maxlength="16" type="text" class="form-control" name="nik_santri" id="id_nik_santri" placeholder="Masukan NIK Calon Santri/wati" value="<?php echo $nik_santri; ?>" />
     <label for="varchar">NIK Calon Santri/wati <?php echo form_error('nik_santri') ?></label>
 </div>
 <div class="form-group md-form">
-    <input type="text" class="form-control" name="nama_santri" id="id_nama_santri" placeholder="Masukan Nama Calon Santri/wati" value="<?php echo $nama_santri; ?>" />
+    <input required type="text" class="form-control" name="nama_santri" id="id_nama_santri" placeholder="Masukan Nama Calon Santri/wati" value="<?php echo $nama_santri; ?>" />
     <label for="varchar">Nama Calon Santri/wati <?php echo form_error('nama_santri') ?></label>
 </div>
 <div class="form-group md-form">
-    <input type="text" class="form-control" name="tempat_lahir" id="id_tempat_lahir" placeholder="Masukan Tempat Lahir" value="<?php echo $tempat_lahir; ?>" />
+    <input required type="text" class="form-control" name="tempat_lahir" id="id_tempat_lahir" placeholder="Masukan Tempat Lahir" value="<?php echo $tempat_lahir; ?>" />
     <label for="varchar">Tempat Lahir <?php echo form_error('tempat_lahir') ?></label>
 </div>
 <div class="border border-primary p-3">
@@ -88,7 +88,7 @@
 </div>
 <div class="form-group my-3">
     <label for="varchar">Jenjang yang dipilih <?php echo form_error('jenjang') ?></label>
-    <select data-placeholder="Pilih Jenjang" name="jenjang" id="id_jenjang" class="form-control chosen-select">
+    <select required data-placeholder="Pilih Jenjang" name="jenjang" id="id_jenjang" class="form-control chosen-select">
         <option value="">Pilih Jenjang</option>
         <option <?php echo set_select('jenjang', "I'dadiyah", $select_jenjang = ($jenjang == "I'dadiyah") ? TRUE : FALSE) ?> value="I'dadiyah">I'dadiyah</option>
         <option <?php echo set_select('jenjang', 'Ibtidaiyah', $select_jenjang = ($jenjang == 'Ibtidaiyah') ? TRUE : FALSE) ?> value="Ibtidaiyah">Ibtidaiyah</option>
@@ -97,12 +97,12 @@
     </select>
 </div>
 <div class="form-group md-form">
-    <input type="email" class="form-control" name="email" id="id_email" placeholder="Masukan Alamat Email" value="<?php echo $email; ?>" />
+    <input required type="email" class="form-control" name="email" id="id_email" placeholder="Masukan Alamat Email" value="<?php echo $email; ?>" />
     <label for="varchar">Alamat Email <?php echo form_error('email') ?></label>
 </div>
 <div class="form-group">
     <label for="varchar">No Handphone / WA <?php echo form_error('no_hp') ?></label>
-    <input type="telp" class="form-control" name="no_hp" id="id_no_hp" placeholder="Masukan No Handphone / WA" value="<?php echo $no_hp; ?>" />
+    <input required type="telp" class="form-control" name="no_hp" id="id_no_hp" placeholder="Masukan No Handphone / WA" value="<?php echo $no_hp; ?>" />
 </div>
 <input type="hidden" name="id" value="<?php echo $id; ?>" />
 <hr>

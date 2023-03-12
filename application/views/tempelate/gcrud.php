@@ -26,4 +26,8 @@
         $('.filter-row').hide();
         $('.column-with-ordering:first').removeClass();
     });
+
+    <?php if ($tableUnique) : ?>
+        localStorage.removeItem("gcrudInitialData_<?= $tableUnique ?>");
+    <?php endif ?>
 </script>

@@ -45,6 +45,8 @@ class Santri extends CI_Controller
 
         $crud->setTable($this->table);
         $table = $crud->getTable();
+        $crud->setUniqueId($table);
+        $crud->defaultOrdering("$table.timestamp", 'desc');
         $subject = $this->subject;
 
         $crud = $this->initial_config($crud);
@@ -70,8 +72,13 @@ class Santri extends CI_Controller
 
 
         $crud->setRead();
+        $crud->setEdit();
+        $crud->editFields(['jenjang', 'asrama_id']);
 
-        $crud->columns(['delete_at', 'nis', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'tanggal_lahir', 'jenjang']);
+        $crud->columns(['delete_at', 'nis', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'tanggal_lahir', 'jenjang', 'asrama_id']);
+        $crud->EditFields(['asrama_id', 'jenjang']);
+
+
 
         if (isset($_GET['search'])) {
             $nama_santri = $this->input->get_post('nama_santri');
@@ -109,8 +116,8 @@ class Santri extends CI_Controller
                 $image = '';
             } else {
                 $image = '';
-                $image .= '<a data-caption="' . $row->nama_santri . '" href="' . base_url('uploads/foto/' . $value) . '" class="blue-text" data-fancybox="pas_foto">';
-                $image .= $this->ShowImage_('foto', $value);
+                $image .= '<a data-caption="' . $row->nama_santri . '" href="' . base_url('uploads/ppdb/' . $value) . '" class="blue-text" data-fancybox="pas_foto">';
+                $image .= $this->ShowImage_('ppdb', $value);
                 $image .= '</a>';
             }
             return $image;
@@ -148,6 +155,7 @@ class Santri extends CI_Controller
             'subject' => $subject,
             'search' => $search,
             'dataGcrud' => $dataGcrud,
+            'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
     }
@@ -175,6 +183,7 @@ class Santri extends CI_Controller
             'tempat_lahir' => 'Tempat Lahir',
             'tanggal_lahir' => 'Tanggal Lahir',
             'upload_pas_foto' => 'Foto',
+            'asrama_id' => 'Asrama',
         ));
 
         return $crud;
