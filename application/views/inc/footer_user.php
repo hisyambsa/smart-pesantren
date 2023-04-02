@@ -152,9 +152,12 @@ if ($this->uri->segment(1) == NULL) { ?>
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">
-    All Rights Reserved Azka Umroh & Tourism 2022
+    <p class="font-xs">
+      &copy; Admin Panel Rabithah Alawiyah .
+    </p>
+    <p class="font-xs mb-30">All rights reserved</p>
     <br>
-    didukung oleh © <a href="https://linktr.ee/hisyambsa" target="_blank" rel="noopener noreferrer"> hisyambsa</a>
+    <!-- didukung oleh © <a href="https://linktr.ee/hisyambsa" target="_blank" rel="noopener noreferrer"> hisyambsa</a> --> -->
     <br>
     <div class="text-center">
       <?= $data_commit ?>

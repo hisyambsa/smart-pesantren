@@ -1,6 +1,18 @@
 </main>
 <!--Main Layout-->
 </body>
+<footer>
+    <!-- Copyright -->
+    <div class="footer-copyright text-center text-black grey lighten-2 py-3">
+        <p class="font-xs">
+            &copy; Admin Panel Rabithah Alawiyah.
+            <br>
+            All rights reserved
+        </p>
+        <!-- didukung oleh © <a href="https://linktr.ee/hisyambsa" target="_blank" rel="noopener noreferrer"> hisyambsa</a> -->
+    </div>
+    <!-- Copyright -->
+</footer>
 <?php if ($this->ion_auth->logged_in()) { ?>
     <script>
         $(function() {
