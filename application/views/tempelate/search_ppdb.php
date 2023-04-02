@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-lg">
-            <button type="submit" class="form-control green white-text"><?= $button ?></button>
+            <button type="submit" class="form-control blue white-text"><?= $button ?></button>
             <?php if (isset($_GET['search'])) : ?>
                 <a href="<?= $_SERVER['PHP_SELF'] ?>"> <button type="button" class="form-control red white-text">RESET</button></a>
             <?php endif ?>

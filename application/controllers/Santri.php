@@ -6,6 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // include the base class
 require_once("application/core/GCrud.php");
+require APPPATH . "/reports/Santri_report.php";
 
 class Santri extends CI_Controller
 {
@@ -24,7 +25,7 @@ class Santri extends CI_Controller
         $this->subject = 'Data Santri';
     }
 
-    public function output_crud($output = null)
+    public function output_crud($output = null, $link_tambah = false, $link = NULL)
     {
         if (isset($output->isJSONResponse) && $output->isJSONResponse) {
             header('Content-Type: application/json; charset=utf-8');
@@ -32,12 +33,22 @@ class Santri extends CI_Controller
             exit;
         }
 
-        $output->link_tambah = FALSE;
+        $output->link_tambah = $link_tambah;
         $output->nama_link = 'Create';
-        $output->link =  __CLASS__ . '/create';
+        $output->link =  $link;
         $output->group = array('all_users');
 
         return $this->load->view('db/view_crud', (array)$output, TRUE);
+    }
+    public function exportExcel()
+    {
+        $data = array(
+            // 'engine' => 'Admin',
+        );
+        $report = new Santri_report($data);
+        $report->run()->exportToExcel('Santri_excel')->toBrowser("Santri.xlsx");
+        //     $this->load->view('lembur/render', $data);
+
     }
     public function modul()
     {
@@ -126,7 +137,7 @@ class Santri extends CI_Controller
 
         $output = $crud->render();
 
-        $dataGcrud = $this->output_crud($output);
+        $dataGcrud = $this->output_crud($output, 'true', 'santri');
 
 
         $attributes = array(

@@ -6,6 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // include the base class
 require_once("application/core/GCrud.php");
+require APPPATH . "/reports/Ppdb_report.php";
 
 class Ppdb extends CI_Controller
 {
@@ -24,7 +25,7 @@ class Ppdb extends CI_Controller
         $this->subject = 'PPDB';
     }
 
-    public function output_crud($output = null)
+    public function output_crud($output = null, $link_tambah = false, $link = NULL)
     {
         if (isset($output->isJSONResponse) && $output->isJSONResponse) {
             header('Content-Type: application/json; charset=utf-8');
@@ -32,12 +33,22 @@ class Ppdb extends CI_Controller
             exit;
         }
 
-        $output->link_tambah = FALSE;
+        $output->link_tambah = $link_tambah;
         $output->nama_link = 'Create';
-        $output->link =  __CLASS__ . '/create';
+        $output->link =  $link;
         $output->group = array('all_users');
 
         return $this->load->view('db/view_crud', (array)$output, TRUE);
+    }
+    public function exportExcel()
+    {
+        $data = array(
+            // 'engine' => 'Admin',
+        );
+        $report = new Ppdb_report($data);
+        $report->run()->exportToExcel('Ppdb_excel')->toBrowser("Ppdb.xlsx");
+        //     $this->load->view('lembur/render', $data);
+
     }
     public function modul()
     {
@@ -420,7 +431,7 @@ class Ppdb extends CI_Controller
         }
         $this->output_crud($output);
 
-        $dataGcrud = $this->output_crud($output);
+        $dataGcrud = $this->output_crud($output, true, 'ppdb');
         $attributes = array(
             'autocomplete' => 'off',
             'id' => 'form_id',

@@ -30,14 +30,7 @@
 </style>
 
 <?php if ($link_tambah != FALSE) : ?>
-    <div class="row mb-2">
-        <div class="col-md-4 text-center">
-            <?php
-            if ($this->ion_auth->in_group($group) or $this->ion_auth->is_admin()) { ?>
-                <?php echo anchor(site_url($link), $nama_link, 'class="btn btn-cyan btn-rounded btn-block"'); ?>
-            <?php } ?>
-        </div>
-    </div>
+    <a class="btn btn-sm btn-success" href="<?= base_url($link . '/exportexcel') ?>" target="_blank" rel="noopener noreferrer">DOWNLOAD EXCEL</a>
 <?php endif ?>
 <div>
     <?php
