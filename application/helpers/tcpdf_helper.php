@@ -75,21 +75,20 @@ if (!function_exists('tcpdf')) {
                 'Name' => '@hisyambsa',
                 'Location' => implode(';', $signer),
                 'Reason' => 'SIGNING : ' . $subject,
-                'ContactInfo' => 'http://apps.len-telko.co.id/',
+                'ContactInfo' => 'https://linktr.ee/hisyambsa',
             );
         } else {
             $info = array(
                 'Name' => '@hisyambsa',
                 'Location' => $signer,
                 'Reason' => 'SIGNING : ' . $subject,
-                'ContactInfo' => 'http://apps.len-telko.co.id/',
+                'ContactInfo' => 'https://linktr.ee/hisyambsa',
             );
             // set document information
 
         }
-
-        $pdf->setSignature($certificate, $private_key, 'lentelko', '', 1, $info);
-        $pdf->SetProtection(array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', null, 0, null);
+        // $pdf->setSignature($certificate, $private_key, 'smart-ponpes', '', 1, $info);
+        $pdf->SetProtection(array('modify'), '', null, 0, null);
         // ---------------------------------------------------------
 
         // set default font subsetting mode
@@ -109,7 +108,7 @@ if (!function_exists('tcpdf')) {
                 $fontname = TCPDF_FONTS::addTTFfont('application/libraries/tcpdf_font/zapfdingbats', 'TrueTypeUnicode', '', 96);
             }
             // use the font
-            $pdf->SetFont($font[0], '', $font[1], '', false);
+            $pdf->SetFont('helvetica', '', $font[1], '', false);
         } else {
             $pdf->SetFont($font[0]);
         }

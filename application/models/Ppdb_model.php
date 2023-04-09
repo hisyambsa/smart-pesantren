@@ -56,8 +56,15 @@ class Ppdb_model extends CI_Model
                 $i++;
             }
         }
+        $this->db->join('provinces', "provinces.id = $this->table.province_id", 'left');
+        $this->db->join('regencies', "regencies.id = $this->table.regency_id", 'left');
+        $this->db->join('districts', "districts.id = $this->table.district_id", 'left');
+        $this->db->join('villages', "villages.id = $this->table.village_id", 'left');
+
+        $this->db->select("$this->table.*, provinces.name as province_name, regencies.name as regency_name,districts.name as district_name,villages.name as village_name");
+
         $this->db->where($this->delete_at, NULL);
-        $this->db->order_by($this->id, $this->order);
+        $this->db->order_by($this->table . '.' . $this->id, $this->order);
         return $this->db->get($this->table);
     }
     function get_all_trash($kondisi = NULL)

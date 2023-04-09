@@ -51,7 +51,7 @@ class Ppdb_report extends \koolreport\KoolReport
         $root = $this->src("default");
 
         $root
-            ->query("select * from t_ppdb")
+            ->query("SELECT `t_ppdb`.*, `provinces`.`name` as `province_name`, `regencies`.`name` as `regency_name`, `districts`.`name` as `district_name`, `villages`.`name` as `village_name` FROM `t_ppdb` LEFT JOIN `provinces` ON `provinces`.`id` = `t_ppdb`.`province_id` LEFT JOIN `regencies` ON `regencies`.`id` = `t_ppdb`.`regency_id` LEFT JOIN `districts` ON `districts`.`id` = `t_ppdb`.`district_id` LEFT JOIN `villages` ON `villages`.`id` = `t_ppdb`.`village_id` WHERE  `delete_at` IS NULL ORDER BY `t_ppdb`.`id` DESC")
             ->saveTo($root);
 
 

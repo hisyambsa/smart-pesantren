@@ -8,10 +8,10 @@ function showNavAdmin()
         if ($CI->ion_auth->user()->row()->foto_karyawan != '') {
             $img_user = base_url('uploads/karyawan/foto_karyawan/' . $CI->ion_auth->user()->row()->foto_karyawan);
         } else {
-            $img_user = 'https://simg.nicepng.com/png/small/514-5146455_premium-home-loan-icon-download-in-svg-png.png';
+            $img_user = 'https://apps.len-telko.co.id/uploads/karyawan/foto_karyawan/6205f75d0f3a5.png';
         }
     } else {
-        $img_user = 'https://simg.nicepng.com/png/small/514-5146455_premium-home-loan-icon-download-in-svg-png.png';
+        $img_user = 'https://apps.len-telko.co.id/uploads/karyawan/foto_karyawan/6205f75d0f3a5.png';
     }
 
 

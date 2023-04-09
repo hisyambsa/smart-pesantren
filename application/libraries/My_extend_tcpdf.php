@@ -148,7 +148,7 @@ class My_extend_tcpdf extends TCPDF
             $revisi_sistem = NULL;
         }
         if ($this->uuid) {
-            $uuid = 'QR : ' . $this->uuid;
+            $uuid = '# '  . $this->uuid . ' #';
         } else {
             $uuid = NULL;
         }

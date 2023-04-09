@@ -22,7 +22,7 @@ return [
     // Currently you can choose between 'bootstrap-v3', 'bootstrap-v4' and 'bootstrap-v5'
     'skin' => 'bootstrap-v4',
 
-    'xss_clean' => false,
+    'xss_clean' => true,
 
     // The character limiter at the datagrid columns, zero(0) value if you don't want any character
     // limitation to the column
@@ -44,7 +44,7 @@ return [
 
     // The button style that we have for the action buttons at the datagrid (list) page
     // Choose between 'icon', 'text', 'icon-text'
-    'action_button_type' => 'icon-text',
+    'action_button_type' => 'text',
 
     // The maximum number of buttons that we would like to have for the actions buttons.
     // If the number of buttons exceeds this number then the last button on the right
@@ -68,5 +68,5 @@ return [
     'optimize_sql_queries' => true,
 
     // Remember the quick search upon refresh. The search information is stored in the browser local storage
-    'remember_quick_search' => true,
+    'remember_quick_search' => false,
 ];

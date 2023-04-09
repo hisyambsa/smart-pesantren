@@ -82,14 +82,29 @@ class Santri extends CI_Controller
         $crud->setFieldUpload('upload_ijasah', 'uploads/ppdb', base_url('uploads/ppdb'));
 
 
-        $crud->setRead();
+        // $crud->setRead();
         $crud->setEdit();
         $crud->editFields(['jenjang', 'asrama_id']);
 
         $crud->columns(['delete_at', 'nis', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'tanggal_lahir', 'jenjang', 'asrama_id']);
         $crud->EditFields(['asrama_id', 'jenjang']);
 
+        $crud->setActionButton('View', 'fa fa-eye', function ($row) use ($table) {
+            // $this->db->where("$table.id", $row->id);
+            // $this->db->join('t_ppdb', "t_ppdb.id = $table.id");
+            // $row = $this->db->get($table)->row();
 
+            $ciphertext = base64_encode(openssl_encrypt($row->nis, "AES-128-ECB", $this->config->item('hash')));
+
+
+            $whitelist = array('127.0.0.1', "::1");
+            if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+                // not valid
+                return $ciphertext = "https://apps.smartponpes.id/cetak/santri/$ciphertext";
+            } else {
+                return $ciphertext = "https://apps.smartponpes.id/cetak/santri/$ciphertext";
+            }
+        }, true);
 
         if (isset($_GET['search'])) {
             $nama_santri = $this->input->get_post('nama_santri');

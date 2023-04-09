@@ -44,3 +44,25 @@
         <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
 <?Php } ?>
+<script>
+    $(document).ready(function() {
+        // window.addEventListener('gcrud.form.read_form', () => {
+        //     $('.money').mask('000.000.000.000.000', {
+        //         reverse: true
+        //     });
+        // });
+        // window.addEventListener('gcrud.form.add_form', () => {
+        //     $('.money').mask('000.000.000.000.000', {
+        //         reverse: true
+        //     });
+        // });
+        // window.addEventListener('gcrud.form.edit_form', ({
+        //     detail
+        // }) => {
+        //     console.log('clone_form triggered', detail);
+        //     // let dataStatus = 0;
+        //     // dataStatus = ($('select["status"]').val());
+        //     // alert(dataStatus);
+        // });
+    });
+</script>

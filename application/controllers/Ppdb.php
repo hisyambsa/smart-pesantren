@@ -64,7 +64,7 @@ class Ppdb extends CI_Controller
         $crud = $this->display_as($crud);
 
         $crud->Columns(['delete_at', 'no_pendaftaran', 'upload_pas_foto', 'nik_santri', 'nama_santri', 'jenis_kelamin', 'status', 'jenjang']);
-        $crud->setRead();
+        // $crud->setRead();
         $crud->setAdd();
         $crud->setEdit();
 
@@ -86,6 +86,17 @@ class Ppdb extends CI_Controller
                 return $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
             } else {
                 return $ciphertext = "https://ppdb.smartponpes.id/ppdb/c/$ciphertext";
+            }
+        }, true);
+        $crud->setActionButton('View', 'fa fa-eye', function ($row) {
+            $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
+
+            $whitelist = array('127.0.0.1', "::1");
+            if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+                // not valid
+                return $ciphertext = "https://apps.smartponpes.id/cetak/ppdb/$ciphertext";
+            } else {
+                return $ciphertext = "https://apps.smartponpes.id/cetak/ppdb/$ciphertext";
             }
         }, true);
         $crud->setActionButton('<i class="fa-brands fa-whatsapp"></i>', 'fa fa-whatsapp', function ($row) use ($table) {
@@ -293,7 +304,7 @@ class Ppdb extends CI_Controller
         $crud->AddFields(['nik_santri', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'province_id', 'regency_id', 'district_id', 'village_id', 'jenjang', 'email', 'no_hp', 'nomor_kartu_keluarga', 'punya_buku_nasab', 'nama_ayah', 'nama_ibu', 'golongan_darah', 'upload_pas_foto', 'upload_kartu_keluarga', 'upload_nasab', 'upload_ijasah', 'status']);
 
         $crud->readOnlyFields(['no_pendaftaran']);
-        $crud->EditFields(['no_pendaftaran', 'status', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'province_id', 'regency_id', 'district_id', 'village_id', 'jenjang', 'email', 'no_hp', 'nomor_kartu_keluarga', 'punya_buku_nasab', 'nama_ayah', 'nama_ibu', 'golongan_darah', 'upload_pas_foto', 'upload_kartu_keluarga', 'upload_nasab', 'upload_ijasah']);
+        $crud->EditFields(['no_pendaftaran', 'status', 'detail_lulus', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'province_id', 'regency_id', 'district_id', 'village_id', 'jenjang', 'email', 'no_hp', 'nomor_kartu_keluarga', 'punya_buku_nasab', 'nama_ayah', 'nama_ibu', 'golongan_darah', 'upload_pas_foto', 'upload_kartu_keluarga', 'upload_nasab', 'upload_ijasah']);
 
         $crud->callbackInsert(function ($stateParameters) use ($table) {
             $this->load->model('Ppdb_model');
@@ -358,8 +369,11 @@ class Ppdb extends CI_Controller
                     'upload_ijasah' => $data_ppdb->upload_ijasah,
                 );
                 $this->db->insert('t_santri', $data);
+                return $stateParameters;
+                // } elseif ($stateParameters->data['status'] == 'Lulus') {
+                //     $redirectResponse = new \GroceryCrud\Core\Redirect\RedirectResponse();
+                //     return $redirectResponse->setUrl(base_url('ppdb/detail/') . $stateParameters->primaryKeyValue);
             }
-
             return $stateParameters;
         });
         if (isset($_GET['search'])) {
@@ -460,6 +474,63 @@ class Ppdb extends CI_Controller
             'tableUnique' => $table,
         );
         $this->load->view('tempelate/gcrud', $data);
+    }
+    public function detail($id)
+    {
+        if ($id == NULL) {
+            show_error('LINK INVALID :' . __LINE__);
+        }
+        $this->load->model('Ppdb_model');
+        $kondisi = array('t_ppdb.id' => $id,);
+        $row = $this->Ppdb_model->get_all($kondisi)->row();
+
+        $attributes = array(
+            'autocomplete' => 'off',
+            'id' => 'form_id'
+        );
+
+        $hidden = array(
+            'id' => $id,
+        );
+        $data = array(
+            'action' => site_url('ppdb/detail_action'),
+            'no_pendaftaran' => $row->no_pendaftaran,
+            'nik_santri' => $row->nik_santri,
+            'nama_santri' => $row->nama_santri,
+            'jenis_kelamin' => $row->jenis_kelamin,
+            'tempat_lahir' => $row->tempat_lahir,
+            'tanggal_lahir' => $row->tanggal_lahir,
+            'alamat' => $row->alamat,
+            'sesuai_ktp' => $row->sesuai_ktp,
+            'jenjang' => $row->jenjang,
+            'email' => $row->email,
+            'no_hp' => $row->no_hp,
+            'nama_ayah' => $row->nama_ayah,
+            'nama_ibu' => $row->nama_ibu,
+
+            'province_id' => $row->province_id,
+            'regency_id' => $row->regency_id,
+            'district_id' => $row->district_id,
+            'village_id' => $row->village_id,
+
+            'nomor_kartu_keluarga' => $row->nomor_kartu_keluarga,
+            'punya_buku_nasab' => $row->punya_buku_nasab,
+
+            'upload_pas_foto' => $row->upload_pas_foto,
+            'upload_kartu_keluarga' => $row->upload_kartu_keluarga,
+            'upload_nasab' => $row->upload_nasab,
+            'upload_ijasah' => $row->upload_ijasah,
+
+            'status' => $row->status,
+            'detail_lulus' => $row->detail_lulus,
+
+            'attributes' => $attributes,
+            'hidden' => $hidden
+        );
+        $this->load->view('c_ppdb/detail', $data);
+    }
+    public function detail_action()
+    {
     }
     private function initial_config($crud)
     {
