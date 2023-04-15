@@ -1,3 +1,7 @@
+<?php
+// var_dump($this->session->all_userdata());
+// die;
+?>
 <div class="tg-wrap">
     <table style="table-layout: fixed; width: 100%;">
         <tbody>
@@ -28,7 +32,7 @@
             <tr>
                 <td style="text-align:center;" colspan="10">
                     <font size="13">
-                        <b>PESANTREN
+                        <b>
                             <?= $this->session->userdata('settings')->nama_pesantren; ?>
                         </b>
                     </font>
@@ -151,14 +155,14 @@
                     <font size="10">Laki-laki</font>
                 </td>
                 <td style="border: 1px solid black;">
-                    <?= $jenis_kelamin == 'Perempuan' ? '4' : '';  ?>
+                    <font face="zapfdingbats"><?= $jenis_kelamin == 'Perempuan' ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
                     <font size="10">Perempuan</font>
                 </td>
                 <td></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td></td>
                 <td>
                     <font size="10">5.</font>
@@ -168,7 +172,7 @@
                 </td>
                 <td style="text-align: center;">:</td>
                 <td colspan="7"><?= $golongan_darah ?></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td></td>
                 <td>

@@ -95,65 +95,65 @@ class C_ppdb extends CI_Controller
             }
             if ($this->input->post('form') == 'form_2') {
                 // connect to FTP server
-                $ftp_server = "151.106.125.175";
-                $ftp_username = "admin_hisyambsa";
-                $ftp_userpass = "Ipd5FI*pd%xemLkM";
-                $ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+                // $ftp_server = "5.181.217.60";
+                // $ftp_username = "admin_app";
+                // $ftp_userpass = "dhb-ieFy^G0ijBO^";
+                // $ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
 
-                //login to FTP server
-                $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
-                if (!$login) {
-                    log_message('error', __CLASS__ . ' baris :' . __LINE__);
-                    $out['error'] = 'terjadi masalah server';
-                }
-                ftp_chdir($ftp_conn, "public_html");
-                ftp_chdir($ftp_conn, "uploads");
-                ftp_chdir($ftp_conn, 'ppdb');
-                $path = 'uploads/ppdb';
-                // upload file
+                // //login to FTP server
+                // $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
+                // if (!$login) {
+                //     log_message('error', __CLASS__ . ' baris :' . __LINE__);
+                //     $out['error'] = 'terjadi masalah server';
+                // }
+                // ftp_chdir($ftp_conn, "public_html");
+                // ftp_chdir($ftp_conn, "uploads");
+                // ftp_chdir($ftp_conn, 'ppdb');
+                // $path = 'uploads/ppdb';
+                // // upload file
 
 
-                if ($this->input->post('upload_pas_foto', TRUE)) {
-                    $newFileUrl = $path . '/' . $this->input->post('upload_pas_foto', TRUE);
-                    if (!ftp_delete($ftp_conn, $this->input->post('upload_pas_foto', TRUE))) {
-                        log_message('error', 'GAGAL FTP PAS FOTO');
-                    }
+                // if ($this->input->post('upload_pas_foto', TRUE)) {
+                //     $newFileUrl = $path . '/' . $this->input->post('upload_pas_foto', TRUE);
+                //     if (!ftp_delete($ftp_conn, $this->input->post('upload_pas_foto', TRUE))) {
+                //         log_message('error', 'GAGAL FTP PAS FOTO');
+                //     }
 
-                    if (!ftp_put($ftp_conn, $this->input->post('upload_pas_foto', TRUE), "$newFileUrl", FTP_BINARY)) {
-                        log_message('error', 'GAGAL FTP PAS FOTO');
-                    }
-                }
+                //     if (!ftp_put($ftp_conn, $this->input->post('upload_pas_foto', TRUE), "$newFileUrl", FTP_BINARY)) {
+                //         log_message('error', 'GAGAL FTP PAS FOTO');
+                //     }
+                // }
 
-                $path = 'uploads/ppdb';
-                ftp_chdir($ftp_conn, '../ppdb');
-                if ($this->input->post('upload_kartu_keluarga', TRUE)) {
-                    $newFileUrl = $path . '/' . $this->input->post('upload_kartu_keluarga', TRUE);
-                    if (!ftp_delete($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE))) {
-                        log_message('error', 'GAGAL FTP KARTU KELUARGA');
-                    }
-                    if (!ftp_put($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE), "$newFileUrl", FTP_BINARY)) {
-                        log_message('error', 'GAGAL FTP KARTU KELUARGA');
-                    }
-                }
-                if ($this->input->post('upload_nasab', TRUE)) {
-                    $newFileUrl = $path . '/' . $this->input->post('upload_nasab', TRUE);
-                    if (!ftp_delete($ftp_conn, $this->input->post('upload_nasab', TRUE))) {
-                        log_message('error', 'GAGAL FTP NASAB');
-                    }
-                    if (!ftp_put($ftp_conn, $this->input->post('upload_nasab', TRUE), "$newFileUrl", FTP_BINARY)) {
-                        log_message('error', 'GAGAL FTP NASAB');
-                    }
-                }
-                if ($this->input->post('upload_ijasah', TRUE)) {
-                    $newFileUrl = $path . '/' . $this->input->post('upload_ijasah', TRUE);
-                    if (!ftp_delete($ftp_conn, $this->input->post('upload_ijasah', TRUE))) {
-                        log_message('error', 'GAGAL FTP IJAZAH');
-                    }
-                    if (!ftp_put($ftp_conn, $this->input->post('upload_ijasah', TRUE), "$newFileUrl", FTP_BINARY)) {
-                        log_message('error', 'GAGAL FTP IJAZAH');
-                    }
-                }
-                ftp_close($ftp_conn);
+                // $path = 'uploads/ppdb';
+                // ftp_chdir($ftp_conn, '../ppdb');
+                // if ($this->input->post('upload_kartu_keluarga', TRUE)) {
+                //     $newFileUrl = $path . '/' . $this->input->post('upload_kartu_keluarga', TRUE);
+                //     if (!ftp_delete($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE))) {
+                //         log_message('error', 'GAGAL FTP KARTU KELUARGA');
+                //     }
+                //     if (!ftp_put($ftp_conn, $this->input->post('upload_kartu_keluarga', TRUE), "$newFileUrl", FTP_BINARY)) {
+                //         log_message('error', 'GAGAL FTP KARTU KELUARGA');
+                //     }
+                // }
+                // if ($this->input->post('upload_nasab', TRUE)) {
+                //     $newFileUrl = $path . '/' . $this->input->post('upload_nasab', TRUE);
+                //     if (!ftp_delete($ftp_conn, $this->input->post('upload_nasab', TRUE))) {
+                //         log_message('error', 'GAGAL FTP NASAB');
+                //     }
+                //     if (!ftp_put($ftp_conn, $this->input->post('upload_nasab', TRUE), "$newFileUrl", FTP_BINARY)) {
+                //         log_message('error', 'GAGAL FTP NASAB');
+                //     }
+                // }
+                // if ($this->input->post('upload_ijasah', TRUE)) {
+                //     $newFileUrl = $path . '/' . $this->input->post('upload_ijasah', TRUE);
+                //     if (!ftp_delete($ftp_conn, $this->input->post('upload_ijasah', TRUE))) {
+                //         log_message('error', 'GAGAL FTP IJAZAH');
+                //     }
+                //     if (!ftp_put($ftp_conn, $this->input->post('upload_ijasah', TRUE), "$newFileUrl", FTP_BINARY)) {
+                //         log_message('error', 'GAGAL FTP IJAZAH');
+                //     }
+                // }
+                // ftp_close($ftp_conn);
 
                 $data = array(
                     'no_pendaftaran' => $no_pendaftaran,
@@ -201,6 +201,15 @@ class C_ppdb extends CI_Controller
         $kondisi = array('no_pendaftaran' => $decrypted_string,);
         $row = $this->Ppdb_model->get_all($kondisi)->row();
 
+        $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
+
+        $whitelist = array('127.0.0.1', "::1");
+        if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+            // not valid
+            $ciphertext = "https://app.smartponpes.id/cetak/ppdb/$ciphertext";
+        } else {
+            $ciphertext = "https://app.smartponpes.id/cetak/ppdb/$ciphertext";
+        }
         if ($row) {
             $data = array(
                 'no_pendaftaran' => $row->no_pendaftaran,
@@ -231,6 +240,7 @@ class C_ppdb extends CI_Controller
                 'upload_ijasah' => $row->upload_ijasah,
 
                 'status' => $row->status,
+                'ciphertext' => $ciphertext,
             );
 
             $form = $this->load->view('c_ppdb/read', $data, true);
@@ -253,7 +263,7 @@ class C_ppdb extends CI_Controller
             if (!$decrypted_string) {
                 show_error('LINK INVALID / ID TIDAK DITEMUKAN');
             } else {
-                redirect("https://ppdb.smartponpes.id/ppdb/c/$no_pendaftaran", 'refresh');
+                redirect("https://app.smartponpes.id/ppdb/c/$no_pendaftaran", 'refresh');
             }
         }
     }

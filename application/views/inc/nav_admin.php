@@ -204,7 +204,7 @@
                                 </li>
                             <?php endif ?>
                             <?php
-                            $group = array('pegawai');
+                            $group = array('pegawai', 'pengajar');
                             ?>
                             <?php if ($this->ion_auth->is_admin() or $this->ion_auth->in_group($group)) : ?>
                                 <li data-jstree='{"type":"file", "class":""}'>

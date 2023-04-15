@@ -215,6 +215,23 @@ use \koolreport\chartjs\ColumnChart;
             </div>
         </div>
     <?php endif ?>
+    <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Upload Dokumen')) : ?>
+        <div class="col-6 col-sm-4 col-md-4 my-2">
+            <div class="card p-3 m-2">
+                <?php
+                Card::create(array(
+                    "value" => $this->dataStore("query_all_ppdb")->where("status", 'Upload Dokumen')->count(),
+                    "title" => "Upload Dokumen",
+                    "cssClass" => array(
+                        "card" => "purple",
+                        "title" => "text-white",
+                        "value" => "text-white"
+                    )
+                ));
+                ?>
+            </div>
+        </div>
+    <?php endif ?>
     <?php if ($this->dataStore("query_all_ppdb")->where("status", 'Lulus')) : ?>
         <div class="col-6 col-sm-4 col-md-4 my-2">
             <div class="card p-3 m-2">

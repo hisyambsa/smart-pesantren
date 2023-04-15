@@ -5,7 +5,11 @@
             <br>
             <span class="font-weight-bolder"><?= $jenjang . ' | ' . $nama_santri ?></span>
         </p>
-        <h4 class="h4-responsive">Status : <span class="font-weight-bold"><?= $status ?></span></h4>
+        <h4 class="h4-responsive">Status : <span class="font-weight-bold"><?= $status ?></span></h4> <a href="<?= $ciphertext ?>" target="_blank" rel="noopener noreferrer">
+            <button class="btn btn-info">
+                Cetak Formulir
+            </button>
+        </a>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -27,7 +31,7 @@
                             <?php
                             $whitelist = array('127.0.0.1', "::1");
                             if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
-                                $href =  "https://ppdb.smartponpes.id/c_ppdb/detail/$ciphertext";
+                                $href =  "https://app.smartponpes.id/c_ppdb/detail/$ciphertext";
                             } else {
                                 $href =  base_url('c_ppdb/detail/' . $ciphertext);
                             }

@@ -44,7 +44,7 @@ class Cetak extends CI_Controller
         $id = base64_decode($id);
         $decrypted_string = openssl_decrypt($id, "AES-128-ECB", $this->config->item('hash'));
         if (!$decrypted_string) {
-            // show_error('LINK INVALID / ID TIDAK DITEMUKAN');
+            show_error('LINK INVALID / ID TIDAK DITEMUKAN');
         }
 
         $envi = (ENVIRONMENT == 'development') ? '/' . $this->config->item('development_folder') : '';
@@ -92,6 +92,8 @@ class Cetak extends CI_Controller
 
                 'status' => $row->status,
             );
+        } else {
+            show_error('GAGAL MENGAMBIL DATA, HUBUNGI SISTEM ADMIN');
         }
         $view = $row->no_pendaftaran;
 
@@ -117,10 +119,11 @@ class Cetak extends CI_Controller
         $ext = pathinfo($imglogo, PATHINFO_EXTENSION);
         $pdf->Image($imglogo, 1, 0, 3, 3, $ext, '', '', TRUE, 500, '', false, false, 0, false, false, false);
 
-        $imglogo = $_SERVER['DOCUMENT_ROOT'] . $envi . '/uploads/ppdb/' . $row->upload_pas_foto;
-        $ext = pathinfo($imglogo, PATHINFO_EXTENSION);
-
-        $pdf->Image($imglogo, 15.4, 6, 3, NULL, $ext, '', '', TRUE, 500, '', false, false, 0, false, false, false);
+        if ($row->upload_pas_foto) {
+            $imglogo = $_SERVER['DOCUMENT_ROOT'] . $envi . '/uploads/ppdb/' . $row->upload_pas_foto;
+            $ext = pathinfo($imglogo, PATHINFO_EXTENSION);
+            $pdf->Image($imglogo, 15.4, 6, 3, NULL, $ext, '', '', TRUE, 500, '', false, false, 0, false, false, false);
+        }
 
         $nama_file = "$row->no_pendaftaran.($row->nama_santri)";
         $html = htmlspecialchars_decode($html_view);
@@ -243,9 +246,9 @@ class Cetak extends CI_Controller
         $whitelist = array('127.0.0.1', "::1");
         if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
             // not valid
-            $ciphertext_link = "https://apps.smartponpes.id/cetak/santri/$ciphertext";
+            $ciphertext_link = "https://app.smartponpes.id/cetak/santri/$ciphertext";
         } else {
-            $ciphertext_link = "https://apps.smartponpes.id/cetak/santri/$ciphertext";
+            $ciphertext_link = "https://app.smartponpes.id/cetak/santri/$ciphertext";
         }
 
         $pdf = tcpdf(strtoupper($view) . ' ' . $row->nama_santri, strtoupper($view), array(), $this->orientation_page, $this->pdf_unit, $this->pdf_page_format, $set_margin, $watermark, false, $ciphertext, false, '1.0', TRUE, 'IGNORED');

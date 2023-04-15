@@ -28,7 +28,7 @@
             <tr>
                 <td style="text-align:center;" colspan="10">
                     <font size="14">
-                        <b>PESANTREN
+                        <b>
                             <?= $this->session->userdata('settings')->nama_pesantren; ?>
                         </b>
                     </font>
