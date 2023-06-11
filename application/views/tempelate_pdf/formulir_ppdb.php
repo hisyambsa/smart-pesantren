@@ -348,7 +348,7 @@
                     <font face="zapfdingbats"><?= $upload_nasab != NULL ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
-                    <font size="10">Nasab</font>
+                    <font size="10">Buku Nasab</font>
                 </td>
                 <td colspan="6"></td>
             </tr>
