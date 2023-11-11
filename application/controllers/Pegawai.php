@@ -55,7 +55,7 @@ class Pegawai extends CI_Controller
         $crud->setAdd();
         $crud->setEdit();
         $crud->setDelete();
-        $crud->requiredFields(['nik', 'nama_pegawai', 'tanggal_lahir', 'email']);
+        // $crud->requiredFields(['nik', 'nama_pegawai', 'tanggal_lahir', 'email']);
         $crud->setConfig('action_button_type', 'icon');
 
         // application/libraries/GroceryCrudEnterprise/grocerycrud/enterprise/src/GroceryCrud/Core/Validate.php

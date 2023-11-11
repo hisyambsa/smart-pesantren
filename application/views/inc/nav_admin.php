@@ -237,7 +237,7 @@
                                     Kitab
                                 </a>
                             </li>
-                            <!-- <li data-jstree='{"type":"file", "class":""}'>
+                            <li data-jstree='{"type":"file", "class":""}'>
                                 <a href="<?= base_url('gedung/modul') ?>" class="">
                                     Gedung
                                 </a>
@@ -246,7 +246,7 @@
                                 <a href="<?= base_url('asrama/modul') ?>" class="">
                                     Asrama
                                 </a>
-                            </li> -->
+                            </li>
                             <li data-jstree='{"type":"file", "class":""}'>
                                 <a href="<?= base_url('auth/logout') ?>" class="">
                                     Logout
