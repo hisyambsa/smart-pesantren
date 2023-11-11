@@ -88,7 +88,7 @@ class Ppdb extends CI_Controller
                 return $ciphertext = "http://localhost:8888/smart-pesantren/ppdb/c/$ciphertext";
             }
         }, true);
-        $crud->setActionButton('View', 'fa fa-link', function ($row) {
+        $crud->setActionButton('View', 'fa fa-print', function ($row) {
             $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
 
             $whitelist = array('127.0.0.1', "::1");
@@ -298,6 +298,7 @@ class Ppdb extends CI_Controller
             return $uploadData;
         });
 
+        $crud->setRelation('jenjang', 'm_jenjang', 'nama');
 
         $crud->fieldType('nik_santri', 'numeric');
         // $crud->unsetAddFields(['no_pendaftaran', 'timestamp', 'create_by', 'modify', 'modify_by', 'delete_at']);

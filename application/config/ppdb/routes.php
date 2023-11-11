@@ -51,6 +51,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $route['default_controller'] = 'c_ppdb/ppdb_1';
 $route['ppdb'] = 'c_ppdb/ppdb_1';
+$route['ppdb/c/(:any)'] = 'c_ppdb/read/$1';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;

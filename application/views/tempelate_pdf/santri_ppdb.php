@@ -219,13 +219,13 @@
                 </td>
                 <td style="text-align: center;">:</td>
                 <td style="border: 1px solid black;">
-                    <font face="zapfdingbats"><?= $jenjang == "I'dadiyah" ? '4' : '';  ?></font>
+                    <font face="zapfdingbats"><?= $jenjang == "1" ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
                     <font size="10">I'dadiyah</font>
                 </td>
                 <td style="border: 1px solid black;">
-                    <font face="zapfdingbats"><?= $jenjang == 'Ibtidaiyah' ? '4' : '';  ?></font>
+                    <font face="zapfdingbats"><?= $jenjang == '2' ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
                     <font size="10">Ibtidaiyah</font>
@@ -236,13 +236,13 @@
                 <td colspan="4"></td>
                 <td></td>
                 <td style="border: 1px solid black;">
-                    <font face="zapfdingbats"><?= $jenjang == 'Tsanawiyah' ? '4' : '';  ?></font>
+                    <font face="zapfdingbats"><?= $jenjang == '3' ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
                     <font size="10">Tsanawiyah</font>
                 </td>
                 <td style="border: 1px solid black;">
-                    <font face="zapfdingbats"><?= $jenjang == 'Aliyah' ? '4' : '';  ?></font>
+                    <font face="zapfdingbats"><?= $jenjang == '4' ? '4' : '';  ?></font>
                 </td>
                 <td colspan="2">
                     <font size="10">Aliyah</font>

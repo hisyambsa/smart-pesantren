@@ -76,6 +76,8 @@ class Santri extends CI_Controller
         $crud->setDependentRelation('district_id', 'regency_id', 'regency_id');
         $crud->setDependentRelation('village_id', 'district_id', 'district_id');
 
+        $crud->setRelation('jenjang', 'm_jenjang', 'nama');
+
         $crud->setFieldUpload('upload_pas_foto', 'uploads/ppdb', base_url('uploads/ppdb'));
         $crud->setFieldUpload('upload_kartu_keluarga', 'uploads/ppdb', base_url('uploads/ppdb'));
         $crud->setFieldUpload('upload_nasab', 'uploads/ppdb', base_url('uploads/ppdb'));

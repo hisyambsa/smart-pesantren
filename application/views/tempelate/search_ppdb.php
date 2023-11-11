@@ -31,10 +31,10 @@
         <div class="col-lg">
             <select name="jenjang" class="browser-default custom-select">
                 <option value="" selected>Jenjang</option>
-                <option <?php echo set_select('jenjang', "I'dadiyah", $select_jenjang = ($jenjang == "I'dadiyah") ? TRUE : FALSE) ?> value="I'dadiyah">I'dadiyah</option>
-                <option <?php echo set_select('jenjang', 'Ibtidaiyah', $select_jenjang = ($jenjang == 'Ibtidaiyah') ? TRUE : FALSE) ?> value="Ibtidaiyah">Ibtidaiyah</option>
-                <option <?php echo set_select('jenjang', 'Tsanawiyah', $select_jenjang = ($jenjang == 'Tsanawiyah') ? TRUE : FALSE) ?> value="Tsanawiyah">Tsanawiyah</option>
-                <option <?php echo set_select('jenjang', 'Aliyah', $select_jenjang = ($jenjang == 'Aliyah') ? TRUE : FALSE) ?> value="Aliyah">Aliyah</option>
+                <option <?php echo set_select('jenjang', "1", $select_jenjang = ($jenjang == "1") ? TRUE : FALSE) ?> value="1">I'dadiyah</option>
+                <option <?php echo set_select('jenjang', '2', $select_jenjang = ($jenjang == '2') ? TRUE : FALSE) ?> value="2">Ibtidaiyah</option>
+                <option <?php echo set_select('jenjang', '3', $select_jenjang = ($jenjang == '3') ? TRUE : FALSE) ?> value="3">Tsanawiyah</option>
+                <option <?php echo set_select('jenjang', '4', $select_jenjang = ($jenjang == '4') ? TRUE : FALSE) ?> value="4">Aliyah</option>
             </select>
         </div>
 

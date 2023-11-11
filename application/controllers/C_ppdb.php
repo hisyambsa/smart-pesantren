@@ -74,7 +74,7 @@ class C_ppdb extends CI_Controller
 
         $this->form_validation->set_rules('upload_pas_foto', 'Upload Pas Foto', 'trim|required');
         $this->form_validation->set_rules('upload_kartu_keluarga', 'Upload Kartu Keluarga', 'trim|required');
-        if ($this->input->post('jenjang') == "I'dadiyah") {
+        if ($this->input->post('jenjang') == "1") {
             $this->form_validation->set_rules('upload_ijasah', 'Upload Ijasah', 'trim|required');
         }
         if ($this->input->post('punya_buku_nasab') == 'punya') {
@@ -211,6 +211,11 @@ class C_ppdb extends CI_Controller
             $ciphertext = "https://app.smartponpes.id/cetak/ppdb/$ciphertext";
         }
         if ($row) {
+            $dataJenjang = $this->db
+                ->where('id', $row->jenjang)
+                ->get('m_jenjang')
+                ->row();
+
             $data = array(
                 'no_pendaftaran' => $row->no_pendaftaran,
                 'nik_santri' => $row->nik_santri,
@@ -220,7 +225,7 @@ class C_ppdb extends CI_Controller
                 'tanggal_lahir' => $row->tanggal_lahir,
                 'alamat' => $row->alamat,
                 'sesuai_ktp' => $row->sesuai_ktp,
-                'jenjang' => $row->jenjang,
+                'jenjang' => $dataJenjang->nama,
                 'email' => $row->email,
                 'no_hp' => $row->no_hp,
                 'nama_ayah' => $row->nama_ayah,

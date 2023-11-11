@@ -67,7 +67,7 @@
 
 <script>
     $(function() {
-        <?php if ($jenjang != "I'dadiyah") : ?>
+        <?php if ($jenjang != "1") : ?>
             $('.info-ijasah-terakhir').show();
         <?php else : ?>
             $('.info-ijasah-terakhir').hide();
