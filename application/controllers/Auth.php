@@ -51,13 +51,13 @@ class Auth extends CI_Controller
                     //if the login is successful
                     //redirect them back to the home page
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect('admin', 'refresh');
+                    redirect('', 'refresh');
                 } else {
                     // if the login was un-successful
                     // redirect them back to the login page
                     $this->session->set_flashdata('message', $this->ion_auth->errors());
                     $this->_render_page('auth/login');
-                    redirect('admin', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
+                    redirect('', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
                 }
             } else {
                 // the user is not logging in so display the login page
@@ -89,7 +89,7 @@ class Auth extends CI_Controller
         $this->load->library('user_agent');
         if (!$this->ion_auth->logged_in()) {
             // redirect them to the login page
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $this->load->model('Users_model');
@@ -153,7 +153,7 @@ class Auth extends CI_Controller
         $this->load->library('user_agent');
         if (!$this->ion_auth->logged_in()) {
             // redirect them to the login page
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $this->load->model('Users_notifications_model');
@@ -195,7 +195,7 @@ class Auth extends CI_Controller
 
         $this->session->set_flashdata('message', 'Data Survey Anda sudah Masuk');
 
-        redirect('admin', 'refresh');
+        redirect('', 'refresh');
     }
     /**
      * Log the user out message user
@@ -205,7 +205,7 @@ class Auth extends CI_Controller
 
         $this->session->set_flashdata('message', 'Berhasil Logout');
 
-        redirect('admin', 'refresh');
+        redirect('', 'refresh');
     }
 
     /**
@@ -218,7 +218,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
 
         if (!$this->ion_auth->logged_in()) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $user = $this->ion_auth->user()->row();
@@ -265,7 +265,7 @@ class Auth extends CI_Controller
                 $messages = $this->ion_auth->messages();
                 $this->session->set_tempdata('pesan', $messages, 5);
                 // $this->logout();
-                redirect('admin', 'refresh');
+                redirect('', 'refresh');
             } else {
                 $messages = 'Kata Sandi Lama Salah';
                 $this->session->set_tempdata('pesan', $messages, 5);
@@ -569,9 +569,9 @@ class Auth extends CI_Controller
     public function redirectUser()
     {
         if ($this->ion_auth->is_admin()) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
-        redirect('admin', 'refresh');
+        redirect('', 'refresh');
     }
 
     /**
@@ -703,7 +703,7 @@ class Auth extends CI_Controller
         $this->data['title'] = $this->lang->line('edit_user_heading');
 
         if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $user = $this->ion_auth->user($id)->row();
@@ -850,7 +850,7 @@ class Auth extends CI_Controller
         $this->data['title'] = $this->lang->line('create_group_title');
 
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         // validate form input
@@ -898,13 +898,13 @@ class Auth extends CI_Controller
     {
         // bail if no group id given
         if (!$id || empty($id)) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $this->data['title'] = $this->lang->line('edit_group_title');
 
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
-            redirect('admin', 'refresh');
+            redirect('', 'refresh');
         }
 
         $group = $this->ion_auth->group($id)->row();

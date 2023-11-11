@@ -38,17 +38,16 @@ function showNavAdmin()
 function showNavUser()
 {
     $CI = &get_instance();
-    $dataHeader = array(
-        'title' => 'xxx',
-        'nama_session' => 'xxx',
-        'description' => 'xxx)',
-        'nama_user' => NULL,
-    );
-
-
     $data_settings = $CI->db->get('settings')->row();
     $CI->session->set_userdata('settings', $data_settings);
 
+    $dataHeader = array(
+        'title' => 'PPDB ' . $data_settings->nama_pesantren,
+        'nama_session' => 'PPDB',
+        'description' => $data_settings->nama_pesantren,
+        'nama_user' => NULL,
+    );
+
     $CI->load->view('inc/header_cdn', $dataHeader);
-    $CI->load->view('inc/nav_user');
+    // $CI->load->view('inc/nav_user');
 }

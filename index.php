@@ -65,12 +65,19 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'developm
  * By default development will show errors but testing and live will hide them.
  */
 switch (ENVIRONMENT) {
-	case 'development':
+	case 'app':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 		break;
 
-	case 'testing':
+	case 'ppdb':
+		error_reporting(-1);
+		ini_set('display_errors', 1);
+		break;
+	case 'development':
+		error_reporting(-1);
+		ini_set('display_errors', 1);
+		break;
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>=')) {

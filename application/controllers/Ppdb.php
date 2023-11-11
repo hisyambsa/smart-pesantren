@@ -85,10 +85,10 @@ class Ppdb extends CI_Controller
                 // not valid
                 return $ciphertext = "https://app.smartponpes.id/ppdb/c/$ciphertext";
             } else {
-                return $ciphertext = "https://app.smartponpes.id/ppdb/c/$ciphertext";
+                return $ciphertext = "http://localhost:8888/smart-pesantren/ppdb/c/$ciphertext";
             }
         }, true);
-        $crud->setActionButton('View', 'fa fa-eye', function ($row) {
+        $crud->setActionButton('View', 'fa fa-link', function ($row) {
             $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
 
             $whitelist = array('127.0.0.1', "::1");
@@ -96,7 +96,7 @@ class Ppdb extends CI_Controller
                 // not valid
                 return $ciphertext = "https://app.smartponpes.id/cetak/ppdb/$ciphertext";
             } else {
-                return $ciphertext = "https://app.smartponpes.id/cetak/ppdb/$ciphertext";
+                return $ciphertext = "http://localhost:8888/smart-pesantren/ppdb/c/$ciphertext";
             }
         }, true);
         $crud->setActionButton('<i class="fa-brands fa-whatsapp"></i>', 'fa fa-whatsapp', function ($row) use ($table) {
@@ -123,12 +123,12 @@ class Ppdb extends CI_Controller
             if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
                 $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
                 $no_bantuan_wa = $this->session->userdata('settings')->no_bantuan_wa;
-                return "https://api.whatsapp.com/send?phone=62$applicant_tel&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://app.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
+                return "https://api.whatsapp.com/send?phone=62$applicant_tel&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
             } else {
                 $ciphertext = base64_encode(openssl_encrypt($row->no_pendaftaran, "AES-128-ECB", $this->config->item('hash')));
                 // $ciphertext = base64_encode(openssl_encrypt(base_url("ppdb/c/" . $row->no_pendaftaran), "AES-128-ECB", $this->config->item('hash')));
                 $no_bantuan_wa = $this->session->userdata('settings')->no_bantuan_wa;
-                return "https://api.whatsapp.com/send?phone=$applicant_tel&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://app.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
+                return "https://api.whatsapp.com/send?phone=$applicant_tel&text=Terima%20Kasih%20sudah%20mendaftar%20di%20smart-pesantren.%0AUntuk%20tahap%20selanjutnya%20adalah%20mengisi%20kelengkapan%20dokumen.%0A%0AStatus%20Pendaftaran%20dan%20Mengisi%20Kelengkapan%20Dokumen%20dapat%20melalui%20Link%20ini%20dibawah%20ini%0A%0Ahttps://ppdb.smartponpes.id/ppdb/c/$ciphertext%0A%0AJika%20Ada%20Pertanyaan%2C%20dapat%20hubungi%20di%20nomor%20ini%0A%0Ahttps%3A%2F%2Fwa.me%2F$no_bantuan_wa";
             }
         }, true);
         $crud->setConfig('action_button_type', 'icon');
